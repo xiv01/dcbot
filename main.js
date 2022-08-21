@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
-const { token, activities, statschannel, welcomechannel, standardRoleName } = require('./config.json');
+const { Client, GatewayIntentBits, Collection, ActivityType, Partials } = require('discord.js');
+const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel } = require('./config.json');
 
 const client = new Client({ 
     intents: 
@@ -11,8 +11,12 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions,  
     GatewayIntentBits.MessageContent, 
     GatewayIntentBits.GuildMembers, 
-    GatewayIntentBits.GuildVoiceStates
-]});
+    GatewayIntentBits.GuildVoiceStates],
+    partials: 
+    [Partials.Message, 
+    Partials.Channel, 
+    Partials.Reaction
+],});
 
 client.once('ready', () => {
 	console.log('online');
@@ -40,12 +44,17 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
     if(message.author.bot) return;
     content = message.content.toLowerCase();
 
     if(content.includes("shrek")) {
         message.reply('https://cdn140.picsart.com/298141702027211.png');
+    }
+
+    if (message.channelId === suggestionchannel) {
+        await message.react('✅');
+        await message.react('❌');
     }
 }) 
 
@@ -69,6 +78,124 @@ client.on('guildMemberRemove', (guildMember) => {
     }
     catch (e) {
         console.log(e);
+    }
+})
+
+client.on('messageReactionAdd', async (reaction, user) => {
+    if(reaction.message.partial) await reaction.message.fetch();
+    if(reaction.partial) await reaction.fetch();
+    if(!reaction.message.guild) return;
+    if(user.bot) return;
+
+    if (reaction.message.channelId == roleschannel) {
+        if(reaction.emoji.name === '1️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
+        }
+        if(reaction.emoji.name === '2️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '16+'));
+        }
+        if(reaction.emoji.name === '3️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '18+'));
+        } 
+
+        if(reaction.emoji.name === '💙') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'male'));
+        } 
+        if(reaction.emoji.name === '💜') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'female'));
+        }
+        if(reaction.emoji.name === '🤍') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'other'));
+        }
+
+        if(reaction.emoji.name === '💫') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
+        } 
+        if(reaction.emoji.name === '⭐') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'she/her'));
+        }
+        if(reaction.emoji.name === '🌟') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'they/them'));
+        }
+        if(reaction.emoji.name === '✨') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'it/it'));
+        }
+
+        if(reaction.emoji.name === '💗') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'femboy'));
+        } 
+        if(reaction.emoji.name === '🖤') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'emo'));
+        }
+        if(reaction.emoji.name === '💪') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'gym bro'));
+        }
+        if(reaction.emoji.name === '🎮') {
+            await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'gamer'));
+        }
+        
+        else {
+            return;
+        }
+    }
+})
+
+client.on('messageReactionRemove', async (reaction, user) => {
+    if(reaction.message.partial) await reaction.message.fetch();
+    if(reaction.partial) await reaction.fetch();
+    if(!reaction.message.guild) return;
+    if(user.bot) return;
+
+    if (reaction.message.channelId == roleschannel) {
+        if(reaction.emoji.name === '1️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
+        }
+        if(reaction.emoji.name === '2️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '16+'));
+        }
+        if(reaction.emoji.name === '3️⃣') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '18+'));
+        } 
+        
+        if(reaction.emoji.name === '💙') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'male'));
+        } 
+        if(reaction.emoji.name === '💜') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'female'));
+        }
+        if(reaction.emoji.name === '🤍') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'other'));
+        }
+
+        if(reaction.emoji.name === '💫') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
+        } 
+        if(reaction.emoji.name === '⭐') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'she/her'));
+        }
+        if(reaction.emoji.name === '🌟') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'they/them'));
+        }
+        if(reaction.emoji.name === '✨') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'it/it'));
+        }
+
+        if(reaction.emoji.name === '💗') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'femboy'));
+        } 
+        if(reaction.emoji.name === '🖤') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'emo'));
+        }
+        if(reaction.emoji.name === '💪') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'gym bro'));
+        }
+        if(reaction.emoji.name === '🎮') {
+            await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'gamer'));
+        }
+        
+        else {
+            return;
+        }
     }
 })
 
