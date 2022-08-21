@@ -1,14 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType } = require('discord.js');
-const { token } = require('./token.json');
-
-// ------- edit these -------
-const activities = ['max = boss', 'ur mom', 'ok', ':heart:'];
-const statschannel = '1010733066408431666';
-const welcomechannel = '1010681847837110422';
-const standardRoleName = 'normal';
-// --------------------------
+const { token, activities, statschannel, welcomechannel, standardRoleName } = require('./config.json');
 
 const client = new Client({ 
     intents: 

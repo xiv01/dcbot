@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('penis')
-		.setDescription('displays your pp size'),
+		.setDescription('calculates your pp size'),
 	async execute(interaction) {
         let length = Math.floor(Math.random() * 40)
         let ppString = "8";
@@ -15,7 +15,7 @@ module.exports = {
         ppString += "D";
 
 		const gayembed = new EmbedBuilder()
-			.setColor(0x0099FF)
+			.setColor(0x6bfa94)
 			.setTitle('Your PP')
 			.setDescription(ppString)
 		await interaction.reply({ embeds: [gayembed] });
