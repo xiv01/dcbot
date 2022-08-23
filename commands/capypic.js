@@ -13,7 +13,7 @@ module.exports = {
             folderSize = files.length;
             imageNumber = Math.floor(Math.random() * folderSize) + 1;
 
-            interaction.reply({ files: [__dirname + '/../images/capypics' + '\\' + files[imageNumber-1]]})
+            interaction.reply({ files: [__dirname + '/../images/capypics' + '//' + files[imageNumber-1]]})
         });
 	},
 };
