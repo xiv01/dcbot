@@ -20,7 +20,7 @@ const client = new Client({
 ],});
 
 client.once('ready', () => {
-	console.log(`[${[date.toLocaleString()]}] bot online`);
+	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
     const updateDelay = 5; 
     let currentIndex = 0;
@@ -52,7 +52,7 @@ client.on('messageCreate', async message => {
     for (var i = 0; i < badwords.length; i++) {
         if (content.includes(badwords[i])) {
             await message.delete();
-            console.log(`[${[date.toLocaleString()]}] deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`)
             const badwordsembed = new EmbedBuilder()
                 .setColor(0xfc2332)
                 .setTitle('❗ **bad words deleted**')
@@ -65,7 +65,7 @@ client.on('messageCreate', async message => {
 
     if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
         await message.delete();
-        console.log(`[${[date.toLocaleString()]}] deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`)
+        console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`)
         const inviteembed = new EmbedBuilder()
             .setColor(0xfc2332)
             .setTitle('❗ **invite link deleted**')
@@ -90,7 +90,7 @@ client.on('guildMemberAdd', (guildMember) => {
 
     guildMember.roles.add(standardRole);
     guildMember.guild.channels.cache.get(welcomechannel).send(`welcome <@${guildMember.user.id}> to the best server`);
-    console.log(`[${[date.toLocaleString()]}] ${guildMember.username} joined the server`);
+    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.username} joined the server`);
 
     try {
         guildMember.guild.channels.cache.get(statschannel).setName(`₊✦˚・MEMBERS: ${guildMember.guild.memberCount}`); 
@@ -101,7 +101,7 @@ client.on('guildMemberAdd', (guildMember) => {
 })
 
 client.on('guildMemberRemove', (guildMember) => {
-    console.log(`[${[date.toLocaleString()]}] ${guildMember.user.username} left the server`);
+    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.user.username} left the server`);
     try {
         guildMember.guild.channels.cache.get(statschannel).setName(`₊✦˚・MEMBERS: ${guildMember.guild.memberCount}`);
     }
@@ -119,62 +119,62 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.channelId == roleschannel) {
         if(reaction.emoji.name === '1️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: 13+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: 13+`)
         }
         if(reaction.emoji.name === '2️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '16+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: 16+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: 16+`)
         }
         if(reaction.emoji.name === '3️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '18+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: 18+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: 18+`)
         } 
 
         if(reaction.emoji.name === '💙') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'male'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: male`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: male`)
         } 
         if(reaction.emoji.name === '💜') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'female'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: female`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: female`)
         }
         if(reaction.emoji.name === '🤍') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'other'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: other`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: other`)
         }
 
         if(reaction.emoji.name === '💫') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: he/him`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: he/him`)
         } 
         if(reaction.emoji.name === '⭐') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'she/her'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: she/her`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: she/her`)
         }
         if(reaction.emoji.name === '🌟') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'they/them'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: they/them`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: they/them`)
         }
         if(reaction.emoji.name === '✨') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'it/it'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: it/it`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: it/it`)
         }
 
         if(reaction.emoji.name === '💗') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'femboy'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: femboy`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: femboy`)
         } 
         if(reaction.emoji.name === '🖤') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'emo'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: emo`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: emo`)
         }
         if(reaction.emoji.name === '💪') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'gym bro'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: gym bro`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: gym bro`)
         }
         if(reaction.emoji.name === '🎮') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === 'gamer'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} added self role: gamer`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: gamer`)
         }
         
         else {
@@ -192,62 +192,62 @@ client.on('messageReactionRemove', async (reaction, user) => {
     if (reaction.message.channelId == roleschannel) {
         if(reaction.emoji.name === '1️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: 13+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: 13+`)
         }
         if(reaction.emoji.name === '2️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '16+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: 16+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: 16+`)
         }
         if(reaction.emoji.name === '3️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '18+'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: 18+`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: 18+`)
         } 
         
         if(reaction.emoji.name === '💙') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'male'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: male`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: male`)
         } 
         if(reaction.emoji.name === '💜') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'female'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: female`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: female`)
         }
         if(reaction.emoji.name === '🤍') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'other'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: other`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: other`)
         }
 
         if(reaction.emoji.name === '💫') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: he/him`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: he/him`)
         } 
         if(reaction.emoji.name === '⭐') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'she/her'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: she/her`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: she/her`)
         }
         if(reaction.emoji.name === '🌟') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'they/them'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: they/them`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: they/them`)
         }
         if(reaction.emoji.name === '✨') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'it/it'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: it/it`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: it/it`)
         }
 
         if(reaction.emoji.name === '💗') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'femboy'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: femboy`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: femboy`)
         } 
         if(reaction.emoji.name === '🖤') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'emo'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: emo`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: emo`)
         }
         if(reaction.emoji.name === '💪') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'gym bro'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: gym bro`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: gym bro`)
         }
         if(reaction.emoji.name === '🎮') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'gamer'));
-            console.log(`[${[date.toLocaleString()]}] ${user.username}#${user.discriminator} removed self role: gamer`)
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: gamer`)
         }
         
         else {

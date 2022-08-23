@@ -15,7 +15,7 @@ module.exports = {
 
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
         let date = new Date();
-		console.log(`[${[date.toLocaleString()]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /rules`);
+		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /rules`);
 
         await interaction.channel.send({ embeds: [rulesembed] });
 	},

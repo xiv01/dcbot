@@ -8,7 +8,7 @@ module.exports = {
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
         let date = new Date();
-		console.log(`[${[date.toLocaleString()]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /capypic`);
+		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /capypic`);
 
         fs.readdir(__dirname + '/../images/capypics', (err, files) => {
             folderSize = files.length;
