@@ -7,7 +7,8 @@ module.exports = {
 		.setDescription('posts a cat picture'),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /catpic`);
+        let date = new Date();
+		console.log(`[${[date.toLocaleString()]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /catpic`);
 
         fs.readdir(__dirname + '/../images/catpics', (err, files) => {
             folderSize = files.length;

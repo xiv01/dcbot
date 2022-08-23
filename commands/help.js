@@ -14,7 +14,8 @@ module.exports = {
 	async execute(interaction) {
 
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /help`);
+		let date = new Date();
+		console.log(`[${[date.toLocaleString()]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /help`);
 
 		await interaction.reply({ embeds: [helpembed] });
 	},
