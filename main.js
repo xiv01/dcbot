@@ -20,7 +20,7 @@ const client = new Client({
 ],});
 
 client.once('ready', () => {
-	console.log(`[${[date.toLocaleString()]}] online`);
+	console.log(`[${[date.toLocaleString()]}] bot online`);
 
     const updateDelay = 5; 
     let currentIndex = 0;
