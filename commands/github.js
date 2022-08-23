@@ -5,6 +5,10 @@ module.exports = {
 		.setName('github')
 		.setDescription('links to this bots public github repo'),
 	async execute(interaction) {
+
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /github`);
+
 		const githubembed = new EmbedBuilder()
 			.setColor(0x6bfa94)
 			.setTitle('GitHub Repository')

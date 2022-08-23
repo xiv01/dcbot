@@ -5,6 +5,10 @@ module.exports = {
 		.setName('penis')
 		.setDescription('calculates your pp size'),
 	async execute(interaction) {
+
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /penis`);
+
         let length = Math.floor(Math.random() * 40)
         let ppString = "8";
 

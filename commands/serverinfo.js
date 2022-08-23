@@ -5,6 +5,10 @@ module.exports = {
 		.setName('server')
 		.setDescription('displays server info'),
 	async execute(interaction) {
+
+        const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /server`);
+
         const serverinfoembed = new EmbedBuilder()
             .setColor(0x6bfa94)
             .setTitle('boss server info')

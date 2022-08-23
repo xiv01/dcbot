@@ -5,6 +5,10 @@ module.exports = {
 		.setName('ping')
 		.setDescription('replies with latency'),
 	async execute(interaction) {
+
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /ping`);
+
 		const pingembed = new EmbedBuilder()
 			.setColor(0x0099FF)
 			.setTitle('🏓 pong')

@@ -12,6 +12,10 @@ module.exports = {
 	async execute(interaction) {
         interaction.deferReply();
         interaction.deleteReply();
+
+        const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /rules`);
+
         await interaction.channel.send({ embeds: [rulesembed] });
 	},
 };

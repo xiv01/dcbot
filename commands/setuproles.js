@@ -5,6 +5,12 @@ module.exports = {
 		.setName('setuproles')
 		.setDescription('setup self roles in current channel'),
 	async execute(interaction) {
+		interaction.deferReply();
+		interaction.deleteReply();
+
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		console.log(`[log] ${interactionUser.user.username} used /setuproles`);
+
 		const role1embed = new EmbedBuilder()
     		.setColor(0x98b1c8)
     		.setTitle('Age')
@@ -25,8 +31,6 @@ module.exports = {
     		.setTitle('Personality')
     		.setDescription('⚙️ choose your personality\n\n💗 ⇢ \`femboy\`\n\n🖤 ⇢ \`emo\`\n\n💪 ⇢ \`gym bro\`\n\n🎮 ⇢ \`gamer\`\n\n')
 
-		interaction.deferReply();
-		interaction.deleteReply();
 		let messageEmbed = await interaction.channel.send({ embeds: [role1embed]  })
 		let messageEmbed2 = await interaction.channel.send({ embeds: [role2embed] })
 		let messageEmbed3 = await interaction.channel.send({ embeds: [role3embed] })
