@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction) {
 
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username} used /howgay`);
+		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /howgay`);
 
 		const gayembed = new EmbedBuilder()
 			.setColor(0x6bfa94)

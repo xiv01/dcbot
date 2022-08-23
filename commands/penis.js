@@ -7,7 +7,7 @@ module.exports = {
 	async execute(interaction) {
 
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username} used /penis`);
+		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /penis`);
 
         let length = Math.floor(Math.random() * 40)
         let ppString = "8";

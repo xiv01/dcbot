@@ -7,7 +7,7 @@ module.exports = {
 		.setDescription('posts a capybara picture'),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username} used /capypic`);
+		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /capypic`);
 
         fs.readdir(__dirname + '/../images/capypics', (err, files) => {
             folderSize = files.length;

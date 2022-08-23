@@ -14,7 +14,7 @@ module.exports = {
         interaction.deleteReply();
 
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		console.log(`[log] ${interactionUser.user.username} used /rules`);
+		console.log(`[log] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /rules`);
 
         await interaction.channel.send({ embeds: [rulesembed] });
 	},
