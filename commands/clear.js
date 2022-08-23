@@ -7,8 +7,8 @@ module.exports = {
         .addIntegerOption(option => option.setName('messages').setDescription('number of messages to delete').setRequired(true)),
 	async execute(interaction) {
 		const num = interaction.options.getInteger('messages');
-
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+		
 		let date = new Date();
 		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /clear ${num}`);
 

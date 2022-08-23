@@ -2,7 +2,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
 const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords } = require('./config.json');
-date = new Date();
 
 const client = new Client({ 
     intents: 
@@ -20,6 +19,7 @@ const client = new Client({
 ],});
 
 client.once('ready', () => {
+    let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
     const updateDelay = 5; 
@@ -52,6 +52,7 @@ client.on('messageCreate', async message => {
     for (var i = 0; i < badwords.length; i++) {
         if (content.includes(badwords[i])) {
             await message.delete();
+            let date = new Date();
             console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`)
             const badwordsembed = new EmbedBuilder()
                 .setColor(0xfc2332)
@@ -65,6 +66,7 @@ client.on('messageCreate', async message => {
 
     if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
         await message.delete();
+        let date = new Date();
         console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`)
         const inviteembed = new EmbedBuilder()
             .setColor(0xfc2332)
@@ -90,7 +92,8 @@ client.on('guildMemberAdd', (guildMember) => {
 
     guildMember.roles.add(standardRole);
     guildMember.guild.channels.cache.get(welcomechannel).send(`welcome <@${guildMember.user.id}> to the best server`);
-    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.username} joined the server`);
+    let date = new Date();
+    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.user.username}#${guildMember.user.discriminator} joined the server`);
 
     try {
         guildMember.guild.channels.cache.get(statschannel).setName(`₊✦˚・MEMBERS: ${guildMember.guild.memberCount}`); 
@@ -101,7 +104,9 @@ client.on('guildMemberAdd', (guildMember) => {
 })
 
 client.on('guildMemberRemove', (guildMember) => {
-    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.user.username} left the server`);
+    let date = new Date();
+    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${guildMember.user.username}#${guildMember.user.discriminator} left the server`);
+
     try {
         guildMember.guild.channels.cache.get(statschannel).setName(`₊✦˚・MEMBERS: ${guildMember.guild.memberCount}`);
     }
@@ -117,6 +122,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
     if(user.bot) return;
 
     if (reaction.message.channelId == roleschannel) {
+        let date = new Date();
         if(reaction.emoji.name === '1️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
             console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} added self role: 13+`)
@@ -190,6 +196,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
     if(user.bot) return;
 
     if (reaction.message.channelId == roleschannel) {
+        let date = new Date();
         if(reaction.emoji.name === '1️⃣') {
             await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === '13+'));
             console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${user.username}#${user.discriminator} removed self role: 13+`)

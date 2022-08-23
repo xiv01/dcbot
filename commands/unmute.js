@@ -8,8 +8,8 @@ module.exports = {
         .addUserOption(option => option.setName('member').setDescription('name of user you want to unmute').setRequired(true)),
 	async execute(interaction) {
 		const member = interaction.options.getMember('member');
-
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
+        
         let date = new Date();
 		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /unmute @${member.user.username}#${member.user.discriminator}`);
 
