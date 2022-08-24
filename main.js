@@ -72,7 +72,7 @@ client.on('messageCreate', async message => {
         const inviteembed = new EmbedBuilder()
             .setColor(0xfc2332)
             .setTitle('❗ **invite link deleted**')
-            .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` tried to post and invite link and got muted >:(`)
+            .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` tried to post an invite link and got muted 🤡`)
 
         let warning = await message.channel.send({ embeds: [inviteembed] });
         setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);

@@ -12,10 +12,10 @@ module.exports = {
 
         const serverinfoembed = new EmbedBuilder()
             .setColor(0x6bfa94)
-            .setTitle('boss server info')
+            .setTitle(`${interaction.guild.name} info`)
             .setDescription(`\nmembers: \`${interaction.guild.memberCount}\` \ncreated: \`${interaction.guild.createdAt}\`\n`)
             .setTimestamp()
-            .setFooter({ text: 'developed by max#0135', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/b02b839c3cb08a00bd7354bc8afda92a.webp?size=32' });
+            .setFooter({ text: 'developed by max#0135', iconURL: client.users.fetch('709098824253177859').avatarURL() });
             
         await interaction.reply({ embeds: [serverinfoembed] });
 	},
