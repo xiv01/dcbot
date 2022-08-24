@@ -66,7 +66,7 @@ client.on('messageCreate', async message => {
 
     if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
         await message.delete();
-        message.guild.members.cache.get(message.author.user.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
+        message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
         let date = new Date();
         console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`)
         const inviteembed = new EmbedBuilder()
