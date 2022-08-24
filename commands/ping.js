@@ -14,7 +14,8 @@ module.exports = {
 			.setColor(0x0099FF)
 			.setTitle('🏓 pong')
 			.setDescription(`\nbot latency ⇢ \`${Date.now() - interaction.createdTimestamp}ms\`\nAPI latency ⇢ \`${Math.round(interaction.client.ws.ping)}ms\`\n`)
-			.setFooter({ text: 'developed by max#0135', iconURL: client.users.fetch('709098824253177859').avatarURL() });
+			.setFooter({ text: 'developed by max#0135', iconURL: interactionclient.users.fetch('709098824253177859').avatarURL() });
+			
 		await interaction.reply({ embeds: [pingembed] });
 	},
 };

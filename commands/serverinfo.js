@@ -15,7 +15,7 @@ module.exports = {
             .setTitle(`${interaction.guild.name} info`)
             .setDescription(`\nmembers: \`${interaction.guild.memberCount}\` \ncreated: \`${interaction.guild.createdAt}\`\n`)
             .setTimestamp()
-            .setFooter({ text: 'developed by max#0135', iconURL: client.users.fetch('709098824253177859').avatarURL() });
+            .setFooter({ text: 'developed by max#0135', iconURL: interaction.client.users.fetch('709098824253177859').avatarURL() });
             
         await interaction.reply({ embeds: [serverinfoembed] });
 	},
