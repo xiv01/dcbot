@@ -25,8 +25,6 @@ a multi purpose bot for my discord server
   - un-mute a member
 - **/clear [messages]**
   - delete given amount of messages
-- **/clear [messages]**
-  - delete given amount of messages
 - **/catpic & /capypic**
   - posts a cat / capybara pic
 - **/server**
