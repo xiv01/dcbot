@@ -1,5 +1,3 @@
-a multi purpose bot for my discord server
-
 ## features
 
 - chat filtering
