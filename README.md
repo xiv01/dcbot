@@ -21,8 +21,6 @@ a multi purpose bot for my discord server
   - setup self roles in current channel
 - **/github**
   - links to this github repo
-- **/github**
-  - links to this github repo
 - **/mute & /unmute [member]**
   - un-mute a member
 - **/clear [messages]**
