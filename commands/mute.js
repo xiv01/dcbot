@@ -25,7 +25,7 @@ module.exports = {
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } else {
             await member.roles.add(mutedRole);
-            await targetUser.voice.setMute(true);
+            await member.voice.setMute(true);
             const muteembed = new EmbedBuilder()
                 .setColor(0x6bfa94)
                 .setTitle('✅ **done**')
