@@ -17,9 +17,8 @@ module.exports = {
 
         if(member.roles.cache.has(mutedRole.id)) {
             await member.roles.remove(mutedRole);
-            if (member.voice.channel) {
-                await member.voice.setMute(false);
-            }
+            await member.voice.setMute(false);
+
             const unmuteembed = new EmbedBuilder()
                 .setColor(0x6bfa94)
                 .setTitle('✅ **done**')
