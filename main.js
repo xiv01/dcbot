@@ -90,6 +90,7 @@ client.on('messageCreate', async message => {
     if(message.channelId === bumpchannel) {
         message.embeds.forEach((embed) => {
             if(embed.description.includes("Bump erfolgreich!")) {
+                console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${message.member.user.username}#${message.member.user.discriminator} bumped the server`)
                 const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
                 setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
             }
