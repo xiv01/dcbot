@@ -39,7 +39,7 @@ client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
+for(const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
 	client.commands.set(command.data.name, command);
@@ -49,7 +49,7 @@ client.on('messageCreate', async message => {
     if(message.author.bot) return;
     content = message.content.toLowerCase();
 
-    for (var i = 0; i < badwords.length; i++) {
+    for(var i = 0; i < badwords.length; i++) {
         if (content.includes(badwords[i])) {
             await message.delete();
             let date = new Date();
@@ -82,9 +82,18 @@ client.on('messageCreate', async message => {
         await message.reply('https://cdn140.picsart.com/298141702027211.png');
     }
 
-    if (message.channelId === suggestionchannel) {
+    if(message.channelId === suggestionchannel) {
         await message.react('✅');
         await message.react('❌');
+    }
+
+    if(message.channelId === bumpchannel) {
+        message.embeds.forEach((embed) => {
+            if(embed.description.includes("Bump erfolgreich!")) {
+                const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
+                setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
+            }
+        });
     }
 }) 
 
