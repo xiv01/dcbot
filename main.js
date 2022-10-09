@@ -46,11 +46,20 @@ for(const file of commandFiles) {
 }
 
 client.on('messageCreate', async message => {
+    if(message.channelId === bumpchannel) {
+        message.embeds.forEach((embed) => {
+            if(embed.description.includes("Bump erfolgreich!")) {
+                const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
+                setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
+            }
+        });
+    }
+
     if(message.author.bot) return;
     content = message.content.toLowerCase();
 
     for(var i = 0; i < badwords.length; i++) {
-        if (content.includes(badwords[i])) {
+        if(content.includes(badwords[i])) {
             await message.delete();
             let date = new Date();
             console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`)
@@ -85,17 +94,6 @@ client.on('messageCreate', async message => {
     if(message.channelId === suggestionchannel) {
         await message.react('✅');
         await message.react('❌');
-    }
-
-    if(message.channelId === bumpchannel) {
-        console.log(message)
-        message.embeds.forEach((embed) => {
-            console.log(embed.description)
-            if(embed.description.includes("Bump erfolgreich!")) {
-                const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
-                setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
-            }
-        });
     }
 }) 
 
