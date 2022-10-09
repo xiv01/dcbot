@@ -47,10 +47,10 @@ for(const file of commandFiles) {
 
 client.on('messageCreate', async message => {
     if(message.channelId === bumpchannel) {
-        if(message.embeds[0].description.includes("ping")) {
-            console.log("yes");
-            //const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
-            //setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
+        if(message.embeds[0].description.includes("Bump erfolgreich!")) {
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] server bumped :D`)
+            const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
+            setTimeout(() => message.channel.send(`${pingRole} bumpt ihr loser`), 7200000);
         };
     }
 
