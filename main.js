@@ -88,6 +88,7 @@ client.on('messageCreate', async message => {
     }
 
     if(message.channelId === bumpchannel) {
+        console.log(message)
         message.embeds.forEach((embed) => {
             console.log(embed.description)
             if(embed.description.includes("Bump erfolgreich!")) {
