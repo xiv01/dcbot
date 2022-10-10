@@ -46,9 +46,10 @@ for(const file of commandFiles) {
 }
 
 client.on('messageCreate', async message => {
+    // TODO: dont break when bot is restarted / check if timer is already running 
     if(message.channelId === bumpchannel) {
         if(message.embeds.length > 0) {
-            if(message.embeds[0].description.includes("Bump erfolgreich!")) {
+            if(message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!")) {
                 let date = new Date();
                 console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] server bumped :D`)
                 const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');

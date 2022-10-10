@@ -6,6 +6,7 @@
 - auto mute after attempt to post invite link
 - member stats channel
 - join message & role
+- disboard bump reminder
 
 ## commands
 
