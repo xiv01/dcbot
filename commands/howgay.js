@@ -11,7 +11,7 @@ module.exports = {
 		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /howgay`);
 
 		const gayembed = new EmbedBuilder()
-			.setColor(0x6bfa94)
+			.setColor(0xf2c6ff)
 			.setTitle('Calculation Result')
 			.setDescription(`\n🏳️‍🌈 your are \`${Math.floor(Math.random() * 101)}\`% gay :)\n`)
 		await interaction.reply({ embeds: [gayembed] });

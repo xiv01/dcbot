@@ -11,7 +11,7 @@ module.exports = {
 		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /github`);
 
 		const githubembed = new EmbedBuilder()
-			.setColor(0x6bfa94)
+			.setColor(0xf2c6ff)
 			.setTitle('GitHub Repository')
             .setURL('https://github.com/xiv01/dcbot/tree/main')
 		await interaction.reply({ embeds: [githubembed] });

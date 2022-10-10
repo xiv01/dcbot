@@ -20,7 +20,7 @@ module.exports = {
         ppString += "D";
 
 		const gayembed = new EmbedBuilder()
-			.setColor(0x6bfa94)
+			.setColor(0xf2c6ff)
 			.setTitle('Your PP')
 			.setDescription(ppString)
 		await interaction.reply({ embeds: [gayembed] });
