@@ -33,6 +33,7 @@ async function newcolor(userID, roles, guild) {
         await member.roles.add(currentrole);
         while(highest.name != "rainbow") {
             await new Promise(resolve => setTimeout(resolve, 1000));
+            highest = member.roles.highest
         }
         await member.roles.remove(highest);
     }).catch(() => { console.error("[error] newcolor failed (probably tried to delete booster role)") })
