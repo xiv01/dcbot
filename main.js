@@ -19,6 +19,21 @@ const client = new Client({
     Partials.Reaction
 ],});
 
+async function newcolor(userID, roles) {
+    await guild.members.fetch(userID).then(async member => {
+        highest = member.roles.highest
+        if(highest.name != "rainbow") {
+            await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
+        }
+        currentrole = roles[Math.floor(Math.random() * roles.length)];
+        while(currentrole == member.roles.highest) {
+            currentrole = roles[Math.floor(Math.random() * roles.length)];
+        }
+        await member.roles.add(currentrole); 
+        await member.roles.remove(highest);
+    }).catch(console.error)
+}
+
 client.once('ready', () => {
     let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
@@ -41,22 +56,26 @@ client.once('ready', () => {
                  guild.roles.cache.find(role => role.id === '1029230447768653904'), 
                  guild.roles.cache.find(role => role.id === '1029230503359946763')];
 
-    guild.members.fetch('709098824253177859')
-    .then(member => {
-            me = member;
-            currentrole = member.roles.highest;
-    })
-    .catch(console.error)
-
     setIntervalAsync(async () => {
-        temp = currentrole 
-        currentrole = roles[Math.floor(Math.random() * roles.length)];
-        while(currentrole == temp) {
-            currentrole = roles[Math.floor(Math.random() * roles.length)];
+        for(var i = 0; i < rainbowrole.length; i++) {
+            newcolor(rainbowrole[i], roles)
         }
-        await me.roles.add(currentrole); 
-        await me.roles.remove(temp);
-      }, 10000);
+    }, 10000);
+
+    //guild.members.fetch('709098824253177859').then(member => {
+    //        me = member;
+    //        currentrole = member.roles.highest;
+    //}).catch(console.error)
+//
+    //setIntervalAsync(async () => {
+    //    temp = currentrole 
+    //    currentrole = roles[Math.floor(Math.random() * roles.length)];
+    //    while(currentrole == temp) {
+    //        currentrole = roles[Math.floor(Math.random() * roles.length)];
+    //    }
+    //    await me.roles.add(currentrole); 
+    //    await me.roles.remove(temp);
+    //  }, 10000);
 });
 
 client.commands = new Collection();
