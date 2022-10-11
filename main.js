@@ -58,7 +58,7 @@ client.once('ready', () => {
 
     setIntervalAsync(async () => {
         for(var i = 0; i < rainbowrole.length; i++) {
-            newcolor(rainbowrole[i], roles, guild)
+            await newcolor(rainbowrole[i], roles, guild)
         }
     }, 10000);
 
