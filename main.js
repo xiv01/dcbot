@@ -32,7 +32,7 @@ async function newcolor(userID, roles, guild) {
         }
         await member.roles.add(currentrole); 
         await member.roles.remove(highest);
-    }).catch(console.error)
+    }).catch(() => { console.error("[error] newcolor failed") })
 }
 
 client.once('ready', () => {
