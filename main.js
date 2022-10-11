@@ -50,11 +50,11 @@ client.once('ready', () => {
                         await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
                     }
                     currentrole = roles[Math.floor(Math.random() * roles.length)];
-                    while(currentrole.name === highest.name) {
+                    while(currentrole == member.roles.highest) {
                         currentrole = roles[Math.floor(Math.random() * roles.length)];
                     }
                     await member.roles.add(currentrole); 
-                    await member.roles.remove(highest);
+                    await member.roles.remove(member.roles.highest);
             })
             .catch(console.error)
         }
