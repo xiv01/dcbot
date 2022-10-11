@@ -22,24 +22,33 @@ client.once('ready', () => {
     let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
-    const guild = client.guilds.cache.get('1009909291165175860');
-    const rainbowRole = guild.roles.cache.find(role => role.name === 'rainbow');
-    var colors = ['#5ef787','#5ec2f7','#825ef7','#f75e8f','#f75edb','#f7c45e','#f75e5e','#5ef7bf','#5e66f7','#9e5ef7','#5ef76b','#f75eb5', '#5e6bf7'];
     let currentIndex = 0;
-  
+    guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
     setInterval(() => {
-      random = Math.floor(Math.random() * colors.length);  
-      rainbowRole.edit({
-          color: colors[random]
-      })
-
       const activity = activities[currentIndex];
       client.user.setActivity(activity, { type: ActivityType.Watching });
   
       currentIndex = currentIndex >= activities.length - 1 
         ? 0
         : currentIndex + 1;
-    }, 10000);
+    }, 5000);
+
+    const guild = client.guilds.cache.get('1009909291165175860');
+    const role1 = guild.roles.cache.find(role => role.id === '1029222292875644978');
+    const role2 = guild.roles.cache.find(role => role.id === '1029230317539700796');
+    const role3 = guild.roles.cache.find(role => role.id === '1029230389945978882');
+    const role4 = guild.roles.cache.find(role => role.id === '1029230218629611540');
+    const role5 = guild.roles.cache.find(role => role.id === '1029230447768653904');
+    const role6 = guild.roles.cache.find(role => role.id === '1029230503359946763');
+    var roles = [role1, role2, role3, role4, role5, role6];
+    currentrole = role1;
+    
+    setInterval(() => {
+        random = Math.floor(Math.random() * roles.length);  
+        guild.members.cache.get('709098824253177859').roles.remove(currentrole);
+        currentrole = roles[random];
+        guild.members.cache.get('709098824253177859').roles.add(currentrole);
+      }, 10000);
 });
 
 client.commands = new Collection();
