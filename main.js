@@ -18,6 +18,12 @@ const client = new Client({
     Partials.Reaction
 ],});
 
+function sleep(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+}
+
 client.once('ready', () => {
     let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
@@ -50,7 +56,7 @@ client.once('ready', () => {
             currentrole = roles[random];
         }
         await guild.members.cache.get('709098824253177859').roles.add(currentrole); 
-        await sleep(1000);
+        await sleep(500);
         await guild.members.cache.get('709098824253177859').roles.remove(temp);
       }, 10000);
 });
