@@ -52,31 +52,20 @@ client.once('ready', () => {
     const guild = client.guilds.cache.get('1009909291165175860');
     var roles = [guild.roles.cache.find(role => role.id === '1029222292875644978'), 
                  guild.roles.cache.find(role => role.id === '1029230317539700796'), 
-                 guild.roles.cache.find(role => role.id === '1029230389945978882'), 
                  guild.roles.cache.find(role => role.id === '1029230218629611540'), 
                  guild.roles.cache.find(role => role.id === '1029230447768653904'), 
-                 guild.roles.cache.find(role => role.id === '1029230503359946763')];
+                 guild.roles.cache.find(role => role.id === '1029230503359946763'), 
+                 guild.roles.cache.find(role => role.id === '1029230389945978882'),
+                 guild.roles.cache.find(role => role.id === '1029305344062668800'), 
+                 guild.roles.cache.find(role => role.id === '1029305517425823818'), 
+                 guild.roles.cache.find(role => role.id === '1029305672124346388'), 
+                 guild.roles.cache.find(role => role.id === '1029305683016941609')];
 
     setIntervalAsync(async () => {
         for(var i = 0; i < rainbowrole.length; i++) {
             await newcolor(rainbowrole[i], roles, guild)
         }
     }, 10000);
-
-    //guild.members.fetch('709098824253177859').then(member => {
-    //        me = member;
-    //        currentrole = member.roles.highest;
-    //}).catch(console.error)
-//
-    //setIntervalAsync(async () => {
-    //    temp = currentrole 
-    //    currentrole = roles[Math.floor(Math.random() * roles.length)];
-    //    while(currentrole == temp) {
-    //        currentrole = roles[Math.floor(Math.random() * roles.length)];
-    //    }
-    //    await me.roles.add(currentrole); 
-    //    await me.roles.remove(temp);
-    //  }, 10000);
 });
 
 client.commands = new Collection();
