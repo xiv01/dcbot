@@ -7,6 +7,7 @@
 - member stats channel
 - join message & role
 - disboard bump reminder
+- rainbow role
 
 ## commands
 
