@@ -42,15 +42,15 @@ client.once('ready', () => {
     var roles = [role1, role2, role3, role4, role5, role6];
     currentrole = guild.members.cache.get('709098824253177859').roles.highest;
 
-    setInterval(() => {
+    setInterval( async () => {
         random = Math.floor(Math.random() * roles.length);
         temp = currentrole 
         currentrole = roles[random];
         while(currentrole == temp) {
             currentrole = roles[random];
         }
-        guild.members.cache.get('709098824253177859').roles.add(currentrole); 
-        guild.members.cache.get('709098824253177859').roles.remove(temp);
+        await guild.members.cache.get('709098824253177859').roles.add(currentrole); 
+        await guild.members.cache.get('709098824253177859').roles.remove(temp);
       }, 10000);
 });
 
