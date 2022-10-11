@@ -46,6 +46,9 @@ client.once('ready', () => {
             guild.members.fetch(rainbowrole[i])
                 .then(async member => {
                     temp = member.roles.highest
+                    if(temp.name != "rainbow") {
+                        await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
+                    }
                     currentrole = roles[Math.floor(Math.random() * roles.length)];
                     while(currentrole == temp) {
                         currentrole = roles[Math.floor(Math.random() * roles.length)];
