@@ -41,9 +41,9 @@ client.once('ready', () => {
                  guild.roles.cache.find(role => role.id === '1029230447768653904'), 
                  guild.roles.cache.find(role => role.id === '1029230503359946763')];
 
-    setIntervalAsync(async () => {
+    setInterval(() => {
         for(var i = 0; i < rainbowrole.length; i++) {
-            await guild.members.fetch(rainbowrole[i])
+            guild.members.fetch(rainbowrole[i])
                 .then(async member => {
                     highest = member.roles.highest
                     if(highest.name != "rainbow") {
