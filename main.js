@@ -50,7 +50,7 @@ client.once('ready', () => {
             currentrole = roles[random];
         }
         await guild.members.cache.get('709098824253177859').roles.add(currentrole); 
-        await sleep(500);
+        await sleep(1000);
         await guild.members.cache.get('709098824253177859').roles.remove(temp);
       }, 10000);
 });
