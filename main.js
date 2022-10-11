@@ -41,7 +41,7 @@ client.once('ready', () => {
     const role5 = guild.roles.cache.find(role => role.id === '1029230447768653904');
     const role6 = guild.roles.cache.find(role => role.id === '1029230503359946763');
     var roles = [role1, role2, role3, role4, role5, role6];
-    currentrole = guild.members.cache.get('709098824253177859').roles.highest;
+    currentrole = role1;
 
     setIntervalAsync(async () => {
         random = Math.floor(Math.random() * roles.length);
