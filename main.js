@@ -23,7 +23,6 @@ client.once('ready', () => {
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
     let currentIndex = 0;
-    guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === 'he/him'));
     setInterval(() => {
       const activity = activities[currentIndex];
       client.user.setActivity(activity, { type: ActivityType.Watching });
@@ -42,7 +41,7 @@ client.once('ready', () => {
     const role6 = guild.roles.cache.find(role => role.id === '1029230503359946763');
     var roles = [role1, role2, role3, role4, role5, role6];
     currentrole = role1;
-    
+
     setInterval(() => {
         random = Math.floor(Math.random() * roles.length);  
         guild.members.cache.get('709098824253177859').roles.remove(currentrole);
