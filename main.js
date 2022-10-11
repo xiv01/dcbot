@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
 const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel } = require('./config.json');
-const { setIntervalAsync } = require('set-interval-async');
+const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async');
 
 const client = new Client({ 
     intents: 
