@@ -22,17 +22,23 @@ client.once('ready', () => {
     let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
-    const updateDelay = 5; 
+    const rainbowRole = message.guild.roles.cache.find(role => role.name === 'rainbow');
+    var colors = ['#5ef787','#5ec2f7','#825ef7','#f75e8f','#f75edb','#f7c45e','#f75e5e','#5ef7bf','#5e66f7','#9e5ef7','#5ef76b','#f75eb5', '#5e6bf7'];
     let currentIndex = 0;
   
     setInterval(() => {
+      random = Math.floor(Math.random() * colors.length);  
+      rainbowRole.edit({
+          color: colors[random]
+      })
+
       const activity = activities[currentIndex];
       client.user.setActivity(activity, { type: ActivityType.Watching });
   
       currentIndex = currentIndex >= activities.length - 1 
         ? 0
         : currentIndex + 1;
-    }, updateDelay * 1000);
+    }, 10000);
 });
 
 client.commands = new Collection();
