@@ -43,10 +43,9 @@ client.once('ready', () => {
 
     setIntervalAsync(async () => {
         for(var i = 0; i < rainbowrole.length; i++) {
-            guild.members.fetch(rainbowrole[i])
+            await guild.members.fetch(rainbowrole[i])
                 .then(async member => {
-                    temp = member.roles.highest
-                    if(temp.name != "rainbow") {
+                    if(member.roles.highest != "rainbow") {
                         await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
                     }
                     currentrole = roles[Math.floor(Math.random() * roles.length)];
@@ -54,7 +53,7 @@ client.once('ready', () => {
                         currentrole = roles[Math.floor(Math.random() * roles.length)];
                     }
                     await member.roles.add(currentrole); 
-                    await member.roles.remove(temp);
+                    await member.roles.remove(member.roles.highest);
             })
             .catch(console.error)
         }
