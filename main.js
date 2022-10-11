@@ -19,7 +19,7 @@ const client = new Client({
     Partials.Reaction
 ],});
 
-async function newcolor(userID, roles) {
+async function newcolor(userID, roles, guild) {
     await guild.members.fetch(userID).then(async member => {
         highest = member.roles.highest
         if(highest.name != "rainbow") {
@@ -58,7 +58,7 @@ client.once('ready', () => {
 
     setIntervalAsync(async () => {
         for(var i = 0; i < rainbowrole.length; i++) {
-            newcolor(rainbowrole[i], roles)
+            newcolor(rainbowrole[i], roles, guild)
         }
     }, 10000);
 
