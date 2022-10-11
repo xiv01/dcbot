@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
-const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel } = require('./config.json');
-const { setIntervalAsync, clearIntervalAsync } = require('set-interval-async');
+const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole } = require('./config.json');
+const { setIntervalAsync } = require('set-interval-async');
 
 const client = new Client({ 
     intents: 
@@ -34,29 +34,27 @@ client.once('ready', () => {
     }, 5000);
 
     const guild = client.guilds.cache.get('1009909291165175860');
-    const role1 = guild.roles.cache.find(role => role.id === '1029222292875644978');
-    const role2 = guild.roles.cache.find(role => role.id === '1029230317539700796');
-    const role3 = guild.roles.cache.find(role => role.id === '1029230389945978882');
-    const role4 = guild.roles.cache.find(role => role.id === '1029230218629611540');
-    const role5 = guild.roles.cache.find(role => role.id === '1029230447768653904');
-    const role6 = guild.roles.cache.find(role => role.id === '1029230503359946763');
-    var roles = [role1, role2, role3, role4, role5, role6];
-
-    guild.members.fetch('709098824253177859')
-        .then(member => {
-            me = member;
-            currentrole = member.roles.highest;
-    })
-    .catch(console.error)
+    var roles = [guild.roles.cache.find(role => role.id === '1029222292875644978'), 
+                 guild.roles.cache.find(role => role.id === '1029230317539700796'), 
+                 guild.roles.cache.find(role => role.id === '1029230389945978882'), 
+                 guild.roles.cache.find(role => role.id === '1029230218629611540'), 
+                 guild.roles.cache.find(role => role.id === '1029230447768653904'), 
+                 guild.roles.cache.find(role => role.id === '1029230503359946763')];
 
     setIntervalAsync(async () => {
-        temp = currentrole 
-        currentrole = roles[Math.floor(Math.random() * roles.length)];
-        while(currentrole == temp) {
-            currentrole = roles[Math.floor(Math.random() * roles.length)];
+        for(var i = 0; i < rainbowrole.length; i++) {
+            guild.members.fetch(rainbowrole[i])
+                .then(async member => {
+                    temp = member.roles.highest
+                    currentrole = roles[Math.floor(Math.random() * roles.length)];
+                    while(currentrole == temp) {
+                        currentrole = roles[Math.floor(Math.random() * roles.length)];
+                    }
+                    await member.roles.add(currentrole); 
+                    await member.roles.remove(temp);
+            })
+            .catch(console.error)
         }
-        await me.roles.add(currentrole); 
-        await me.roles.remove(temp);
       }, 10000);
 });
 
