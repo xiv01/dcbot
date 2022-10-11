@@ -50,10 +50,8 @@ client.once('ready', () => {
 
     setIntervalAsync(async () => {
         temp = currentrole 
-        currentrole = roles[random];
         currentrole = roles[Math.floor(Math.random() * roles.length)];
         while(currentrole == temp) {
-            currentrole = roles[random];
             currentrole = roles[Math.floor(Math.random() * roles.length)];
         }
         await me.roles.add(currentrole); 
