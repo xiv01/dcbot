@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
 const { token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel } = require('./config.json');
+const { setIntervalAsync } = require('set-interval-async');
 
 const client = new Client({ 
     intents: 
@@ -17,12 +18,6 @@ const client = new Client({
     Partials.Channel, 
     Partials.Reaction
 ],});
-
-function sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms);
-    });
-}
 
 client.once('ready', () => {
     let date = new Date();
@@ -48,7 +43,7 @@ client.once('ready', () => {
     var roles = [role1, role2, role3, role4, role5, role6];
     currentrole = guild.members.cache.get('709098824253177859').roles.highest;
 
-    setInterval( async () => {
+    setIntervalAsync(async () => {
         random = Math.floor(Math.random() * roles.length);
         temp = currentrole 
         currentrole = roles[random];
@@ -56,7 +51,6 @@ client.once('ready', () => {
             currentrole = roles[random];
         }
         await guild.members.cache.get('709098824253177859').roles.add(currentrole); 
-        await sleep(500);
         await guild.members.cache.get('709098824253177859').roles.remove(temp);
       }, 10000);
 });
