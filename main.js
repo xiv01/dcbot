@@ -41,20 +41,24 @@ client.once('ready', () => {
     const role5 = guild.roles.cache.find(role => role.id === '1029230447768653904');
     const role6 = guild.roles.cache.find(role => role.id === '1029230503359946763');
     var roles = [role1, role2, role3, role4, role5, role6];
-    user = client.guilds.cache.get('1009909291165175860').members.cache.get('709098824253177859');
-    console.log(user);
-    //currentrole = user.roles.highest;
-//
-    //setIntervalAsync(async () => {
-    //    random = Math.floor(Math.random() * roles.length);
-    //    temp = currentrole 
-    //    currentrole = roles[random];
-    //    while(currentrole == temp) {
-    //        currentrole = roles[random];
-    //    }
-    //    await user.roles.add(currentrole); 
-    //    await user.roles.remove(temp);
-    //  }, 10000);
+
+    guild.members.fetch('709098824253177859')
+        .then(member => {
+            me = member;
+            currentrole = member.roles.highest;
+    })
+    .catch(console.error)
+
+    setIntervalAsync(async () => {
+        random = Math.floor(Math.random() * roles.length);
+        temp = currentrole 
+        currentrole = roles[random];
+        while(currentrole == temp) {
+            currentrole = roles[random];
+        }
+        await me.roles.add(currentrole); 
+        await me.roles.remove(temp);
+      }, 10000);
 });
 
 client.commands = new Collection();
