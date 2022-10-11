@@ -31,11 +31,10 @@ async function newcolor(userID, roles, guild) {
             currentrole = roles[Math.floor(Math.random() * roles.length)];
         }
         await member.roles.add(currentrole);
-        if(highest.name != "rainbow") {
-            return;
-        } else {
-            await member.roles.remove(highest);
+        while(highest.name != "rainbow") {
+            await new Promise(resolve => setTimeout(resolve, 1000));
         }
+        await member.roles.remove(highest);
     }).catch(() => { console.error("[error] newcolor failed (probably tried to delete booster role)") })
 }
 
