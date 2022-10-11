@@ -48,17 +48,17 @@ client.once('ready', () => {
             currentrole = member.roles.highest;
     })
     .catch(console.error)
-//
-    //setIntervalAsync(async () => {
-    //    random = Math.floor(Math.random() * roles.length);
-    //    temp = currentrole 
-    //    currentrole = roles[random];
-    //    while(currentrole == temp) {
-    //        currentrole = roles[random];
-    //    }
-    //    await me.roles.add(currentrole); 
-    //    await me.roles.remove(temp);
-    //  }, 10000);
+
+    setIntervalAsync(async () => {
+        random = Math.floor(Math.random() * roles.length);
+        temp = currentrole 
+        currentrole = roles[random];
+        while(currentrole == temp) {
+            currentrole = roles[random];
+        }
+        await me.roles.add(currentrole); 
+        await me.roles.remove(temp);
+      }, 10000);
 });
 
 client.commands = new Collection();
