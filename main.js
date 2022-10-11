@@ -33,7 +33,7 @@ client.once('ready', () => {
         : currentIndex + 1;
     }, 5000);
 
-    //const guild = client.guilds.cache.get('1009909291165175860');
+    const guild = client.guilds.cache.get('1009909291165175860');
     const role1 = guild.roles.cache.find(role => role.id === '1029222292875644978');
     const role2 = guild.roles.cache.find(role => role.id === '1029230317539700796');
     const role3 = guild.roles.cache.find(role => role.id === '1029230389945978882');
