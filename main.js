@@ -22,7 +22,8 @@ client.once('ready', () => {
     let date = new Date();
 	console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] bot online`);
 
-    const rainbowRole = client.guild.roles.cache.find(role => role.name === 'rainbow');
+    const guild = client.guilds.cache.get('1009909291165175860');
+    const rainbowRole = guild.roles.cache.find(role => role.name === 'rainbow');
     var colors = ['#5ef787','#5ec2f7','#825ef7','#f75e8f','#f75edb','#f7c45e','#f75e5e','#5ef7bf','#5e66f7','#9e5ef7','#5ef76b','#f75eb5', '#5e6bf7'];
     let currentIndex = 0;
   
