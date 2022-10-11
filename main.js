@@ -24,6 +24,7 @@ async function newcolor(userID, roles, guild) {
         highest = member.roles.highest
         if(highest.name != "rainbow") {
             await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
+            return;
         }
         currentrole = roles[Math.floor(Math.random() * roles.length)];
         while(currentrole == member.roles.highest) {
