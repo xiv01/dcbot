@@ -45,15 +45,16 @@ client.once('ready', () => {
         for(var i = 0; i < rainbowrole.length; i++) {
             await guild.members.fetch(rainbowrole[i])
                 .then(async member => {
-                    if(member.roles.highest != "rainbow") {
+                    highest = member.roles.highest
+                    if(highest.name != "rainbow") {
                         await member.roles.add(guild.roles.cache.find(role => role.id === '1029222292875644978')); 
                     }
                     currentrole = roles[Math.floor(Math.random() * roles.length)];
-                    while(currentrole == member.roles.highest) {
+                    while(currentrole.name === highest.name) {
                         currentrole = roles[Math.floor(Math.random() * roles.length)];
                     }
                     await member.roles.add(currentrole); 
-                    await member.roles.remove(member.roles.highest);
+                    await member.roles.remove(highest);
             })
             .catch(console.error)
         }
