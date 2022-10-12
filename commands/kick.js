@@ -8,9 +8,6 @@ module.exports = {
 	async execute(interaction) {
         const member = interaction.options.getMember('member');
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-        
-        let date = new Date();
-        console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`);
 
         try {
             await member.kick();
@@ -19,6 +16,8 @@ module.exports = {
                 .setTitle('✅ **done**')
                 .setDescription(`successfully kicked \`${member.user.username}#${member.user.discriminator}\``)
 
+            let date = new Date();
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } catch {
@@ -27,6 +26,8 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`unable to kick \`${member.user.username}#${member.user.discriminator}\``)
 
+            let date = new Date();
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} tried to kick @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         }

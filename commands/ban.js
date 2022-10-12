@@ -8,9 +8,6 @@ module.exports = {
 	async execute(interaction) {
         const member = interaction.options.getMember('member');
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-        
-        let date = new Date();
-        console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} banned @${member.user.username}#${member.user.discriminator}`);
 
         try {
             await member.ban();
@@ -19,6 +16,8 @@ module.exports = {
                 .setTitle('✅ **done**')
                 .setDescription(`successfully banned \`${member.user.username}#${member.user.discriminator}\``)
 
+            let date = new Date();
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} banned @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [banembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } catch {
@@ -27,6 +26,8 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`unable to ban \`${member.user.username}#${member.user.discriminator}\``)
 
+            let date = new Date();
+            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} tried to ban @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [banembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         }
