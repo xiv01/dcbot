@@ -36,7 +36,7 @@ async function newcolor(userID, roles, guild) {
             highest = member.roles.highest
         }
         await member.roles.remove(highest);
-    }).catch(() => { console.error("[error] newcolor failed (probably tried to delete booster role)") })
+    }).catch(() => { console.error("[error] newcolor() failed (probably tried to delete booster role)") })
 }
 
 client.once('ready', () => {
@@ -70,6 +70,8 @@ client.once('ready', () => {
             await newcolor(rainbowrole[i], roles, guild)
         }
     }, 10000);
+
+    
 });
 
 client.commands = new Collection();
