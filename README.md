@@ -5,7 +5,7 @@
   - delete invite links
 - auto mute after attempt to post invite link
 - member stats channel
-- join message & role
+- custom join image & role
 - disboard bump reminder
 - rainbow role
 
@@ -13,6 +13,8 @@
 
 - **/help**
   - display commands summary
+- **/help**
+  - add / remove the bumper role
 - **/ping**
   - displays bot & api latency
 - **/rules**

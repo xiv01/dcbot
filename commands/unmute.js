@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { logEx } = require('../util.js');
 const { mutedRoleName } = require('../config.json');
 
 module.exports = {
@@ -10,8 +11,7 @@ module.exports = {
 		const member = interaction.options.getMember('member');
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
         
-        let date = new Date();
-		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /unmute @${member.user.username}#${member.user.discriminator}`);
+        logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /unmute @${member.user.username}#${member.user.discriminator}`);
 
         let mutedRole = interaction.guild.roles.cache.find(role => role.name === mutedRoleName);
 

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { logEx } = require('../util.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,9 +7,8 @@ module.exports = {
 		.setDescription('displays server info'),
 	async execute(interaction) {
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-        
-        let date = new Date();
-		console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} used /server`);
+
+        logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /server`);
 
         const serverinfoembed = new EmbedBuilder()
             .setColor(0xf2c6ff)

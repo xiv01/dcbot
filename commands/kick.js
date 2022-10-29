@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { logEx } = require('../util.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,8 +17,7 @@ module.exports = {
                 .setTitle('✅ **done**')
                 .setDescription(`successfully kicked \`${member.user.username}#${member.user.discriminator}\``)
 
-            let date = new Date();
-            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`);
+            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } catch {
@@ -26,8 +26,7 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`unable to kick \`${member.user.username}#${member.user.discriminator}\``)
 
-            let date = new Date();
-            console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${interactionUser.user.username}#${interactionUser.user.discriminator} tried to kick @${member.user.username}#${member.user.discriminator}`);
+            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} tried to kick @${member.user.username}#${member.user.discriminator}`);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         }
