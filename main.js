@@ -77,12 +77,10 @@ client.on('messageCreate', async message => {
         return;
     }
 
-    let bumped = false;
     if(message.channelId === bumpchannel) {
         if(message.embeds.length > 0) {
             if(message.embeds[0].description != null) {
-                if((message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!")) && !bumped) {
-                    bumped = true;
+                if((message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!"))) {
                     logEx(`server bumped | timestamp: ${getUnixTime()}`, message.guild);
                     let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
                     config.lastbump = getUnixTime();
@@ -90,7 +88,6 @@ client.on('messageCreate', async message => {
                     const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
                     setTimeout(() => { 
                         message.channel.send(`${pingRole} bumpt ihr loser`);
-                        bumped = false;
                     }, 7200000);
                 };
             }
