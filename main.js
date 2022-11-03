@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
-const { guildId, token, activities, statschannel, welcomechannel, logschannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
+const { guildId, token, activities, statschannel, welcomechannel, bumperRoleName, logschannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
 const { setIntervalAsync } = require('set-interval-async');
 const { logEx, newColor, drawWelcomeImage, getUnixTime, registerCommands } = require('./util.js');
 
@@ -51,7 +51,7 @@ client.once('ready', () => {
         roles.push(guild.roles.cache.find(role => role.id === rainbowroles[i]))
     }
 
-    var pingRole = guild.roles.cache.find(role => role.name === 'bumper');
+    var pingRole = guild.roles.cache.find(role => role.name === bumperRoleName);
     logEx(`last bump was ${getUnixTime() - lastbump} seconds ago`, guild);
     if((lastbump + 7200) < getUnixTime()) {
         guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
@@ -85,7 +85,7 @@ client.on('messageCreate', async message => {
                     let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
                     config.lastbump = getUnixTime();
                     fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
-                    const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
+                    const pingRole = message.guild.roles.cache.find(role => role.name === bumperRoleName);
                     setTimeout(() => { 
                         message.channel.send(`${pingRole} bumpt ihr loser`);
                     }, 7200000);
