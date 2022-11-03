@@ -1,6 +1,11 @@
 const Canvas = require("canvas");
-const { registerFont } = require('canvas')
-module.exports = { logEx, drawWelcomeImage, newColor, getUnixTime };
+const { registerFont } = require('canvas');
+const fs = require('node:fs');
+const path = require('node:path');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord.js');
+const { clientId, guildId, token } = require('./config.json');
+module.exports = { logEx, drawWelcomeImage, newColor, getUnixTime, registerCommands };
 
 function logEx(message) {
     let date = new Date();
@@ -9,6 +14,24 @@ function logEx(message) {
 
 function getUnixTime() {
     return Math.floor(new Date().getTime() / 1000);
+}
+
+function registerCommands() {
+    const commands = [];
+    const commandsPath = path.join(__dirname, 'commands');
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+    for (const file of commandFiles) {
+    	const filePath = path.join(commandsPath, file);
+    	const command = require(filePath);
+    	commands.push(command.data.toJSON());
+    }
+
+    const rest = new REST({ version: '10' }).setToken(token);
+
+    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
+    	.then(() => logEx('successfully registered commands'))
+    	.catch(console.error);
 }
 
 async function newColor(userID, roles, guild) {
@@ -40,7 +63,17 @@ async function drawWelcomeImage(member) {
 
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-    var username = `${member.user.username}#${member.user.discriminator}`;
+    if (member === 'testrender') {
+        var username = 'test render';
+        var membercount = 'test render';
+        var avatar = await Canvas.loadImage(`./images/resources/welcomeImage.png`);
+        logEx('performing test render')
+    } else {
+        var username = `${member.user.username}#${member.user.discriminator}`;
+        var membercount = member.guild.memberCount
+        var avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'jpg' }));
+    }
+
     ctx.fillStyle = '#f2f2f2';
     if(/[^\u0000-\u00ff]/.test(username)) {
         ctx.font = `19px "ArialR"`;
@@ -61,7 +94,6 @@ async function drawWelcomeImage(member) {
         ctx.fillText(username, canvas.width / 2 + offset, canvas.height / 2 + 25);
     }
 
-    let membercount = member.guild.memberCount
     var string = `you are member #${membercount}`;
     ctx.fillStyle = '#8155fa';
     ctx.font = '20px "ArialR"';
@@ -77,8 +109,7 @@ async function drawWelcomeImage(member) {
     ctx.arc(74.5, canvas.height / 2 - 3, 57, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
-    const avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'jpg' }));
-    ctx.drawImage(avatar, 15, 15, 125, 125);
+    ctx.drawImage(avatar, 12, 15, 125, 125);
 
     return canvas.toBuffer();
 }

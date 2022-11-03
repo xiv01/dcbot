@@ -1,9 +1,9 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
-const { guildId, token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics } = require('./config.json');
+const { guildId, token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
 const { setIntervalAsync } = require('set-interval-async');
-const { logEx, newColor, drawWelcomeImage } = require('./util.js');
+const { logEx, newColor, drawWelcomeImage, getUnixTime, registerCommands } = require('./util.js');
 
 const client = new Client({ 
     intents: 
@@ -32,6 +32,8 @@ for(const file of commandFiles) {
 
 client.once('ready', () => {
     logEx("bot started");
+    drawWelcomeImage('testrender'); // ghetto fix 
+    registerCommands()
 
     let currentIndex = 0;
     setInterval(() => {
@@ -50,6 +52,18 @@ client.once('ready', () => {
         roles.push(guild.roles.cache.find(role => role.id === rainbowroles[i]))
     }
 
+    var pingRole = guild.roles.cache.find(role => role.name === 'bumper');
+    if((lastbump + 7200) < getUnixTime()) {
+        guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
+    } else {
+        logEx(`last bump was ${getUnixTime() - lastbump} seconds ago`);
+        logEx(`starting bump reminder timer | time left: ${Math.round(((lastbump + 7200 - getUnixTime()) / 60) * 100) / 100} minutes`);
+        setTimeout(() => { 
+            guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
+            bumped = false;
+        }, ((lastbump + 7200) - getUnixTime()) * 1000);
+    }
+
     setIntervalAsync(async () => {
         for(var i = 0; i < rainbowrole.length; i++) {
             await newColor(rainbowrole[i], roles, guild)
@@ -59,13 +73,15 @@ client.once('ready', () => {
 
 client.on('messageCreate', async message => {
     let bumped = false;
-    // TODO: dont break when bot is restarted
     if(message.channelId === bumpchannel) {
         if(message.embeds.length > 0) {
             if(message.embeds[0].description != null) {
                 if((message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!")) && !bumped) {
                     bumped = true;
-                    logEx('server bumped');
+                    logEx(`server bumped | timestamp: ${getUnixTime()}`);
+                    let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+                    config.lastbump = getUnixTime();
+                    fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
                     const pingRole = message.guild.roles.cache.find(role => role.name === 'bumper');
                     setTimeout(() => { 
                         message.channel.send(`${pingRole} bumpt ihr loser`);
