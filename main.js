@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
-const { guildId, token, activities, statschannel, welcomechannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
+const { guildId, token, activities, statschannel, welcomechannel, logschannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
 const { setIntervalAsync } = require('set-interval-async');
 const { logEx, newColor, drawWelcomeImage, getUnixTime, registerCommands } = require('./util.js');
 
@@ -72,6 +72,11 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', async message => {
+    if((message.channelId === logschannel) && !message.author.bot) {
+        await message.delete(); 
+        return;
+    }
+
     let bumped = false;
     if(message.channelId === bumpchannel) {
         if(message.embeds.length > 0) {
