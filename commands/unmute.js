@@ -11,7 +11,7 @@ module.exports = {
 		const member = interaction.options.getMember('member');
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
         
-        logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /unmute @${member.user.username}#${member.user.discriminator}`);
+        logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /unmute @${member.user.username}#${member.user.discriminator}`, interaction.guild);
 
         let mutedRole = interaction.guild.roles.cache.find(role => role.name === mutedRoleName);
 

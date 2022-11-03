@@ -9,7 +9,7 @@ module.exports = {
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
 		
-		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /capypic`);
+		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /capypic`, interaction.guild);
 
         fs.readdir(__dirname + '/../images/capypics', (err, files) => {
             folderSize = files.length;

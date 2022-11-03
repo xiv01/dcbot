@@ -10,7 +10,7 @@ module.exports = {
 		const num = interaction.options.getInteger('messages');
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
 		
-		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /clear ${num}`);
+		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /clear ${num}`, interaction.guild);
 
 		if(num <= 0 || num > 100) {
 			const clearembed = new EmbedBuilder()

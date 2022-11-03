@@ -17,7 +17,7 @@ module.exports = {
                 .setTitle('✅ **done**')
                 .setDescription(`successfully kicked \`${member.user.username}#${member.user.discriminator}\``)
 
-            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`);
+            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} kicked @${member.user.username}#${member.user.discriminator}`, interaction.guild);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } catch {
@@ -26,7 +26,7 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`unable to kick \`${member.user.username}#${member.user.discriminator}\``)
 
-            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} tried to kick @${member.user.username}#${member.user.discriminator}`);
+            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} tried to kick @${member.user.username}#${member.user.discriminator}`, interaction.guild);
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         }

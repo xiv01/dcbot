@@ -9,7 +9,7 @@ module.exports = {
         const member = interaction.member;;
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
 
-        let bumperRole = interaction.guild.roles.cache.find(role => role.name === 'bumper');
+        let bumperRole = interaction.guild.roles.cache.find(role => role.name === 'bumper', interaction.guild);
 
         if(member.roles.cache.has(bumperRole.id)) {
             logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} removed the bumper role`);

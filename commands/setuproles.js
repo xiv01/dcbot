@@ -10,7 +10,7 @@ module.exports = {
 		interaction.deleteReply();
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
 		
-		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /setuproles`);
+		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /setuproles`, interaction.guild);
 
 		const role1embed = new EmbedBuilder()
     		.setColor(0x98b1c8)

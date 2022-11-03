@@ -8,6 +8,7 @@
 - custom join image & role
 - disboard bump reminder
 - rainbow role
+- log channel
 
 ## commands
 

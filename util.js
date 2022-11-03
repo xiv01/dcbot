@@ -4,19 +4,22 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
+const { clientId, guildId, token, logschannel } = require('./config.json');
 module.exports = { logEx, drawWelcomeImage, newColor, getUnixTime, registerCommands };
 
-function logEx(message) {
+async function logEx(message, guild) {
     let date = new Date();
     console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${message}`);
+    if(guild != undefined) {
+        await guild.channels.cache.get(logschannel).send(`\`\`\`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${message}\`\`\``);
+    }
 }
 
 function getUnixTime() {
     return Math.floor(new Date().getTime() / 1000);
 }
 
-function registerCommands() {
+function registerCommands(guild) {
     const commands = [];
     const commandsPath = path.join(__dirname, 'commands');
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
@@ -30,7 +33,7 @@ function registerCommands() {
     const rest = new REST({ version: '10' }).setToken(token);
 
     rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-    	.then(() => logEx('successfully registered commands'))
+    	.then(() => logEx('successfully registered commands', guild))
     	.catch(console.error);
 }
 
@@ -53,7 +56,7 @@ async function newColor(userID, roles, guild) {
     }).catch(console.error)
 }
 
-async function drawWelcomeImage(member) {
+async function drawWelcomeImage(member, guild) {
     const canvas = Canvas.createCanvas(400, 165);
 
     const ctx = canvas.getContext('2d');
@@ -67,7 +70,7 @@ async function drawWelcomeImage(member) {
         var username = 'test render';
         var membercount = 'test render';
         var avatar = await Canvas.loadImage(`./images/resources/welcomeImage.png`);
-        logEx('performing test render')
+        logEx('performing test render', guild)
     } else {
         var username = `${member.user.username}#${member.user.discriminator}`;
         var membercount = member.guild.memberCount

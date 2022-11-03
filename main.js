@@ -31,9 +31,10 @@ for(const file of commandFiles) {
 }
 
 client.once('ready', () => {
-    logEx("bot started");
-    drawWelcomeImage('testrender'); // ghetto fix 
-    registerCommands()
+    const guild = client.guilds.cache.get(guildId);
+    logEx("bot started", guild);
+    drawWelcomeImage('testrender', guild); // ghetto fix 
+    registerCommands(guild);
 
     let currentIndex = 0;
     setInterval(() => {
@@ -45,19 +46,18 @@ client.once('ready', () => {
         : currentIndex + 1;
     }, 5000);
 
-    const guild = client.guilds.cache.get(guildId);
     var roles = [];
-    
     for(var i = 0; i < rainbowroles.length; i++) {
         roles.push(guild.roles.cache.find(role => role.id === rainbowroles[i]))
     }
 
     var pingRole = guild.roles.cache.find(role => role.name === 'bumper');
+    logEx(`last bump was ${getUnixTime() - lastbump} seconds ago`, guild);
     if((lastbump + 7200) < getUnixTime()) {
         guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
+        logEx(`sending bump reminder message`, guild);
     } else {
-        logEx(`last bump was ${getUnixTime() - lastbump} seconds ago`);
-        logEx(`starting bump reminder timer | time left: ${Math.round(((lastbump + 7200 - getUnixTime()) / 60) * 100) / 100} minutes`);
+        logEx(`starting bump remind timer | time left: ${Math.round(((lastbump + 7200 - getUnixTime()) / 60) * 100) / 100} minutes`, guild);
         setTimeout(() => { 
             guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
             bumped = false;
@@ -78,7 +78,7 @@ client.on('messageCreate', async message => {
             if(message.embeds[0].description != null) {
                 if((message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!")) && !bumped) {
                     bumped = true;
-                    logEx(`server bumped | timestamp: ${getUnixTime()}`);
+                    logEx(`server bumped | timestamp: ${getUnixTime()}`, message.guild);
                     let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
                     config.lastbump = getUnixTime();
                     fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
@@ -99,7 +99,7 @@ client.on('messageCreate', async message => {
     for(var i = 0; i < badwords.length; i++) {
         if(content.includes(badwords[i])) {
             await message.delete();
-            logEx(`deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`); 
+            logEx(`deleted message from ${message.member.user.username}#${message.member.user.discriminator} content: ${content}`, message.guild); 
             const badwordsembed = new EmbedBuilder()
                 .setColor(0xfc2332)
                 .setTitle('❗ **bad words deleted**')
@@ -113,7 +113,7 @@ client.on('messageCreate', async message => {
     if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
         await message.delete();
         message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
-        logEx(`deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`);
+        logEx(`deleted invite link from ${message.member.user.username}#${message.member.user.discriminator}`, message.guild);
         const inviteembed = new EmbedBuilder()
             .setColor(0xfc2332)
             .setTitle('❗ **invite link deleted**')
@@ -134,7 +134,7 @@ client.on('messageCreate', async message => {
     if(message.channelId === suggestionchannel) {
         await message.react('✅');
         await message.react('❌');
-        logEx(`${message.member.user.username}#${message.member.user.discriminator} posted suggestion: ${content}`);
+        logEx(`${message.member.user.username}#${message.member.user.discriminator} posted suggestion: ${content}`, message.guild);
     }
 }) 
 
@@ -143,7 +143,7 @@ client.on('guildMemberAdd', async (member) => {
 
     await member.roles.add(standardRole);
     member.guild.channels.cache.get(welcomechannel).send({ files: [await drawWelcomeImage(member)]});
-    logEx(`${member.user.username}#${member.user.discriminator} joined the server`);
+    logEx(`${member.user.username}#${member.user.discriminator} joined the server`, member.guild);
 
     try {
         member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`); 
@@ -154,7 +154,7 @@ client.on('guildMemberAdd', async (member) => {
 })
 
 client.on('guildMemberRemove', (member) => {
-    logEx(`${member.user.username}#${member.user.discriminator} left the server`);
+    logEx(`${member.user.username}#${member.user.discriminator} left the server`, member.guild);
 
     try {
         member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);
@@ -174,7 +174,7 @@ client.on('messageReactionAdd', async (reaction, member) => {
         for(var i = 0; i < selfroles.length; i++) {
             if(reaction.emoji.name === selfroles[i][0]) {
                 await reaction.message.guild.members.cache.get(member.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i][1]));
-                logEx(`${member.username}#${member.discriminator} added self role: ${selfroles[i][1]}`)
+                logEx(`${member.username}#${member.discriminator} added self role: ${selfroles[i][1]}`, reaction.message.guild)
             }
         }
     }
@@ -190,7 +190,7 @@ client.on('messageReactionRemove', async (reaction, member) => {
         for(var i = 0; i < selfroles.length; i++) {
             if(reaction.emoji.name === selfroles[i][0]) {
                 await reaction.message.guild.members.cache.get(member.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i][1]));
-                logEx(`${member.username}#${member.discriminator} removed self role: ${selfroles[i][1]}`)
+                logEx(`${member.username}#${member.discriminator} removed self role: ${selfroles[i][1]}`, reaction.message.guild)
             }
         }
     }
