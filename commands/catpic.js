@@ -12,8 +12,8 @@ module.exports = {
 		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /catpic`, interaction.guild);
 
         fs.readdir(__dirname + '/../images/catpics', (err, files) => {
-            folderSize = files.length;
-            imageNumber = Math.floor(Math.random() * folderSize) + 1;
+            let folderSize = files.length;
+            let imageNumber = Math.floor(Math.random() * folderSize) + 1;
 
             interaction.reply({ files: [__dirname + '/../images/catpics' + '//' + files[imageNumber-1]]})
         });

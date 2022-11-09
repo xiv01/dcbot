@@ -126,7 +126,7 @@ client.on('messageCreate', async message => {
     }
 
     if(content.includes("shrek")) {
-        await message.reply(shrekpics[Math.floor(Math.random() * shrekpics.length) + 1])
+        await message.reply(shrekpics[Math.floor(Math.random() * shrekpics.length)])
     }
 
     if(content.includes(":catvibe:")) {
