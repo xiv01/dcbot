@@ -14,7 +14,7 @@
 
 - **/help**
   - display commands summary
-- **/help**
+- **/bumper**
   - add / remove the bumper role
 - **/ping**
   - displays bot & api latency
@@ -26,6 +26,8 @@
   - links to this github repo
 - **/mute & /unmute [member]**
   - un-mute a member
+- **/kick & /ban [member]**
+  - kick / ban a member
 - **/clear [messages]**
   - delete given amount of messages
 - **/catpic & /capypic**

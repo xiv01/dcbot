@@ -21,7 +21,18 @@ module.exports = {
 			await interaction.reply({ embeds: [clearembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
 		} else {
-			await interaction.channel.bulkDelete(num);
+			try {
+				await interaction.channel.bulkDelete(num);
+			}
+			catch {
+				const clearembed = new EmbedBuilder()
+					.setColor(0xfc2332)
+					.setTitle('❗ **error**')
+            		.setDescription(`failed to delete messages`)
+
+				await interaction.reply({ embeds: [clearembed] });
+            	setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
+			}
 
 			const clearembed = new EmbedBuilder()
 				.setColor(0x6bfa94)

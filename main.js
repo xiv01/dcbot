@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection, ActivityType, Partials, EmbedBuilder } = require('discord.js');
 const { guildId, token, activities, statschannel, welcomechannel, bumperRoleName, logschannel, standardRoleName, suggestionchannel, roleschannel, badwords, bumpchannel, rainbowrole, rainbowroles, selfroles, shrekpics, lastbump } = require('./config.json');
-const { setIntervalAsync } = require('set-interval-async');
+const { setIntervalAsync } = require('set-interval-async/fixed');
 const { logEx, newColor, drawWelcomeImage, getUnixTime, registerCommands } = require('./util.js');
 
 const client = new Client({ 
@@ -13,28 +13,21 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions,  
     GatewayIntentBits.MessageContent, 
     GatewayIntentBits.GuildMembers, 
-    GatewayIntentBits.GuildVoiceStates],
+    GatewayIntentBits.GuildVoiceStates
+    ],
     partials: 
-    [Partials.Message, 
+    [
+    Partials.Message, 
     Partials.Channel, 
     Partials.Reaction
-],});
-
-client.commands = new Collection();
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-for(const file of commandFiles) {
-	const filePath = path.join(commandsPath, file);
-	const command = require(filePath);
-	client.commands.set(command.data.name, command);
-}
+    ],
+});
 
 client.once('ready', () => {
     const guild = client.guilds.cache.get(guildId);
     logEx("bot started", guild);
     drawWelcomeImage('testrender', guild); // ghetto fix 
-    registerCommands(guild);
+    registerCommands(guild, client);
 
     let currentIndex = 0;
     setInterval(() => {
@@ -51,15 +44,15 @@ client.once('ready', () => {
         roles.push(guild.roles.cache.find(role => role.id === rainbowroles[i]))
     }
 
-    var pingRole = guild.roles.cache.find(role => role.name === bumperRoleName);
+    var bumperRole = guild.roles.cache.find(role => role.name === bumperRoleName);
     logEx(`last bump was ${getUnixTime() - lastbump} seconds ago`, guild);
     if((lastbump + 7200) < getUnixTime()) {
-        guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
+        guild.channels.cache.get(bumpchannel).send(`${bumperRole} bumpt ihr loser`);
         logEx(`sending bump reminder message`, guild);
     } else {
         logEx(`starting bump remind timer | time left: ${Math.round(((lastbump + 7200 - getUnixTime()) / 60) * 100) / 100} minutes`, guild);
         setTimeout(() => { 
-            guild.channels.cache.get(bumpchannel).send(`${pingRole} bumpt ihr loser`);
+            guild.channels.cache.get(bumpchannel).send(`${bumperRole} bumpt ihr loser`);
             bumped = false;
         }, ((lastbump + 7200) - getUnixTime()) * 1000);
     }
@@ -68,7 +61,7 @@ client.once('ready', () => {
         for(var i = 0; i < rainbowrole.length; i++) {
             await newColor(rainbowrole[i], roles, guild)
         }
-    }, 10500);
+    }, 11000);
 });
 
 client.on('messageCreate', async message => {
@@ -85,9 +78,9 @@ client.on('messageCreate', async message => {
                     let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
                     config.lastbump = getUnixTime();
                     fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
-                    const pingRole = message.guild.roles.cache.find(role => role.name === bumperRoleName);
+                    const bumperRole = message.guild.roles.cache.find(role => role.name === bumperRoleName);
                     setTimeout(() => { 
-                        message.channel.send(`${pingRole} bumpt ihr loser`);
+                        message.channel.send(`${bumperRole} bumpt ihr loser`);
                     }, 7200000);
                 };
             }

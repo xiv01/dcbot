@@ -10,7 +10,7 @@ module.exports = {
 
 		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /penis`, interaction.guild);
 
-        let length = Math.floor(Math.random() * 40)
+        let length = Math.floor(Math.random() * 30)
         let ppString = "8";
 
         for (let i = 0; i < length; i++) {

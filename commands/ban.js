@@ -17,7 +17,7 @@ module.exports = {
                 .setTitle('✅ **done**')
                 .setDescription(`successfully banned \`${member.user.username}#${member.user.discriminator}\``)
 
-            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} banned @${member.user.username}#${member.user.discriminator}`, interaction.guild);
+            logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} banned ${member.user.username}#${member.user.discriminator}`, interaction.guild);
             await interaction.reply({ embeds: [banembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } catch {
