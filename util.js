@@ -20,7 +20,6 @@ function getUnixTime() {
 }
 
 function registerCommands(guild, client) {
-
     client.commands = new Collection();
     const commandsI = [];
     const commandsPath = path.join(__dirname, 'commands');
