@@ -1,14 +1,14 @@
 const { logEx } = require('./Util.js');
-const { suggestionchannel, badwords } = require('./config.json');
+const { suggestionchannel, badwords, fishingchannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { advancedLogging };
 
 async function advancedLogging(client) {
     client.on('channelCreate', async channel => {
-        logEx(color.defaultLog, 'New Channel Created', `**name**: \`\`${channel.name}\`\`\n**parent**: \`\`${channel.parent.name}\`\``, channel.guild);
+        logEx(color.defaultLog, 'New Channel Created', `**name**: \`\`${channel.name}\`\``, channel.guild);
     });
     client.on('channelDelete', async channel => {
-        logEx(color.defaultLog, 'Channel Deleted', `**name**: \`\`${channel.name}\`\`\n**parent**: \`\`${channel.parent.name}\`\``, channel.guild);
+        logEx(color.defaultLog, 'Channel Deleted', `**name**: \`\`${channel.name}\`\``, channel.guild);
     });
     client.on('guildBanAdd', async ban => {
         logEx(color.defaultLog, 'Member Banned', `\`\`${ban.user.username}#${ban.user.discriminator}\`\` has been banned`, ban.guild);
@@ -39,7 +39,7 @@ async function advancedLogging(client) {
                     return;
                 };
             };
-            if(message.channelId === suggestionchannel) return;
+            if((message.channelId === suggestionchannel) || (message.channelId === fishingchannel)) return;
             if(message.content.includes("discord.gg/" || "discordapp.com/invite/")) return;
 
             let contentstring =  `**author**: <@${message.author.id}>\n**channel**: <#${message.channel.id}>`
