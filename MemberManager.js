@@ -58,10 +58,14 @@ async function memberManager(client) {
         const newInvites = await member.guild.invites.fetch()
         const oldInvites = invites.get(member.guild.id);
         const invite = newInvites.find(i => i.uses > oldInvites.get(i.code));
-        const inviter = await client.users.fetch(invite.inviter.id);
-        inviter
-          ? logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${invite.code} (${invite.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild)
-          : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild);
+        try {
+            const inviter = await client.users.fetch(invite.inviter.id);
+            inviter
+              ? logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${invite.code} (${invite.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild)
+              : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild);
+        } catch {
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild);
+        }
     });
     
     client.on('guildMemberRemove', (member) => {

@@ -23,10 +23,11 @@ async function advancedLogging(client) {
         logEx(color.defaultLog, 'Role Deleted', `**name**: \`\`${role.name}\`\``, role.guild);
     });
     client.on('voiceStateUpdate', (oldState, newState) => {
-        if(oldState.channel !== null && newState.channel === null) {
-            logEx(color.vcLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n**channel**: <#${oldState.channel.id}>`, oldState.channel.guild);
-        } else {
+        if(newState.channel === oldState.channel) return;
+        if (newState.channel) { 
             logEx(color.vcLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n**channel**: <#${newState.channel.id}>`, newState.channel.guild);
+        } else if (oldState.channel) { 
+            logEx(color.vcLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n**channel**: <#${oldState.channel.id}>`, oldState.channel.guild);
         };
     });
     client.on('messageDelete', async message => {
