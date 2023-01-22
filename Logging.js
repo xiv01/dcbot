@@ -32,13 +32,13 @@ async function advancedLogging(client) {
     });
     client.on('messageDelete', async message => {
         try {
+            if(message.author.bot === null || message.author.bot) return;
             var content = message.content.toLowerCase();
             for(var i = 0; i < badwords.length; i++) {
                 if(content.includes(badwords[i])) {
                     return;
                 };
             };
-            if(message.author.bot === null || message.author.bot) return;
             if(message.channelId === suggestionchannel) return;
             if(message.content.includes("discord.gg/" || "discordapp.com/invite/")) return;
 
