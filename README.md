@@ -9,6 +9,7 @@
 - disboard bump reminder
 - rainbow role
 - log channel
+- pools channel
 
 ## commands
 
@@ -24,6 +25,10 @@
   - setup self roles in current channel
 - **/github**
   - links to this github repo
+- **/avatar [member]**
+  - links to a members avatar
+- **/banner [member]**
+  - links to a members banner
 - **/mute & /unmute [member]**
   - un-mute a member
 - **/kick & /ban [member]**

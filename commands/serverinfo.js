@@ -1,17 +1,17 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { logEx } = require('../util.js');
+const { logEx } = require('../Util.js');
+const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('server')
 		.setDescription('displays server info'),
 	async execute(interaction) {
-        const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-
-        logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /server`, interaction.guild);
+        const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /server <@${member.id}>\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
 
         const serverinfoembed = new EmbedBuilder()
-            .setColor(0xf2c6ff)
+            .setColor(color.pink)
             .setTitle(`${interaction.guild.name} info`)
             .setDescription(`\nmembers: \`${interaction.guild.memberCount}\` \ncreated: \`${interaction.guild.createdAt}\`\n`)
             .setTimestamp()

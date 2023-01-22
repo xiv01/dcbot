@@ -1,0 +1,12 @@
+{
+    "warning": "0xfc2332",
+    "success": "0x6bfa94",
+    "pink": "0xf2c6ff",
+    "defaultLog": "0x5e7cf2",
+    "selfrolesLog": "0x262626",
+    "joinLog": "0x42f598",
+    "leaveLog": "0xf5424b",
+    "bumpLog": "0xffec8f",
+    "commandLog": "0xf5c542",
+    "vcLog": "0x00ebbc"
+}

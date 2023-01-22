@@ -1,16 +1,17 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { logEx } = require('../util.js');
+const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { logEx } = require('../Util.js');
+const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('setuproles')
-		.setDescription('setup self roles in current channel'),
+		.setDescription('setup self roles in current channel')
+		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
 		interaction.deferReply();
 		interaction.deleteReply();
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		
-		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /setuproles`, interaction.guild);
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
 
 		const role1embed = new EmbedBuilder()
     		.setColor(0x98b1c8)

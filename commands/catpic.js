@@ -1,21 +1,32 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { logEx } = require('../util.js');
+const { EmbedBuilder, AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
+const { logEx } = require('../Util.js');
 const fs = require('node:fs');
+const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('catpic')
-		.setDescription('posts a cat picture'),
+		.setDescription('sends a cute cat picture'),
 	async execute(interaction) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id)
-		
-		logEx(`${interactionUser.user.username}#${interactionUser.user.discriminator} used /catpic`, interaction.guild);
+		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
+		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /catpic\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
 
-        fs.readdir(__dirname + '/../images/catpics', (err, files) => {
+        fs.readdir(__dirname + '/../resources/images/catpics', (err, files) => {
             let folderSize = files.length;
             let imageNumber = Math.floor(Math.random() * folderSize) + 1;
 
-            interaction.reply({ files: [__dirname + '/../images/catpics' + '//' + files[imageNumber-1]]})
+			const image = new AttachmentBuilder(__dirname + '/../resources/images/catpics' + '//' + files[imageNumber - 1], { name: 'catpic.png' })
+
+			const catembed = new EmbedBuilder()
+				.setColor(color.pink)
+				.setTitle("**₊✦˚・a cat pic for you!**")
+     			.setImage('attachment://catpic.png')
+				.setTimestamp()
+				.setFooter({
+					text: `Pic #${imageNumber}`,
+			});
+
+            interaction.reply({embeds: [catembed], files: [image]})
         });
 	},
 };
