@@ -30,7 +30,6 @@ async function messageFiltering(client) {
         };
     
         if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
-            if(message.member.permissionsIn(message.channel).has("ADMINISTRATOR")) return;
             await message.delete();
             message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
 
