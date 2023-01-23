@@ -32,7 +32,6 @@ async function memberManager(client) {
     client.on("guildDelete", (guild) => {
         invites.delete(guild.id);
     });
-    
     client.on('guildMemberAdd', async (member) => {
         let standardRole = member.guild.roles.cache.find(role => role.name === standardRoleName);
         await member.roles.add(standardRole);
@@ -65,11 +64,13 @@ async function memberManager(client) {
               : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member);
         } catch {
             logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member);
-        }
+        };
     });
     
-    client.on('guildMemberRemove', (member) => {
-        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
+    client.on('guildMemberRemove', async (member) => {
+        await member.fetch().then(async member => {
+            logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
+        });
     
         try {
             member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);
