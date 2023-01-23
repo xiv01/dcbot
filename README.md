@@ -9,7 +9,7 @@
 - disboard bump reminder
 - rainbow role
 - log channel
-- pools channel
+- polls channel
 
 ## commands
 

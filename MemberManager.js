@@ -68,9 +68,7 @@ async function memberManager(client) {
     });
     
     client.on('guildMemberRemove', async (member) => {
-        await member.fetch().then(async member => {
-            logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
-        });
+        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
     
         try {
             member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);
