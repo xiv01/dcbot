@@ -26,9 +26,9 @@ module.exports = {
             await member.send({ embeds: [dmembed] }).catch(() => dmenabled = false); 
             await member.roles.remove(mutedRole);
             if(!dmenabled) {
-                logEx(color.success, 'Mute Command Used', `<@${interactionUser.id}> unmuted <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                logEx(color.success, 'Mute Command Used', `<@${interactionUser.id}> unmuted <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
             } else {
-                logEx(color.success, 'Mute Command Used', `<@${interactionUser.id}> unmuted <@${member.id}>`, interaction.guild);
+                logEx(color.success, 'Mute Command Used', `<@${interactionUser.id}> unmuted <@${member.id}>`, interaction.guild, interactionUser);
             }
             const unmuteembed = new EmbedBuilder()
                 .setColor(color.success)
@@ -43,7 +43,7 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`\`${member.user.username}#${member.user.discriminator}\` is not muted`)
 
-            logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> tried to mute <@${member.id}>`, interaction.guild);
+            logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> tried to mute <@${member.id}>`, interaction.guild, interactionUser);
             await interaction.reply({ embeds: [unmuteembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         };

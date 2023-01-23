@@ -8,14 +8,15 @@ module.exports = {
 		.setDescription('displays server info'),
 	async execute(interaction) {
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /server <@${member.id}>\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /server <@${interactionUser.id}>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
         const serverinfoembed = new EmbedBuilder()
             .setColor(color.pink)
             .setTitle(`${interaction.guild.name} info`)
-            .setDescription(`\nmembers: \`${interaction.guild.memberCount}\` \ncreated: \`${interaction.guild.createdAt}\`\n`)
+            .setThumbnail(interaction.guild.iconURL())
+            .setDescription(`\n**members**: \`${interaction.guild.memberCount}\` \n **created**: \`${interaction.guild.createdAt.toString().slice(0, -40)}\`\n`)
             .setTimestamp()
-            .setFooter({ text: 'developed by max#0135', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/dd0279b8ee7a992c3c18db6b406d1151.png?size=32' });
+            .setFooter({ text: 'developed by max#0135', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
             
         await interaction.reply({ embeds: [serverinfoembed] });
 	},

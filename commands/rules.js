@@ -11,7 +11,7 @@ module.exports = {
         interaction.deferReply();
         interaction.deleteReply();
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /rules>\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /rules>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
         await interaction.channel.send({ files: ['./resources/images/rules/rule1.jpg', 
                                           './resources/images/rules/rule2.jpg', 

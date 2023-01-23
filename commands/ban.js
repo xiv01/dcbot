@@ -25,9 +25,9 @@ module.exports = {
             await member.send({ embeds: [dmembed] }).catch(() => dmenabled = false); 
             await member.ban({reason: reason});
             if(!dmenabled) {
-                logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n**reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
             } else {
-                logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+                logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
             }
             const banembed = new EmbedBuilder()
                 .setColor(color.success)
@@ -43,9 +43,9 @@ module.exports = {
                 .setDescription(`unable to ban \`${member.user.username}#${member.user.discriminator}\``)
 
             if(!dmenabled) {
-                logEx(color.warning, 'Ban Command Failed', `<@${interactionUser.user.id}> tried to ban <@${member.id}>\n**reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                logEx(color.warning, 'Ban Command Failed', `<@${interactionUser.user.id}> tried to ban <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
             } else {
-                logEx(color.warning, 'Ban Command Failed', `<@${interactionUser.user.id}> tried to ban <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+                logEx(color.warning, 'Ban Command Failed', `<@${interactionUser.user.id}> tried to ban <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
             }
             await interaction.reply({ embeds: [banembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);

@@ -23,7 +23,7 @@ module.exports = {
                 .setTitle('❗ **error**')
                 .setDescription(`\`${member.user.username}#${member.user.discriminator}\` is already muted`)
 
-            logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> tried to mute <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+            logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> tried to mute <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
             await interaction.reply({ embeds: [muteembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
         } else {
@@ -45,9 +45,9 @@ module.exports = {
                 .setDescription(`successfully muted \`${member.user.username}#${member.user.discriminator}\``)
     
             if(!dmenabled) {
-                logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> muted <@${member.id}>\n**reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> muted <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
             } else {
-                logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> muted <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+                logEx(color.warning, 'Mute Command Used', `<@${interactionUser.id}> muted <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
             }
             await interaction.reply({ embeds: [muteembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);

@@ -10,7 +10,7 @@ module.exports = {
 	async execute(interaction) {
         const member = interaction.options.getMember('member');
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /banner <@${member.id}>\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /banner <@${member.id}>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
         const failedembed = new EmbedBuilder()
             .setColor(color.warning)

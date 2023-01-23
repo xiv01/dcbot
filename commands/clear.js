@@ -11,7 +11,7 @@ module.exports = {
 	async execute(interaction) {
 		const num = interaction.options.getInteger('messages');
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /clear ${num}\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /clear ${num}\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
 		clearembed = new EmbedBuilder()
 			.setColor(color.success)

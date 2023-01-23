@@ -8,16 +8,28 @@ const { clientId, guildId, token, logschannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
-async function logEx(color, title, message, guild) {
+async function logEx(color, title, message, guild, member) {
     let date = new Date();
     console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${message.replace(/[*`\n]/g, "")}`);
     if(guild != undefined) {
-        let logembed = new EmbedBuilder()
-            .setColor(color)
-            .setTitle(title)
-            .setDescription(message)
-            .setTimestamp()
-        await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
+        if(member != undefined) {
+            await member.fetch().then(async member => {
+                    const logembed = new EmbedBuilder()
+                        .setColor(color)
+                        .setTitle(title)
+                        .setDescription(message)
+                        .setFooter({ text: `${member.user.username}#${member.user.discriminator}`, iconURL: member.displayAvatarURL() })
+                        .setTimestamp()
+                    await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
+            });
+            } else {
+                const logembed = new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle(title)
+                    .setDescription(message)
+                    .setTimestamp()
+                await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
+            };
     }
 };
 

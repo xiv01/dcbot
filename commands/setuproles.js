@@ -11,7 +11,7 @@ module.exports = {
 		interaction.deferReply();
 		interaction.deleteReply();
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
 		const role1embed = new EmbedBuilder()
     		.setColor(0x98b1c8)

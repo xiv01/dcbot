@@ -9,7 +9,7 @@ module.exports = {
 		.setDescription('sends a cute cat picture'),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /catpic\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /catpic\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
         fs.readdir(__dirname + '/../resources/images/catpics', (err, files) => {
             let folderSize = files.length;

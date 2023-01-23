@@ -18,7 +18,7 @@ async function messageFiltering(client) {
         for(var i = 0; i < badwords.length; i++) {
             if(content.includes(badwords[i])) {
                 await message.delete();
-                logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${message.member.id}>\n**message**: \`\`${content}\`\``, message.guild);
+                logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${message.member.id}>\n**message**: \`\`${content}\`\``, message.guild, message.member);
                 const badwordsembed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **bad words deleted**')
@@ -48,9 +48,9 @@ async function messageFiltering(client) {
                 .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` tried to post an invite link and got muted 🤡`)
 
             if(!dmenabled) {
-                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link\n\n❗ unable to send DM due to users privacy settings`, message.guild);
+                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link\n\n❗ unable to send DM due to users privacy settings`, message.guild, message.member);
             } else {
-                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link`, message.guild);
+                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link`, message.guild, message.member);
             }
             let warning = await message.channel.send({ embeds: [inviteembed] });
             setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
@@ -84,7 +84,7 @@ async function messageFiltering(client) {
                     await message.delete();
                     setTimeout(() => toolong.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 5000);
                 } else {
-                    logEx(color.defaultLog, 'Poll Posted', `<@${message.member.id}> posted a pool\n**message**: ${content}`, message.guild);
+                    logEx(color.defaultLog, 'Poll Posted', `<@${message.member.id}> posted a pool\n**message**: ${content}`, message.guild, message.member);
                     const suggestembed = new EmbedBuilder()
                         .setColor(color.pink)
                         .setTitle(`${content}`)

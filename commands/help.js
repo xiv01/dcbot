@@ -15,8 +15,8 @@ module.exports = {
 		.setDescription('display help summary'),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /help\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
-
+		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /help\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		
 		await interaction.reply({ embeds: [helpembed] });
 	},
 };

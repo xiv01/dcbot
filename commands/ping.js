@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('replies with latency'),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /ping\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /ping\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
 		const pingembed = new EmbedBuilder()
 			.setColor(color.pink)

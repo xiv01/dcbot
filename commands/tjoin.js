@@ -10,7 +10,7 @@ module.exports = {
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /tjoin <@${member.id}>\n**Channel**: <#${interaction.channel.id}>`, interaction.guild);
+        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /tjoin <@${member.id}>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
 		const image = new AttachmentBuilder(await drawWelcomeImage(interaction.member), { name: 'welcome.png' })
 		const welcomeembed = new EmbedBuilder()
@@ -24,6 +24,5 @@ module.exports = {
 		});
 
 		await interaction.member.guild.channels.cache.get(welcomechannel).send({embeds: [welcomeembed], files: [image]});
-		//await interaction.reply({ files: [await drawWelcomeImage(interaction.member)] });
 	},
 };

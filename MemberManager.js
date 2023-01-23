@@ -61,15 +61,15 @@ async function memberManager(client) {
         try {
             const inviter = await client.users.fetch(invite.inviter.id);
             inviter
-              ? logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${invite.code} (${invite.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild)
-              : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild);
+              ? logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${invite.code} (${invite.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member)
+              : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member);
         } catch {
-            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild);
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member);
         }
     });
     
     client.on('guildMemberRemove', (member) => {
-        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild);
+        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
     
         try {
             member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);

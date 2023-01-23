@@ -24,10 +24,10 @@ async function addRole(reaction, member, type) {
             if(reaction.emoji.name === selfroles[i][0]) {
                 if(type) {
                     await reaction.message.guild.members.cache.get(member.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i][1]));
-                    logEx(color.selfrolesLog, 'Self Role Removed', `<@${member.id}> removed self role: \`\`${selfroles[i][1]}\`\``, reaction.message.guild);
+                    logEx(color.selfrolesLog, 'Self Role Removed', `<@${member.id}> removed self role: \`\`${selfroles[i][1]}\`\``, reaction.message.guild, member);
                 } else {
                     await reaction.message.guild.members.cache.get(member.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i][1]));
-                    logEx(color.selfrolesLog, 'Self Role Added', `<@${member.id}> added self role: \`\`${selfroles[i][1]}\`\``, reaction.message.guild);
+                    logEx(color.selfrolesLog, 'Self Role Added', `<@${member.id}> added self role: \`\`${selfroles[i][1]}\`\``, reaction.message.guild, member);
                 };
             };
         };

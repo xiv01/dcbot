@@ -14,7 +14,7 @@ module.exports = {
         const bumperRole = interaction.guild.roles.cache.find(role => role.name === bumperRoleName, interaction.guild);
 
         if(member.roles.cache.has(bumperRole.id)) {
-            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id} removed the bumper role`, interaction.guild);
+            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> removed the bumper role`, interaction.guild, interactionUser);
             await member.roles.remove(bumperRole);
 
             const bumperembed = new EmbedBuilder()
@@ -24,7 +24,7 @@ module.exports = {
     
             await interaction.reply({ embeds: [bumperembed], ephemeral: true });
         } else {
-            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id} added the bumper role`, interaction.guild);
+            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> added the bumper role`, interaction.guild, interactionUser);
             await member.roles.add(bumperRole);
 
             const bumperembed = new EmbedBuilder()

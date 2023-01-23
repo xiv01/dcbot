@@ -25,9 +25,9 @@ module.exports = {
             await member.send({ embeds: [dmembed] }).catch(() => dmenabled = false); 
             await member.kick();
             if(!dmenabled) {
-                logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n**reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
             } else {
-                logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+                logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
             }
             const kickembed = new EmbedBuilder()
                 .setColor(color.success)
@@ -44,9 +44,9 @@ module.exports = {
                 .setDescription(`unable to kick \`${member.user.username}#${member.user.discriminator}\``)
 
                 if(!dmenabled) {
-                    logEx(color.warning, 'Kick Command Failed', `<@${interactionUser.user.id}> tried to kick <@${member.id}>\n**reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild);
+                    logEx(color.warning, 'Kick Command Failed', `<@${interactionUser.user.id}> tried to kick <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
                 } else {
-                    logEx(color.warning, 'Kick Command Failed', `<@${interactionUser.user.id}> tried to kick <@${member.id}>\n**reason**: ${reason}`, interaction.guild);
+                    logEx(color.warning, 'Kick Command Failed', `<@${interactionUser.user.id}> tried to kick <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
                 }
             await interaction.reply({ embeds: [kickembed] });
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
