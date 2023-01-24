@@ -1,5 +1,5 @@
 const { Collection, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { statschannel, welcomechannel, standardRoleName, rulesChannel } = require('./config.json');
+const { statschannel, welcomechannel, standardRoleName, rulesChannel, logschannel } = require('./config.json');
 const { logEx, drawWelcomeImage } = require('./Util.js');
 const color = require('./colors.json');
 module.exports = { memberManager };
@@ -68,7 +68,14 @@ async function memberManager(client) {
     });
     
     client.on('guildMemberRemove', async (member) => {
-        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member);
+        const logembed = new EmbedBuilder()
+            .setColor(color.leaveLog)
+            .setTitle('📤 Member Left')
+            .setDescription(`<@${member.id}> left the server`)
+            .setFooter({ text: `${member.user.username}#${member.user.discriminator}`, iconURL: member.displayAvatarURL() })
+            .setTimestamp()
+        await member.guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
+        console.log(`[${[new Date().toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] <@${member.id}> left the server`);
     
         try {
             member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);

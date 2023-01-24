@@ -24,7 +24,7 @@ const client = new Client({
     Partials.Message, 
     Partials.Channel, 
     Partials.Reaction,
-    Partials.GuildMember,
+    Partials.GuildMember
     ],
 });
 

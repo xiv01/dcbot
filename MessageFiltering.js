@@ -18,14 +18,25 @@ async function messageFiltering(client) {
         for(var i = 0; i < badwords.length; i++) {
             if(content.includes(badwords[i])) {
                 await message.delete();
-                logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${message.member.id}>\n**message**: \`\`${content}\`\``, message.guild, message.member);
-                const badwordsembed = new EmbedBuilder()
-                    .setColor(color.warning)
-                    .setTitle('❗ **bad words deleted**')
-                    .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` said a bad word >:(`)
-    
-                let warning = await message.channel.send({ embeds: [badwordsembed] });
-                setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
+                try {
+                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${message.member.id}>\n**message**: \`\`${content}\`\``, message.guild, message.member);
+                    const badwordsembed = new EmbedBuilder()
+                        .setColor(color.warning)
+                        .setTitle('❗ **bad words deleted**')
+                        .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` said a bad word >:(`)
+        
+                    let warning = await message.channel.send({ embeds: [badwordsembed] });
+                    setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
+                } catch {
+                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from \`\`unknown\`\`\n**message**: \`\`${content}\`\``, message.guild, message.member);
+                    const badwordsembed = new EmbedBuilder()
+                        .setColor(color.warning)
+                        .setTitle('❗ **bad words deleted**')
+                        .setDescription(`\`unknown\` said a bad word >:(`)
+        
+                    let warning = await message.channel.send({ embeds: [badwordsembed] });
+                    setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
+                }
             };
         };
     
