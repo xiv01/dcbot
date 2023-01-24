@@ -29,7 +29,7 @@ async function messageFiltering(client) {
             };
         };
     
-        if(content.includes("discord.gg/" || "discordapp.com/invite/")) {
+        if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/")) {
             await message.delete();
             message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
 
@@ -40,7 +40,7 @@ async function messageFiltering(client) {
                 .setTimestamp()
                 
             let dmenabled = true;
-            await message.author.send({ embeds: [dmembed] }).catch(() => dmenabled = false);;   
+            await message.author.send({ embeds: [dmembed] }).catch(() => dmenabled = false);
             const inviteembed = new EmbedBuilder()
                 .setColor(color.warning)
                 .setTitle('❗ **invite link deleted**')

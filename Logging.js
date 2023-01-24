@@ -32,6 +32,8 @@ async function advancedLogging(client) {
     });
     client.on('messageDelete', async message => {
         try {
+            if((message.channelId === suggestionchannel) || (message.channelId === fishingchannel)) return;
+            if(message.content.includes("discord.gg/" || "discordapp.com/invite/")) return;
             if(message.author.bot === null || message.author.bot) return;
             var content = message.content.toLowerCase();
             for(var i = 0; i < badwords.length; i++) {
@@ -39,8 +41,6 @@ async function advancedLogging(client) {
                     return;
                 };
             };
-            if((message.channelId === suggestionchannel) || (message.channelId === fishingchannel)) return;
-            if(message.content.includes("discord.gg/" || "discordapp.com/invite/")) return;
 
             let contentstring =  `**author**: <@${message.author.id}>\n **channel**: <#${message.channel.id}>`;
             if(message.content.length > 0) contentstring += `\n **message**: ${message.content}`;
