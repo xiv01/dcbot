@@ -25,9 +25,9 @@ async function advancedLogging(client) {
     client.on('voiceStateUpdate', (oldState, newState) => {
         if(newState.channel === oldState.channel) return;
         if (newState.channel) { 
-            logEx(color.vcLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n **channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voicelogschannel);
+            logEx(color.joinLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n **channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voicelogschannel);
         } else if (oldState.channel) { 
-            logEx(color.vcLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n **channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member, voicelogschannel);
+            logEx(color.leaveLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n **channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member, voicelogschannel);
         };
     });
     client.on('messageDelete', async message => {
