@@ -1,5 +1,5 @@
 const { logEx } = require('./Util.js');
-const { suggestionchannel, badwords, fishingchannel } = require('./config.json');
+const { badwords, delmessageblacklist, voicelogschannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { advancedLogging };
 
@@ -25,22 +25,18 @@ async function advancedLogging(client) {
     client.on('voiceStateUpdate', (oldState, newState) => {
         if(newState.channel === oldState.channel) return;
         if (newState.channel) { 
-            logEx(color.vcLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n **channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member);
+            logEx(color.vcLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n **channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voicelogschannel);
         } else if (oldState.channel) { 
-            logEx(color.vcLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n **channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member);
+            logEx(color.vcLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n **channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member, voicelogschannel);
         };
     });
     client.on('messageDelete', async message => {
         try {
-            if((message.channelId === suggestionchannel) || (message.channelId === fishingchannel)) return;
             if(message.content.includes("discord.gg/" || "discordapp.com/invite/")) return;
             if(message.author.bot === null || message.author.bot) return;
+            for(var i = 0; i < delmessageblacklist.length; i++) if(message.channel.id === delmessageblacklist[i]) return;
             var content = message.content.toLowerCase();
-            for(var i = 0; i < badwords.length; i++) {
-                if(content.includes(badwords[i])) {
-                    return;
-                };
-            };
+            for(var i = 0; i < badwords.length; i++) if(content.includes(badwords[i])) return;
 
             let contentstring =  `**author**: <@${message.author.id}>\n **channel**: <#${message.channel.id}>`;
             if(message.content.length > 0) contentstring += `\n **message**: ${message.content}`;

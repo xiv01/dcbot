@@ -29,7 +29,7 @@
   - links to a members avatar
 - **/banner [member]**
   - links to a members banner
-- **/mute & /unmute [member]**
+- **/jail & /unjail [member]**
   - un-mute a member
 - **/kick & /ban [member]**
   - kick / ban a member

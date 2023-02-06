@@ -7,6 +7,5 @@
     "joinLog": "0x42f598",
     "leaveLog": "0xf5424b",
     "bumpLog": "0xffec8f",
-    "commandLog": "0xf5c542",
-    "vcLog": "0x00ebbc"
+    "commandLog": "0xf5c542"
 }

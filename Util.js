@@ -4,24 +4,23 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Collection, EmbedBuilder, Routes } = require('discord.js');
-const { clientId, guildId, token, logschannel } = require('./config.json');
+const { clientId, guildId, token, logschannel, memberlogschannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
-async function logEx(color, title, message, guild, member) {
+async function logEx(color, title, message, guild, member, channel) {
     let date = new Date();
-    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${message.replace(/[*`\n]/g, "")}`);
+    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${title + " " + message.replace(/[*`\n]/g, "")}`);
+    if(channel === undefined) channel = logschannel;
     if(guild != undefined) {
         if(member != undefined) {
-            await member.fetch().then(async member => {
-                    const logembed = new EmbedBuilder()
-                        .setColor(color)
-                        .setTitle(title)
-                        .setDescription(message)
-                        .setFooter({ text: `${member.user.username}#${member.user.discriminator}`, iconURL: member.displayAvatarURL() })
-                        .setTimestamp()
-                    await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
-            });
+                const logembed = new EmbedBuilder()
+                    .setColor(color)
+                    .setTitle(title)
+                    .setDescription(message)
+                    .setFooter({ text: `${member.user.username}#${member.user.discriminator}`, iconURL: member.displayAvatarURL() })
+                    .setTimestamp()
+                await guild.channels.cache.get(channel).send({ embeds: [logembed] });
             } else {
                 const logembed = new EmbedBuilder()
                     .setColor(color)
@@ -66,6 +65,7 @@ async function drawWelcomeImage(member, guild) {
     registerFont('./resources/fonts/base.ttf', { family: 'custom' });
     registerFont('./resources/fonts/math.ttf', { family: 'custom' });
     registerFont('./resources/fonts/symbols.ttf', { family: 'custom' });
+    registerFont('./resources/fonts/emojis.ttf', { family: 'custom' });
     registerFont('./resources/fonts/extended.ttf', { family: 'custom' });
 
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
@@ -79,11 +79,11 @@ async function drawWelcomeImage(member, guild) {
         var avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'jpg' }));
     };
 
-    if(username.length > 22) {
+    if(username.length > 20) {
         ctx.font = `18px "custom"`;
     } else {
         ctx.font = `25px "custom"`;
-    }
+    };
     ctx.textAlign = 'center';
     ctx.fillStyle = '#ffffff';
     ctx.fillText(username, canvas.width / 2, canvas.height / 2 + 67);
@@ -92,7 +92,7 @@ async function drawWelcomeImage(member, guild) {
     ctx.arc(200, canvas.height / 2 - 23, 55, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.clip();
-    ctx.fill()
+    ctx.fill();
 
     ctx.beginPath();
     ctx.arc(200, canvas.height / 2 - 23, 49, 0, Math.PI * 2, true);

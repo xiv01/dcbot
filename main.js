@@ -11,7 +11,8 @@ const color = require('./colors.json');
 
 const client = new Client({ 
     intents: 
-    [GatewayIntentBits.Guilds, 
+    [
+    GatewayIntentBits.Guilds, 
     GatewayIntentBits.GuildMessages, 
     GatewayIntentBits.GuildBans, 
     GatewayIntentBits.GuildMessageReactions,  
@@ -59,7 +60,7 @@ client.once('ready', async () => {
             await guild.members.fetch(rainbowrole[i]).then(async member => {
                 let highest = member.roles.highest
                 if(highest.name != "rainbow") {
-                    await member.roles.add(roles[Math.floor(Math.random() * roles.length)]); 
+                    await member.roles.add(roles[0]); 
                     return;
                 }
                 await member.roles.add(roles[currentIndex2]);
