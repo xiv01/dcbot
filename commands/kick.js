@@ -13,16 +13,14 @@ module.exports = {
         .addStringOption(option => option.setName('reason').setDescription('provide a reason for the kick').setMaxLength(2000))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 	async execute(interaction) {
-        const members = [] 
-        members.push(interaction.options.getMember('member'));
-        var description = `attempting to kick \`\`${members[0].user.username}#${members[0].user.discriminator}\`\` `;
-        for(var i = 2; i < 5; i++) {
-            let member = interaction.options.getMember(`member${i}`)
-            if(member != null) {
-                members.push(member);
-                description += `\`\`${member.user.username}#${member.user.discriminator}\`\` `;
+        const members = [];
+        interaction.options.data.forEach(option => {
+            if (option.type === 6) {
+                members.push(option.member);
             };
-        };
+        });
+        const description = `attempting to kick ${members.map(member => `\`\`${member.user.username}#${member.user.discriminator}\`\``).join(' ')}`;
+        
         const kickembed = new EmbedBuilder()
             .setColor(color.defaultLog)
             .setDescription(description)

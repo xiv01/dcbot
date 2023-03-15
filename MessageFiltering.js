@@ -1,5 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const { logschannel, suggestionchannel, badwords } = require('./config.json');
+const { logschannel, suggestionchannel, badwords, mutedRoleName } = require('./config.json');
 const { logEx } = require('./Util.js');
 const color = require('./colors.json');
 module.exports = { messageFiltering };
@@ -42,7 +42,7 @@ async function messageFiltering(client) {
     
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/")) {
             await message.delete();
-            message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === 'muted'));
+            message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
 
             const dmembed = new EmbedBuilder()
                 .setColor(color.warning)

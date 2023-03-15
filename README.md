@@ -1,9 +1,20 @@
 ## features
 
+- general logs channel
+  - invite creations 
+  - bot rate limits
+  - deleted messages
+  - channel creation / deletion 
+  - role creation / deletion
+- member logs channel
+  - member join / leave with invite tracker
+  - kicks / bans / unbans 
+- voice logs channel
+  - voice chat connect / diconnects 
 - chat filtering
   - delete unwanted words
   - delete invite links
-- auto mute after attempt to post invite link
+- auto jail after attempt to post invite link
 - member stats channel
 - custom join image & role
 - disboard bump reminder

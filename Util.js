@@ -4,13 +4,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Collection, EmbedBuilder, Routes } = require('discord.js');
-const { clientId, guildId, token, logschannel, memberlogschannel } = require('./config.json');
+const { clientId, guildId, token, logschannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
 async function logEx(color, title, message, guild, member, channel) {
     let date = new Date();
-    console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${title + " " + message.replace(/[*`\n]/g, "")}`);
+    let logmessage = message.replace(/[*`\n]/g, "");
     if(channel === undefined) channel = logschannel;
     if(guild != undefined) {
         if(member != undefined) {
@@ -18,7 +18,7 @@ async function logEx(color, title, message, guild, member, channel) {
                     .setColor(color)
                     .setTitle(title)
                     .setDescription(message)
-                    .setFooter({ text: `${member.user.username}#${member.user.discriminator}`, iconURL: member.displayAvatarURL() })
+                    .setFooter({ text: `${member.user.tag}`, iconURL: member.displayAvatarURL() })
                     .setTimestamp()
                 await guild.channels.cache.get(channel).send({ embeds: [logembed] });
             } else {
@@ -29,6 +29,7 @@ async function logEx(color, title, message, guild, member, channel) {
                     .setTimestamp()
                 await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
             };
+        console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${title + " " + logmessage}`);
     }
 };
 
@@ -58,24 +59,25 @@ function registerCommands(guild, client) {
 
 async function drawWelcomeImage(member, guild) {
     const canvas = Canvas.createCanvas(400, 165);
-
     const ctx = canvas.getContext('2d');
 
     const background = await Canvas.loadImage(`./resources/images/welcomeImage.png`);
-    registerFont('./resources/fonts/base.ttf', { family: 'custom' });
-    registerFont('./resources/fonts/math.ttf', { family: 'custom' });
-    registerFont('./resources/fonts/symbols.ttf', { family: 'custom' });
-    registerFont('./resources/fonts/emojis.ttf', { family: 'custom' });
-    registerFont('./resources/fonts/extended.ttf', { family: 'custom' });
 
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
     if (member === 'testrender') {
+        fs.readdir('./resources/fonts', (err, files) => {
+            let fonts = 0;
+            files.forEach(font => {
+                registerFont('./resources/fonts/' + font, { family: 'custom' });
+                fonts++;
+            });
+            logEx(color.defaultLog, '⚙️ System', `performing test render \nregistered \`\`${fonts}\`\` fonts`, guild);
+        });
         var username = 'test render';
         var avatar = await Canvas.loadImage(`./resources/images/welcomeImage.png`);
-        logEx(color.defaultLog, '⚙️ System', 'performing test render', guild);
     } else {
-        var username = `${member.user.username}`;
+        var username = member.user.username;
         var avatar = await Canvas.loadImage(member.user.displayAvatarURL({ extension: 'jpg' }));
     };
 

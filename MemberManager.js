@@ -1,37 +1,14 @@
 const { Collection, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { statschannel, welcomechannel, standardRoleName, rulesChannel,memberlogschannel } = require('./config.json');
+const { statschannel, welcomechannel, standardRoleName, rulesChannel, memberlogschannel, guildId } = require('./config.json');
 const { logEx, drawWelcomeImage } = require('./Util.js');
 const color = require('./colors.json');
 module.exports = { memberManager };
 
 async function memberManager(client) {
-    const invites = new Collection();
-    const wait = require("timers/promises").setTimeout;
-
-    await wait(1000);
-    client.guilds.cache.forEach(async (guild) => {
-      const firstInvites = await guild.invites.fetch();
-      invites.set(guild.id, new Collection(firstInvites.map((invite) => [invite.code, invite.uses])));
-      logEx(color.defaultLog, '⚙️ System', `successfully cached invites`, guild);
-    });
-
-    client.on("inviteDelete", (invite) => {
-      invites.get(invite.guild.id).delete(invite.code);
-    });
+    const firstInvites = await client.guilds.cache.get(guildId).invites.fetch();
+    client.inviteUsageCounts = new Collection(firstInvites.map((invite) => [invite.code, invite.uses]));
+    logEx(color.defaultLog, '⚙️ System', `successfully cached invites`, client.guilds.cache.get(guildId));
     
-    client.on("inviteCreate", (invite) => {
-      invites.get(invite.guild.id).set(invite.code, invite.uses);
-    });
-
-    client.on("guildCreate", (guild) => {
-        guild.invites.fetch().then(guildInvites => {
-          invites.set(guild.id, new Map(guildInvites.map((invite) => [invite.code, invite.uses])));
-        })
-    });
-
-    client.on("guildDelete", (guild) => {
-        invites.delete(guild.id);
-    });
     client.on('guildMemberAdd', async (member) => {
         let standardRole = member.guild.roles.cache.find(role => role.name === standardRoleName);
         await member.roles.add(standardRole);
@@ -54,14 +31,19 @@ async function memberManager(client) {
             console.error(error);
         };
 
-        const newInvites = await member.guild.invites.fetch()
-        const oldInvites = invites.get(member.guild.id);
-        const invite = newInvites.find(i => i.uses > oldInvites.get(i.code));
+        const invites = await member.guild.invites.fetch();
+        const inviteUsed = invites.find(invite => {
+            const inviteUsageBefore = client.inviteUsageCounts.get(invite.code) ?? 0;
+            const inviteUsageAfter = invite.uses;
+            if (inviteUsageAfter > inviteUsageBefore) {
+                client.inviteUsageCounts.set(invite.code, inviteUsageAfter);
+                return true;
+            }
+        });
+      
         try {
-            const inviter = await client.users.fetch(invite.inviter.id);
-            inviter
-              ? logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${invite.code} (${invite.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberlogschannel)
-              : logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member, memberlogschannel);
+            const inviter = await client.users.fetch(inviteUsed.inviter.id);
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${inviteUsed.code} (${inviteUsed.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberlogschannel)
         } catch {
             logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member, memberlogschannel);
         };

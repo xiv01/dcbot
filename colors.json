@@ -1,11 +1,11 @@
 {
-    "warning": "0xfc2332",
-    "success": "0x6bfa94",
-    "pink": "0xf2c6ff",
-    "defaultLog": "0x5e7cf2",
-    "selfrolesLog": "0x262626",
-    "joinLog": "0x42f598",
-    "leaveLog": "0xf5424b",
-    "bumpLog": "0xffec8f",
-    "commandLog": "0xf5c542"
+    "warning": "fc2332",
+    "success": "6bfa94",
+    "pink": "f2c6ff",
+    "defaultLog": "5e7cf2",
+    "selfrolesLog": "262626",
+    "joinLog": "42f598",
+    "leaveLog": "f5424b",
+    "bumpLog": "ffec8f",
+    "commandLog": "f5c542"
 }

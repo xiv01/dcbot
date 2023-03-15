@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits, ActivityType, Partials } = require('discord.js');
-const { guildId, token, activities, rainbowrole, rainbowroles } = require('./config.json');
+const { guildId, token, activities, rainbowrole, rainbowroles, chatai } = require('./config.json');
 const { setIntervalAsync } = require('set-interval-async');
 const { logEx, drawWelcomeImage, registerCommands } = require('./Util.js');
 const { advancedLogging } = require('./Logging.js');
@@ -7,6 +7,7 @@ const { messageFiltering } = require('./MessageFiltering.js');
 const { selfRoles } = require('./SelfRoles.js');
 const { memberManager } = require('./MemberManager.js');
 const { bumpReminder } = require('./BumpReminder.js');
+const { chatAI } = require('./ChatAI.js');
 const color = require('./colors.json');
 
 const client = new Client({ 
@@ -14,7 +15,7 @@ const client = new Client({
     [
     GatewayIntentBits.Guilds, 
     GatewayIntentBits.GuildMessages, 
-    GatewayIntentBits.GuildBans, 
+    GatewayIntentBits.GuildModeration, 
     GatewayIntentBits.GuildMessageReactions,  
     GatewayIntentBits.MessageContent, 
     GatewayIntentBits.GuildMembers, 
@@ -32,7 +33,7 @@ const client = new Client({
 client.once('ready', async () => {
     const guild = client.guilds.cache.get(guildId);
     logEx(color.defaultLog, '⚙️ System', `bot started\n**latest commit** -> ${require('child_process').execSync('git rev-parse --short HEAD').toString().trim()}`, guild);
-    drawWelcomeImage('testrender', guild); // ghetto fix 
+    drawWelcomeImage('testrender', guild); 
     registerCommands(guild, client);
 
     advancedLogging(client);
@@ -40,6 +41,7 @@ client.once('ready', async () => {
     selfRoles(client);
     memberManager(client);
     bumpReminder(client);
+    if(chatai) chatAI(guild, client);
 
     var roles = [];
     for(var i = 0; i < rainbowroles.length; i++) {
