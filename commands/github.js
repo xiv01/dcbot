@@ -10,10 +10,11 @@ module.exports = {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /github\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-		const githubembed = new EmbedBuilder()
+		const githubEmbed = new EmbedBuilder()
 			.setColor(color.defaultLog)
 			.setTitle('GitHub Repository')
             .setURL('https://github.com/xiv01/dcbot/tree/main')
-		await interaction.reply({ embeds: [githubembed] });
+			
+		await interaction.reply({ embeds: [githubEmbed] });
 	},
 };

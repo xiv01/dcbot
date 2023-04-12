@@ -10,10 +10,10 @@ module.exports = {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /howgay\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-		const gayembed = new EmbedBuilder()
+		const gayEmbed = new EmbedBuilder()
 			.setColor(color.pink)
 			.setTitle('Calculation Result')
 			.setDescription(`\n🏳️‍🌈 your are \`${Math.floor(Math.random() * 101)}\`% gay :)\n`)
-		await interaction.reply({ embeds: [gayembed] });
+		await interaction.reply({ embeds: [gayEmbed] });
 	},
 };

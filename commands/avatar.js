@@ -14,18 +14,18 @@ module.exports = {
 
         const avatarURL = member.displayAvatarURL({ dynamic: true, size: 256 });
 
-        const savebutton = new ActionRowBuilder()
+        const saveButton = new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
                     .setLabel('save')
                     .setURL(avatarURL)
                     .setStyle(5))
 
-        const avatarembed = new EmbedBuilder()
+        const avatarEmbed = new EmbedBuilder()
             .setColor(color.pink)
             .setTitle(`**₊✦˚・${member.user.username}'s avatar**`)
             .setImage(avatarURL)
 
-        await interaction.reply({ embeds: [avatarembed], components: [savebutton] });
+        await interaction.reply({ embeds: [avatarEmbed], components: [saveButton] });
     },
 };

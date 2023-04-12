@@ -4,14 +4,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Collection, EmbedBuilder, Routes } = require('discord.js');
-const { clientId, guildId, token, logschannel } = require('./config.json');
+const { clientId, guildId, token, logsChannel } = require('./config.json');
 const color = require('./colors.json');
 module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
 async function logEx(color, title, message, guild, member, channel) {
     let date = new Date();
     let logmessage = message.replace(/[*`\n]/g, "");
-    if(channel === undefined) channel = logschannel;
+    if(channel === undefined) channel = logsChannel;
     if(guild != undefined) {
         if(member != undefined) {
                 const logembed = new EmbedBuilder()
@@ -27,7 +27,7 @@ async function logEx(color, title, message, guild, member, channel) {
                     .setTitle(title)
                     .setDescription(message)
                     .setTimestamp()
-                await guild.channels.cache.get(logschannel).send({ embeds: [logembed] });
+                await guild.channels.cache.get(logsChannel).send({ embeds: [logembed] });
             };
         console.log(`[${[date.toLocaleString('en-US', { timeZone: 'Europe/Berlin' })]}] ${title + " " + logmessage}`);
     }
@@ -72,7 +72,7 @@ async function drawWelcomeImage(member, guild) {
                 registerFont('./resources/fonts/' + font, { family: 'custom' });
                 fonts++;
             });
-            logEx(color.defaultLog, '⚙️ System', `performing test render \nregistered \`\`${fonts}\`\` fonts`, guild);
+            logEx(color.defaultLog, '⚙️ System', `performing test render \nregistered \`${fonts}\` fonts`, guild);
         });
         var username = 'test render';
         var avatar = await Canvas.loadImage(`./resources/images/welcomeImage.png`);

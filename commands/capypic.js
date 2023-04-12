@@ -1,13 +1,15 @@
 const { EmbedBuilder, AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
 const { logEx } = require('../Util.js');
 const fs = require('node:fs');
+const { addAIMessage } = require('../ChatAI.js');
 const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('capypic')
 		.setDescription('sends a cute capybara picture'),
-	async execute(interaction) {
+	async execute(interaction, client) {
+		addAIMessage(client, "assistant", "i posted a cute capybara picture");
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
         logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /capypic\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
@@ -17,16 +19,14 @@ module.exports = {
 
 			const image = new AttachmentBuilder(__dirname + '/../resources/images/capypics' + '//' + files[imageNumber - 1], { name: 'capypic.png' })
 
-			const capyembed = new EmbedBuilder()
+			const capyEmbed = new EmbedBuilder()
 				.setColor(color.pink)
 				.setTitle("**₊✦˚・a capy pic for you!**")
      			.setImage('attachment://capypic.png')
 				.setTimestamp()
-				.setFooter({
-					text: `Pic #${imageNumber}`,
-			});
+				.setFooter({text: `Pic #${imageNumber}`});
 
-            interaction.reply({embeds: [capyembed], files: [image]})
+            interaction.reply({embeds: [capyEmbed], files: [image]})
         });
 	},
 };

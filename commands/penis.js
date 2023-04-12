@@ -11,18 +11,15 @@ module.exports = {
 
         let length = Math.floor(Math.random() * 30)
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /penis\n**length**: \`\`${length}\`\`\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
-        let ppString = "8";
 
-        for (let i = 0; i < length; i++) {
-            ppString += "=";
-        };
+        let ppString = '8';
+        for (let i = 0; i < length; i++) ppString += '=';
+        ppString += 'D';
 
-        ppString += "D";
-
-		const gayembed = new EmbedBuilder()
+		const gayEmbed  = new EmbedBuilder()
 			.setColor(color.pink)
 			.setTitle('Your PP')
 			.setDescription(ppString)
-		await interaction.reply({ embeds: [gayembed] });
+		await interaction.reply({ embeds: [gayEmbed] });
 	},
 };

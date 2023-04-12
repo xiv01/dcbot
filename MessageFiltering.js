@@ -1,20 +1,20 @@
 const { EmbedBuilder } = require('discord.js');
-const { logschannel, suggestionchannel, badwords, mutedRoleName } = require('./config.json');
+const { logsChannel, suggestionChannel, badwords, mutedRoleName } = require('./config.json');
 const { logEx } = require('./Util.js');
 const color = require('./colors.json');
 module.exports = { messageFiltering };
 
 async function messageFiltering(client) {
     client.on('messageCreate', async message => {
-        if((message.channelId === logschannel) && !message.author.bot) {
+        if((message.channelId === logsChannel) && !message.author.bot) {
             await message.delete(); 
             return;
         };
-    
+
         if(message.author.bot) return;
         var content = message.content.toLowerCase();
         if(content == null) return;
-    
+
         for(var i = 0; i < badwords.length; i++) {
             if(content.includes(badwords[i])) {
                 await message.delete();
@@ -46,8 +46,8 @@ async function messageFiltering(client) {
 
             const dmembed = new EmbedBuilder()
                 .setColor(color.warning)
-                .setTitle('❗ **you have been muted on cozy community**')
-                .setDescription(`**Reason:** [Automatic] posted invite. \n\ndm a staff member to get unmuted.`)
+                .setTitle('❗ **you have been jailed on cozy community**')
+                .setDescription(`**Reason:** [Automatic] posted an invite. \n\ndm a staff member to get unmuted.`)
                 .setTimestamp()
                 
             let dmenabled = true;
@@ -70,7 +70,7 @@ async function messageFiltering(client) {
             await message.reply("<a:catvibe:1035808779255676978>");
         };
     
-        if(message.channelId === suggestionchannel) {
+        if(message.channelId === suggestionChannel) {
             if(message.attachments.size > 0 || message.stickers.size > 0) {
                 const warningembed = new EmbedBuilder()
                     .setColor(color.warning)

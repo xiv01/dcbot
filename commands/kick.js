@@ -21,15 +21,15 @@ module.exports = {
         });
         const description = `attempting to kick ${members.map(member => `\`\`${member.user.username}#${member.user.discriminator}\`\``).join(' ')}`;
         
-        const kickembed = new EmbedBuilder()
+        const kickEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)
             .setDescription(description)
-        await interaction.reply({ embeds: [kickembed], ephemeral: true });
+        await interaction.reply({ embeds: [kickEmbed], ephemeral: true });
 
         const reason = interaction.options.getString('reason') ?? 'No reason provided.';
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);   
 
-        const dmembed = new EmbedBuilder()
+        const dmEmbed = new EmbedBuilder()
             .setColor(color.warning)
             .setTitle('❗ **you have been kicked from cozy community**')
             .setDescription(`**Reason:** ${reason}`)
@@ -37,33 +37,33 @@ module.exports = {
 
         members.forEach(async member => {
             if(member.kickable) {
-                let dmenabled = true;
-                await member.send({ embeds: [dmembed] }).catch(() => dmenabled = false); 
+                let dmEnabled = true;
+                await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
                 await member.kick();
-                if(!dmenabled) {
+                if(!dmEnabled) {
                     logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
                 } else {
                     logEx(color.warning, 'Kick Command Used', `<@${interactionUser.user.id}> kicked <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
                 };
-                const kickembed = new EmbedBuilder()
+                const kickEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
                     .setDescription(`successfully kicked \`${member.user.username}#${member.user.discriminator}\``)
                     .setFooter({ text: `${interactionUser.user.username}#${interactionUser.user.discriminator}`, iconURL: interactionUser.displayAvatarURL() })
                     .setTimestamp()
     
-                let message = await interaction.channel.send({ embeds: [kickembed] });
+                let message = await interaction.channel.send({ embeds: [kickEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             } else {
                 logEx(color.warning, 'Kick Command Failed', `<@${interactionUser.user.id}> tried to kick <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
-                const kickembed = new EmbedBuilder()
+                const kickEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **failed**')
                     .setDescription(`failed to kick \`${member.user.username}#${member.user.discriminator}\``)
                     .setFooter({ text: `${interactionUser.user.username}#${interactionUser.user.discriminator}`, iconURL: interactionUser.displayAvatarURL() })
                     .setTimestamp()
     
-                let message = await interaction.channel.send({ embeds: [kickembed] });
+                let message = await interaction.channel.send({ embeds: [kickEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             };
         });

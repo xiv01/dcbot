@@ -1,5 +1,5 @@
 const { Collection, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { statschannel, welcomechannel, standardRoleName, rulesChannel, memberlogschannel, guildId } = require('./config.json');
+const { statsChannel, welcomeChannel, standardRoleName, rulesChannel, memberLogsChannel, guildId } = require('./config.json');
 const { logEx, drawWelcomeImage } = require('./Util.js');
 const color = require('./colors.json');
 module.exports = { memberManager };
@@ -14,7 +14,7 @@ async function memberManager(client) {
         await member.roles.add(standardRole);
 
 		const image = new AttachmentBuilder(await drawWelcomeImage(member), { name: 'welcome.png' })
-        const welcomeembed = new EmbedBuilder()
+        const welcomeEmbed = new EmbedBuilder()
             .setColor(color.pink)
             .setTitle(`🎉 **Willkommen ${member.user.username} auf ₊˚✦ cozy community!!**`)
             .setDescription(`Wir freuen uns auf dich und wünschen dir viel Spaß!\nBitte lese zuerst die Regeln in <#${rulesChannel}> :)`)
@@ -23,10 +23,10 @@ async function memberManager(client) {
             .setFooter({
                 text: `du bist member #${member.guild.memberCount}`,
         });
-        await member.guild.channels.cache.get(welcomechannel).send({embeds: [welcomeembed], files: [image]});
+        await member.guild.channels.cache.get(welcomeChannel).send({embeds: [welcomeEmbed], files: [image]});
     
         try {
-            member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`); 
+            member.guild.channels.cache.get(statsChannel).setName(`₊✦˚・members: ${member.guild.memberCount}`); 
         } catch (error) {
             console.error(error);
         };
@@ -40,19 +40,19 @@ async function memberManager(client) {
                 return true;
             }
         });
-      
+
         try {
             const inviter = await client.users.fetch(inviteUsed.inviter.id);
-            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${inviteUsed.code} (${inviteUsed.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberlogschannel)
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${inviteUsed.code} (${inviteUsed.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberLogsChannel)
         } catch {
-            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member, memberlogschannel);
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member, memberLogsChannel);
         };
     });
     
     client.on('guildMemberRemove', async (member) => {
-        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member, memberlogschannel)
+        logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member, memberLogsChannel)
         try {
-            member.guild.channels.cache.get(statschannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);
+            member.guild.channels.cache.get(statsChannel).setName(`₊✦˚・members: ${member.guild.memberCount}`);
         } catch (error) {
             console.error(error);
         };

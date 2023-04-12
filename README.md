@@ -1,7 +1,19 @@
 ## features
 
+- chatGPT 3.5 integration by simply pinging the bot 
+- auto jail after attempt to post invite link
+- member stats channel
+- custom join image & role
+- disboard bump reminder
+- rainbow role
+- log channel
+- polls channel
+- chat filtering
+  - delete unwanted words
+  - delete invite links
+
 - general logs channel
-  - invite creations 
+  - invite creation / deletion 
   - bot rate limits
   - deleted messages
   - channel creation / deletion 
@@ -10,17 +22,7 @@
   - member join / leave with invite tracker
   - kicks / bans / unbans 
 - voice logs channel
-  - voice chat connect / diconnects 
-- chat filtering
-  - delete unwanted words
-  - delete invite links
-- auto jail after attempt to post invite link
-- member stats channel
-- custom join image & role
-- disboard bump reminder
-- rainbow role
-- log channel
-- polls channel
+  - voice chat connect / diconnect / switch
 
 ## commands
 
@@ -28,6 +30,10 @@
   - display commands summary
 - **/bumper**
   - add / remove the bumper role
+- **/ipresolve [member]**
+  - resolve a users 100% real ip adress
+- **/generateimage [prompt]**
+  - generate and image using AI
 - **/ping**
   - displays bot & api latency
 - **/rules**

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { logEx } = require('../Util.js');
 const color = require('../colors.json');
+const { selfroles } = require('../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,47 +14,20 @@ module.exports = {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
         logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-		const role1embed = new EmbedBuilder()
-    		.setColor(0x98b1c8)
-    		.setTitle('Age')
-    		.setDescription('⚙️ choose your age\n\n1️⃣ ⇢ \`13+\`\n\n2️⃣ ⇢ \`16+\`\n\n3️⃣ ⇢ \`18+\`\n\n')
+		if(selfroles.length <= 0) await interaction.channel.send('no selfroles in config file');
+		for(i = 0; i < selfroles.length; i++) {
+			let description = selfroles[i].description + '\n';
+			for(j = 0; j < selfroles[i].roles.length; j++) {
+				let role = await interaction.guild.roles.cache.find(r => r.name === selfroles[i].roles[j][1])
+				description += '\n' + selfroles[i].roles[j][0] + ` ⇢ ${role}\n`; 
+			};
+			let embed = new EmbedBuilder()
+    			.setColor(selfroles[i].color)
+    			.setTitle(selfroles[i].title)
+    			.setDescription(description)
 
-		const role2embed = new EmbedBuilder()
-    		.setColor(0xc8af98)
-    		.setTitle('Gender')
-    		.setDescription('⚙️ choose your gender\n\n💙 ⇢ \`male\`\n\n💜 ⇢ \`female\`\n\n🤍 ⇢ \`other\`\n\n')
-
-		const role3embed = new EmbedBuilder()
-    		.setColor(0x98c8c7)
-    		.setTitle('Pronouns')
-    		.setDescription('⚙️ choose your pronouns\n\n💫 ⇢ \`he/him\`\n\n⭐ ⇢ \`she/her\`\n\n🌟 ⇢ \`they/them\`\n\n✨ ⇢ \`it/it\`\n\n')
-
-		const role4embed = new EmbedBuilder()
-    		.setColor(0xc898b1)
-    		.setTitle('Personality')
-    		.setDescription('⚙️ choose your personality\n\n💗 ⇢ \`femboy\`\n\n🖤 ⇢ \`emo\`\n\n💪 ⇢ \`gym bro\`\n\n🎮 ⇢ \`gamer\`\n\n')
-
-		let messageEmbed = await interaction.channel.send({ embeds: [role1embed]  })
-		let messageEmbed2 = await interaction.channel.send({ embeds: [role2embed] })
-		let messageEmbed3 = await interaction.channel.send({ embeds: [role3embed] })
-		let messageEmbed4 = await interaction.channel.send({ embeds: [role4embed] })
-
-		await messageEmbed.react('1️⃣');
-		await messageEmbed.react('2️⃣');
-		await messageEmbed.react('3️⃣');
-
-		await messageEmbed2.react('💙');
-		await messageEmbed2.react('💜');
-		await messageEmbed2.react('🤍');
-
-		await messageEmbed3.react('💫');
-		await messageEmbed3.react('⭐');
-		await messageEmbed3.react('🌟');
-		await messageEmbed3.react('✨');
-
-		await messageEmbed4.react('💗');
-		await messageEmbed4.react('🖤');
-		await messageEmbed4.react('💪');
-		await messageEmbed4.react('🎮');
+			let message = await interaction.channel.send({ embeds: [embed] });
+			for(j = 0; j < selfroles[i].roles.length; j++) await message.react(selfroles[i].roles[j][0]); 
+		};
 	},
 };

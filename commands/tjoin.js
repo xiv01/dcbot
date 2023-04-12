@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const color = require('../colors.json');
-const { welcomechannel, rulesChannel } = require('../config.json');
+const { welcomeChannel, rulesChannel } = require('../config.json');
 const { drawWelcomeImage } = require('../Util.js');
 
 module.exports = {
@@ -19,6 +19,6 @@ module.exports = {
             .setFooter({
                 text: `du bist member #${interaction.guild.memberCount}`,
         });
-        await interaction.guild.channels.cache.get(welcomechannel).send({embeds: [welcomeembed], files: [image]});
+        await interaction.guild.channels.cache.get(welcomeChannel).send({embeds: [welcomeembed], files: [image]});
 	},
 };

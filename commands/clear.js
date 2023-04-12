@@ -13,21 +13,21 @@ module.exports = {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /clear ${num}\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-		clearembed = new EmbedBuilder()
+		const clearEmbed = new EmbedBuilder()
 			.setColor(color.success)
 			.setTitle('✅ **done**')
 			.setDescription(`successfully deleted \`${num}\` messages`)
 		try {
 			await interaction.channel.bulkDelete(num);
-		}
-		catch {
-			clearembed = new EmbedBuilder()
+			await interaction.reply({ embeds: [clearEmbed] });
+			setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
+		} catch {
+			const clearEmbed = new EmbedBuilder()
 				.setColor(color.warning)
 				.setTitle('❗ **error**')
         		.setDescription(`failed to delete messages`)
-			logEx('failed to delete ${')
+			await interaction.reply({ embeds: [clearEmbed] });
+			setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
 		};
-		await interaction.reply({ embeds: [clearembed] });
-        setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
 	},
 };

@@ -12,7 +12,7 @@ module.exports = {
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
         logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /banner <@${member.id}>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-        const failedembed = new EmbedBuilder()
+        const failedEmbed = new EmbedBuilder()
             .setColor(color.warning)
             .setTitle('❗ **failed**')
             .setDescription(`this user does not have a banner`)
@@ -20,22 +20,22 @@ module.exports = {
         await member.user.fetch(true).then(async user => {
             let bannerURL = await user.bannerURL({ dynamic: true, size: 4096 });
             if(bannerURL === null) {
-                await interaction.reply({ embeds: [failedembed] });
+                await interaction.reply({ embeds: [failedEmbed] });
                 setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             } else {
-                const savebutton = new ActionRowBuilder()
+                const saveButton = new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
                             .setLabel('save')
                             .setURL(bannerURL)
                             .setStyle(5))
 
-                const avatarembed = new EmbedBuilder()
+                const avatarEmbed = new EmbedBuilder()
                     .setColor(color.pink)
                     .setTitle(`**₊✦˚・${member.user.username}'s banner**`)
                     .setImage(bannerURL)
 
-                await interaction.reply({ embeds: [avatarembed], components: [savebutton] });
+                await interaction.reply({ embeds: [avatarEmbed], components: [saveButton] });
             };
         }).catch(console.error)
     },

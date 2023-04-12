@@ -2,12 +2,14 @@ const { EmbedBuilder, AttachmentBuilder, SlashCommandBuilder } = require('discor
 const { logEx } = require('../Util.js');
 const fs = require('node:fs');
 const color = require('../colors.json');
+const { addAIMessage } = require('../ChatAI.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('catpic')
 		.setDescription('sends a cute cat picture'),
-	async execute(interaction) {
+	async execute(interaction, client) {
+		addAIMessage(client, "assistant", "i posted a cute cat picture");
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /catpic\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
@@ -17,16 +19,14 @@ module.exports = {
 
 			const image = new AttachmentBuilder(__dirname + '/../resources/images/catpics' + '//' + files[imageNumber - 1], { name: 'catpic.png' })
 
-			const catembed = new EmbedBuilder()
+			const catEmbed = new EmbedBuilder()
 				.setColor(color.pink)
 				.setTitle("**₊✦˚・a cat pic for you!**")
      			.setImage('attachment://catpic.png')
 				.setTimestamp()
-				.setFooter({
-					text: `Pic #${imageNumber}`,
-			});
+				.setFooter({text: `Pic #${imageNumber}`});
 
-            interaction.reply({embeds: [catembed], files: [image]})
+            interaction.reply({embeds: [catEmbed], files: [image]})
         });
 	},
 };

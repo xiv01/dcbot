@@ -29,7 +29,7 @@ module.exports = {
         const reason = interaction.options.getString('reason') ?? 'No reason provided.';
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);   
 
-        const dmembed = new EmbedBuilder()
+        const dmEmbed = new EmbedBuilder()
             .setColor(color.warning)
             .setTitle('❗ **you have been banned from cozy community**')
             .setDescription(`**Reason:** ${reason}`)
@@ -37,33 +37,33 @@ module.exports = {
 
         members.forEach(async member => {
             if(member.bannable) {
-                let dmenabled = true;
-                await member.send({ embeds: [dmembed] }).catch(() => dmenabled = false); 
+                let dmEnabled = true;
+                await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
                 await member.ban({reason: reason});
-                if(!dmenabled) {
+                if(!dmEnabled) {
                     logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
                 } else {
                     logEx(color.warning, 'Ban Command Used', `<@${interactionUser.user.id}> banned <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
                 };
-                const banembed = new EmbedBuilder()
+                const banEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
                     .setDescription(`successfully banned \`${member.user.username}#${member.user.discriminator}\``)
                     .setFooter({ text: `${interactionUser.user.username}#${interactionUser.user.discriminator}`, iconURL: interactionUser.displayAvatarURL() })
                     .setTimestamp()
     
-                let message = await interaction.channel.send({ embeds: [banembed] });
+                let message = await interaction.channel.send({ embeds: [banEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             } else {
                 logEx(color.warning, 'Ban Command Failed', `<@${interactionUser.user.id}> tried to ban <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interactionUser);
-                const banembed = new EmbedBuilder()
+                const banEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **failed**')
                     .setDescription(`failed to ban \`${member.user.username}#${member.user.discriminator}\``)
                     .setFooter({ text: `${interactionUser.user.username}#${interactionUser.user.discriminator}`, iconURL: interactionUser.displayAvatarURL() })
                     .setTimestamp()
     
-                let message = await interaction.channel.send({ embeds: [banembed] });
+                let message = await interaction.channel.send({ embeds: [banEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             };
         });
