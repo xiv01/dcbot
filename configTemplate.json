@@ -1,0 +1,59 @@
+{
+    "clientId": "CLIENT ID",
+    "guildId": "GUILD ID",
+    "token": "TOKEN",
+    "openaikey": "OPENAI API KEY",
+    
+    "statsChannel": "CHANNEL ID",
+    "rulesChannel": "CHANNEL ID",
+    "welcomeChannel": "CHANNEL ID",
+    "logsChannel": "CHANNEL ID",
+    "memberLogsChannel": "CHANNEL ID",
+    "voiceLogsChannel": "CHANNEL ID",
+    "suggestionChannel": "CHANNEL ID",
+    "rolesChannel": "CHANNEL ID",
+    "bumpChannel": "CHANNEL ID",
+    "jailVCChannel": "CHANNEL ID",
+  
+    "standardRoleName": "ROLE NAME",
+    "mutedRoleName": "ROLE NAME",
+    "bumperRoleName": "ROLE NAME",
+  
+    "chatAIToggle": true,
+    "chatAIMemory": 15,
+  
+    "activities": [
+        "ACTIVITY NAME"
+    ],
+    "delMessageBlacklist": [
+        "CHANNEL ID"
+    ],
+    "badwords": [
+        "BADWORD"
+    ],
+    "rainbowRoles": [
+        "ROLE ID"
+    ],
+    "selfroles": [
+      {
+        "title": "EMBED TITLE",
+        "description": "EMBED DESCRIPTION",
+        "color": "EMBED COLOR",
+        "roles": [
+          [
+            "EMOJI",
+            "ROLE NAME"
+          ],
+          [
+            "EMOJI",
+            "ROLE NAME"
+          ],
+          [
+            "EMOJI",
+            "ROLE NAME"
+          ]
+        ]
+      }
+    ],
+    "lastbump": 100000
+}
