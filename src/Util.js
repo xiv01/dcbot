@@ -4,13 +4,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { REST } = require('@discordjs/rest');
 const { Collection, EmbedBuilder, Routes } = require('discord.js');
-const { clientId, guildId, token, logsChannel } = require('./config.json');
-const color = require('./colors.json');
+const { clientId, guildId, token, logsChannel } = require('../config.json');
+const color = require('../colors.json');
 module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
 async function logEx(color, title, message, guild, member, channel) {
     let date = new Date();
-    let logmessage = message.replace(/[*`\n]/g, "");
+    let logmessage = message.replace(/[*`\n]/g, " ");
     if(channel === undefined) channel = logsChannel;
     if(guild != undefined) {
         if(member != undefined) {
@@ -39,20 +39,20 @@ function getUnixTime() {
 
 function registerCommands(guild, client) {
     client.commands = new Collection();
-    const commandsI = [];
-    const commandsPath = path.join(__dirname, 'commands');
+    const reqBody = [];
+    const commandsPath = path.join(__dirname,'../commands');
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
     
     for (const file of commandFiles) {
     	const filePath = path.join(commandsPath, file);
     	const command = require(filePath);
-    	commandsI.push(command.data.toJSON());
+    	reqBody.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     };
 
     const rest = new REST({ version: '10' }).setToken(token);
 
-    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commandsI })
+    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: reqBody })
     	.then(() => logEx(color.defaultLog, '⚙️ System', 'successfully registered commands', guild))
     	.catch(console.error);
 };

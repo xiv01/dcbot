@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
-const { logsChannel, suggestionChannel, badwords, mutedRoleName } = require('./config.json');
+const { logsChannel, suggestionChannel, badwords, mutedRoleName, jailVCChannel } = require('../config.json');
 const { logEx } = require('./Util.js');
-const color = require('./colors.json');
+const color = require('../colors.json');
 module.exports = { messageFiltering };
 
 async function messageFiltering(client) {
@@ -42,7 +42,8 @@ async function messageFiltering(client) {
     
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/")) {
             await message.delete();
-            message.guild.members.cache.get(message.author.id).roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
+            await message.member.roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
+            if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
 
             const dmembed = new EmbedBuilder()
                 .setColor(color.warning)
@@ -94,7 +95,7 @@ async function messageFiltering(client) {
                     await message.delete();
                     setTimeout(() => toolong.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 5000);
                 } else {
-                    logEx(color.defaultLog, 'Poll Posted', `<@${message.member.id}> posted a pool\n**message**: ${content}`, message.guild, message.member);
+                    logEx(color.defaultLog, 'Poll Posted', `<@${message.member.id}> posted a poll\n**message**: ${content}`, message.guild, message.member);
                     const suggestembed = new EmbedBuilder()
                         .setColor(color.pink)
                         .setTitle(`${content}`)

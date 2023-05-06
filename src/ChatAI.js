@@ -1,12 +1,20 @@
-const { chatAIToggle, chatAIMemory, badwords } = require('./config.json');
+const { chatAIToggle, badwords } = require('../config.json');
+const { encode } = require('gpt-3-encoder')
 const { logEx } = require('./Util.js');
-const color = require('./colors.json');
+const color = require('../colors.json');
 module.exports = { chatAI, addAIMessage };
 
 function addAIMessage(client, role, input) {
     if(chatAIToggle) {
+        let tokens = 0;
         client.conversation.push({ role: role, content: input });
-        if(client.conversation.length > chatAIMemory) client.conversation.shift();
+        client.conversation.forEach( entry => {
+            tokens += encode(entry.content).length
+        });
+        while(tokens > 4096) {
+            tokens -= encode(client.conversation[0].content).length;
+            client.conversation.shift();
+        };
     };
 };
 
@@ -22,17 +30,15 @@ async function chatAI(guild, client) {
         for(var i = 0; i < badwords.length; i++) if(content.includes(badwords[i])) return;
         
         if(!message.mentions.has(client.user)) { 
-            let coversationInput = message.content;
-            if(message.stickers.size > 0) coversationInput += ` sticker: ${message.stickers.first().name}`;
-            addAIMessage(client, "user", message.member.displayName + " said: " + coversationInput);
+            addAIMessage(client, "user", message.member.displayName + " said: " + message.content);
         };
 
         if (message.mentions.has(client.user)) {
             let prompt = content.replace(/<@\d+>/g, '');
             if(prompt.length > 1) {
-                await message.channel.sendTyping()
+                await message.channel.sendTyping();
                 const typing = setInterval(() => { message.channel.sendTyping() }, 5000);
-                addAIMessage(client, "system", "you are a discord bot taking part in the chat of a discord server your primary language should be german");
+                console.log(message.id + '\n\n')
                 addAIMessage(client, "user", message.member.displayName + " said to you: " + prompt);
                 try {
                     const completion = await client.openAI.createChatCompletion({
@@ -59,7 +65,7 @@ async function chatAI(guild, client) {
                             await message.channel.send(reply.substr(0, 2000));
                         };
                         for(i = 1; i < reply.length / 2000; i++) {
-                            await message.channel.send(reply.substr(0 + (i * 2000), 2000 + (i * 2000)));
+                            await message.channel.send(reply.substr(i * 2000, 2000 + (i * 2000)));
                         };
                     } else {
                         try {
@@ -68,9 +74,12 @@ async function chatAI(guild, client) {
                             await message.channel.send(reply);
                         };
                     };
-                } catch (err) {
+                } catch(err) {
+                    clearInterval(typing);
+                    console.log(err.response);
                     logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${content}`, guild, message.member);
-                    return message.reply('An error occured while i was trying to answer. :(\nI have already informed my creator about this issue and hope it will get resolved ASAP');
+                    if(err.response.status === 429) return message.reply('you are sending messages too fast please try again in a few seconds :(');
+                    return message.reply('An error occured while I was trying to answer. :(');
                 };
             };
         };

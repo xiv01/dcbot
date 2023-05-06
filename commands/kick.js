@@ -1,11 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('kick')
-		.setDescription('kicks 1 or multiple users')
+		.setDescription('kick 1 or multiple users')
         .addUserOption(option => option.setName('member').setDescription('name of user you want to kick').setRequired(true))
         .addUserOption(option => option.setName('member2').setDescription('name of user you want to kick'))
         .addUserOption(option => option.setName('member3').setDescription('name of user you want to kick'))
@@ -19,7 +19,7 @@ module.exports = {
                 members.push(option.member);
             };
         });
-        const description = `attempting to kick ${members.map(member => `\`\`${member.user.username}#${member.user.discriminator}\`\``).join(' ')}`;
+        const description = `attempting to kick ${members.map(member => `\`${member.user.username}#${member.user.discriminator}\``).join(' ')}`;
         
         const kickEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)

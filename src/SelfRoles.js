@@ -1,6 +1,6 @@
-const { rolesChannel, selfroles } = require('./config.json');
+const { rolesChannel, selfroles } = require('../config.json');
 const { logEx } = require('./Util.js');
-const color = require('./colors.json');
+const color = require('../colors.json');
 module.exports = { selfRoles };
 
 async function selfRoles(client) {
@@ -25,11 +25,15 @@ async function addSelfRole(reaction, user, type) {
                 if(selfroles[i].roles[j][0].includes(reaction.emoji.name)) {
                     let roleName = selfroles[i].roles[j][1];
                     if(type) {
-                        await reaction.message.guild.members.cache.get(user.id).roles.remove(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i].roles[j][1]));
-                        logEx(color.selfrolesLog, '👥 Self Role Removed', `<@${user.id}> removed self role: \`${roleName}\``, reaction.message.guild, reaction.message.guild.members.cache.get(user.id));
+                        await reaction.message.guild.members.fetch(user.id).then(async member => {
+                            await member.roles.remove(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i].roles[j][1]));
+                            logEx(color.selfrolesLog, '👥 Self Role Removed', `<@${user.id}> removed self role: \`${roleName}\``, reaction.message.guild, member);
+                        });
                     } else {
-                        await reaction.message.guild.members.cache.get(user.id).roles.add(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i].roles[j][1]));
-                        logEx(color.selfrolesLog, '👥 Self Role Added', `<@${user.id}> added self role: \`${roleName}\``, reaction.message.guild, reaction.message.guild.members.cache.get(user.id));
+                        await reaction.message.guild.members.fetch(user.id).then(async member => {
+                            await member.roles.add(reaction.message.guild.roles.cache.find(role => role.name === selfroles[i].roles[j][1]));
+                            logEx(color.selfrolesLog, '👥 Self Role Added', `<@${user.id}> added self role: \`${roleName}\``, reaction.message.guild, member);
+                        });
                     };
                 };
             };

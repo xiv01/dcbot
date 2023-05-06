@@ -1,11 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('addrainbow')
-		.setDescription('add rainbow role for user')
+		.setDescription('add rainbow role to user')
         .addUserOption(option => option.setName('member').setDescription('user').setRequired(true))
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction, client) {

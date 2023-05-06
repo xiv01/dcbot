@@ -1,23 +1,24 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { Configuration, OpenAIApi } = require("openai");
 const { guildId, token, chatAIToggle, openaikey } = require('./config.json');
-const { logEx, drawWelcomeImage, registerCommands } = require('./Util.js');
-const { advancedLogging } = require('./Logging.js');
-const { messageFiltering } = require('./MessageFiltering.js');
-const { routines } = require('./Routines.js');
-const { selfRoles } = require('./SelfRoles.js');
-const { memberManager } = require('./MemberManager.js');
-const { bumpReminder } = require('./BumpReminder.js');
-const { chatAI } = require('./ChatAI.js');
+const { logEx, drawWelcomeImage, registerCommands } = require('./src/Util.js');
+const { advancedLogging } = require('./src/Logging.js');
+const { messageFiltering } = require('./src/MessageFiltering.js');
+const { routines } = require('./src/Routines.js');
+const { selfRoles } = require('./src/SelfRoles.js');
+const { memberManager } = require('./src/MemberManager.js');
+const { bumpReminder } = require('./src/BumpReminder.js');
+const { chatAI } = require('./src/ChatAI.js');
 const color = require('./colors.json');
 
 const client = new Client({ 
     intents: 
     [
-    GatewayIntentBits.Guilds, 
-    GatewayIntentBits.GuildMessages, 
-    GatewayIntentBits.GuildModeration, 
-    GatewayIntentBits.GuildMessageReactions,  
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildModeration,
+    GatewayIntentBits.GuildMessageReactions, 
+    GatewayIntentBits.GuildEmojisAndStickers,
     GatewayIntentBits.MessageContent, 
     GatewayIntentBits.GuildMembers, 
     GatewayIntentBits.GuildVoiceStates

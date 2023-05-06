@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
 module.exports = {

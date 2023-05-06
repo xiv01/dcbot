@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const { mutedRoleName } = require('../config.json');
 const color = require('../colors.json');
 
@@ -19,7 +19,7 @@ module.exports = {
                 members.push(option.member);
             };
         });
-        const description = `attempting to unjail ${members.map(member => `\`\`${member.user.username}#${member.user.discriminator}\`\``).join(' ')}`;
+        const description = `attempting to unjail ${members.map(member => `\`${member.user.username}#${member.user.discriminator}\``).join(' ')}`;
 
         const unmuteEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)

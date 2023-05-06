@@ -1,21 +1,87 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType } = require('discord.js');
+const path = require('node:path');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
-
-const helpEmbed = new EmbedBuilder()
-    .setColor(color.pink)
-    .setTitle('🛠️ **Help**')
-    .setDescription('**/help**\n\`\`display commands summary\`\`\n\n**/bumper**\n\`\`add / remove the bumper role\`\`\n\n**/ipresolve [member]**\n\`\`resolve a users 100% real ip adress\`\`\n\n**/generateimage [prompt]**\n\`\`generate an image using ai\`\`\n\n**/catpic & /capypic**\n\`\`posts a cat / capybara pic\`\`\n\n**/avatar [member]**\n\`\`display a members avatar\`\`\n\n**/banner [member]**\n\`\`display a members banner\`\`\n\n**/jail & /unjailed [member]**\n\`\`un-jail a member\`\`\n\n**/addrainbow & /removerainbow [member]**\n\`\`add / remove the rainbow role from member\`\`\n\n**/clear [messages]**\n\`\`delete given amount of messages\`\`\n\n**/github**\n\`\`links to this bots public github repo\`\`\n\n**/ping**\n\`\`displays bot & api latency\`\`\n\n**/rules**\n\`\`post server rules\`\`\n\n**/server**\n\`\`displays server information\`\`\n\n**/penis**\n\`\`calculates your pp size\`\`\n\n**/howgay**\n\`\`calculates your gayness\`\`\n\n**/setuproles**\n\`\`setup self roles channel\`\`\n᲼')
-	.setTimestamp()
-	.setFooter({ text: 'developed by max#0135', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('display help summary'),
-	async execute(interaction) {
+	async execute(interaction, client) {
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /help\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
-		await interaction.reply({ embeds: [helpEmbed] });
+
+		let counter = 1;
+		let string = '';
+		let fields = [];
+		client.commands.forEach( command => {
+			if(command.data.default_member_permissions === '8' || command.data.default_member_permissions === '2' || command.data.default_member_permissions === '4' || command.data.default_member_permissions === '1099511627776') string += '❗ ';
+			string += '**/' + command.data.name + '**\n\`\`\`' + command.data.description + '\`\`\`\n\n';
+			if(counter % 3 == 0) {
+				fields.push({ name: ' ', value: string, inline: true })
+				string = '';
+			};
+			counter++;
+		});
+		if(string.length > 0) {
+			fields.push({ name: ' ', value: string, inline: true });
+		};
+
+		const groups = [];
+		for (let i = 0; i < fields.length; i += Math.ceil(fields.length / 3)) {
+		    groups.push(fields.slice(i, i + Math.ceil(fields.length / 3)));
+		};
+
+		let embeds = [];
+		for(var i = 0; i < groups.length; i++) {
+			const embed = new EmbedBuilder()
+				.setColor(color.pink)
+				.setTitle('₊˚✦ **Command Overview**')
+				.setDescription('>>> commands marked with ❗ require special permissions\n\n')
+				.addFields(groups[i])
+				.setFooter({ text: `developed by max#0135 | Page ${i + 1} of ${groups.length}`, iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
+			embeds.push(embed);
+		};
+
+		let prev = new ButtonBuilder()
+			.setCustomId('helpPrev')
+			.setLabel('⬅️')
+			.setStyle(1)
+			.setDisabled(true);
+
+		let next = new ButtonBuilder()
+			.setCustomId('helpNext')
+			.setLabel('➡️')
+			.setStyle(1);
+
+		const expiredEmbed = new EmbedBuilder()
+			.setColor(color.warning)
+			.setTitle('❗ **Menu Expired**')
+			.setDescription('run the command again to generate a new one')
+
+		var currentPage = 0;
+		const response = await interaction.reply({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
+
+		const collector = response.createMessageComponentCollector({ componentType: 2, time: 120_000 });
+		collector.on('collect', async i => {
+			if(i.user.id !== interaction.user.id) return;
+			if (i.customId === 'helpPrev') {
+				currentPage--;
+				if(currentPage === 0) prev.setDisabled(true);
+				else prev.setDisabled(false);
+				if(currentPage === embeds.length) next.setDisabled(true);
+				else next.setDisabled(false);
+				await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
+			} else if (i.customId === 'helpNext') {
+				currentPage++;
+				if(currentPage === 0) prev.setDisabled(true);
+				else prev.setDisabled(false);
+				if(currentPage === (embeds.length - 1)) next.setDisabled(true);
+				else next.setDisabled(false);
+				await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
+			};
+		});
+		//collector.on('end', async i => {await interaction.editReply({ embeds: [embeds[currentPage].setDescription('❗ **Menu Expired** run the command again to generate a new one').setColor(color.warning)], components: [] })});
+		collector.on('end', async i => {await interaction.editReply({ embeds: [expiredEmbed], components: [] })});
 	},
 };

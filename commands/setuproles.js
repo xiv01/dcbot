@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 const { selfroles } = require('../config.json');
 
@@ -9,12 +9,11 @@ module.exports = {
 		.setDescription('setup self roles in current channel')
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction) {
-		interaction.deferReply();
-		interaction.deleteReply();
+		await interaction.deferReply();
+		await interaction.deleteReply();
 		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
         logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
 
-		if(selfroles.length <= 0) await interaction.channel.send('no selfroles in config file');
 		for(i = 0; i < selfroles.length; i++) {
 			let description = selfroles[i].description + '\n';
 			for(j = 0; j < selfroles[i].roles.length; j++) {

@@ -1,8 +1,8 @@
 const { EmbedBuilder, AttachmentBuilder, SlashCommandBuilder } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const fs = require('node:fs');
 const color = require('../colors.json');
-const { addAIMessage } = require('../ChatAI.js');
+const { addAIMessage } = require('../src/ChatAI.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -17,7 +17,7 @@ module.exports = {
             let folderSize = files.length;
             let imageNumber = Math.floor(Math.random() * folderSize) + 1;
 
-			const image = new AttachmentBuilder(__dirname + '/../resources/images/catpics' + '//' + files[imageNumber - 1], { name: 'catpic.png' })
+			const image = new AttachmentBuilder(__dirname + '/../resources/images/catpics//' + files[imageNumber - 1], { name: 'catpic.png' })
 
 			const catEmbed = new EmbedBuilder()
 				.setColor(color.pink)

@@ -1,7 +1,7 @@
 const { Collection, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { statsChannel, welcomeChannel, standardRoleName, rulesChannel, memberLogsChannel, guildId } = require('./config.json');
+const { statsChannel, welcomeChannel, standardRoleName, rulesChannel, memberLogsChannel, guildId } = require('../config.json');
 const { logEx, drawWelcomeImage } = require('./Util.js');
-const color = require('./colors.json');
+const color = require('../colors.json');
 module.exports = { memberManager };
 
 async function memberManager(client) {
@@ -43,9 +43,9 @@ async function memberManager(client) {
 
         try {
             const inviter = await client.users.fetch(inviteUsed.inviter.id);
-            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** \`\`${inviteUsed.code} (${inviteUsed.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberLogsChannel)
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n>>> **invite code:** \`\`${inviteUsed.code} (${inviteUsed.uses})\`\`\n**inviter**: <@${inviter.id}>`, member.guild, member, memberLogsChannel)
         } catch {
-            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n**invite code:** not trackable`, member.guild, member, memberLogsChannel);
+            logEx(color.joinLog, '📥 Member Joined', `<@${member.id}> joined the server\n>>> **invite code:** not trackable`, member.guild, member, memberLogsChannel);
         };
     });
     

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const { mutedRoleName, jailVCChannel } = require('../config.json');
 const color = require('../colors.json');
 
@@ -20,7 +20,7 @@ module.exports = {
                 members.push(option.member);
             };
         });
-        const description = `attempting to jail ${members.map(member => `\`\`${member.user.username}#${member.user.discriminator}\`\``).join(' ')}`;
+        const description = `attempting to jail ${members.map(member => `\`${member.user.username}#${member.user.discriminator}\``).join(' ')}`;
 
         const muteEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
 module.exports = {
@@ -40,6 +40,7 @@ module.exports = {
         const imageEmbed = new EmbedBuilder()
             .setColor(color.pink)
             .setTitle("**₊✦˚・here is your image**")
+            .setDescription('>>> ' + prompt)
             .setImage(image_url)
             .setTimestamp()
 

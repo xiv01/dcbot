@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const { EmbedBuilder } = require('discord.js');
-const { bumperRoleName, bumpChannel, guildId, lastbump } = require('./config.json');
+const { bumperRoleName, bumpChannel, guildId, lastbump } = require('../config.json');
 const { logEx, getUnixTime } = require('./Util.js');
-const color = require('./colors.json');
+const color = require('../colors.json');
 module.exports = { bumpReminder };
 
 const reminderEmbed = new EmbedBuilder()
@@ -33,7 +33,7 @@ async function bumpReminder(client) {
                 if(message.embeds[0].description != null) {
                     if((message.embeds[0].description.includes("Bump erfolgreich!") || message.embeds[0].description.includes("Bump done!"))) {
                         logEx(color.bumpLog, '🔔 Bump Reminder', `server bumped\n**timestamp**: \`${getUnixTime()}\``, message.guild);
-                        let config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+                        let config = JSON.parse(fs.readFileSync('../config.json', 'utf8'));
                         config.lastbump = getUnixTime();
                         fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
                         await message.channel.setTopic(`next bump: <t:${getUnixTime() + 7200}:R>`)

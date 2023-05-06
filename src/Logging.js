@@ -1,6 +1,6 @@
 const { logEx } = require('./Util.js');
-const { badwords, delMessageBlacklist, voiceLogsChannel, memberLogsChannel, guildId } = require('./config.json');
-const color = require('./colors.json');
+const { badwords, delMessageBlacklist, voiceLogsChannel, memberLogsChannel, guildId } = require('../config.json');
+const color = require('../colors.json');
 module.exports = { advancedLogging };
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
@@ -22,10 +22,10 @@ async function advancedLogging(client) {
             logEx(color.warning, '💥 Member Kicked', `<@${entry.executorId}>\`${executor.user.tag}\` kicked <@${entry.targetId}>\`${entry.target.tag}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 40) {
-            logEx(color.success, '➕ Invite Created', `<@${entry.executorId}> created invite code: \`${entry.changes[0].new}\``, guild, await guild.members.fetch(entry.executorId));
+            logEx(color.success, '➕ Invite Created', `<@${entry.executorId}> created invite code: \`${entry.changes[0].new}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 42) { 
-            logEx(color.warning, '➖ Invite Deleted', `<@${entry.executorId}> deleted invite code: \`${entry.changes[0].old}\``, guild, await guild.members.fetch(entry.executorId));
+            logEx(color.warning, '➖ Invite Deleted', `<@${entry.executorId}> deleted invite code: \`${entry.changes[0].old}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
     });
     client.on('channelCreate', async channel => {
@@ -43,11 +43,11 @@ async function advancedLogging(client) {
     client.on('voiceStateUpdate', async (oldState, newState) => {
         if(newState.channel === oldState.channel) return;
         if(newState.channel && oldState.channel != null) {
-            logEx(color.yellow, '🔊 VC Switch', `**member**: <@${newState.member.id}>\n **old channel**: <#${oldState.channel.id}>\n **new channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voiceLogsChannel);
+            logEx(color.yellow, '🔊 VC Switch', `>>> **member**: <@${newState.member.id}>\n**old channel**: <#${oldState.channel.id}>\n**new channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voiceLogsChannel);
         } else if(newState.channel) { 
-            logEx(color.joinLog, '🔊 VC Join', `**member**: <@${newState.member.id}>\n **channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voiceLogsChannel);
+            logEx(color.joinLog, '🔊 VC Join', `>>> **member**: <@${newState.member.id}>\n**channel**: <#${newState.channel.id}>`, newState.channel.guild, newState.member, voiceLogsChannel);
         } else if (oldState.channel) { 
-            logEx(color.leaveLog, '🔇 VC Leave', `**member**: <@${newState.member.id}>\n **channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member, voiceLogsChannel);
+            logEx(color.leaveLog, '🔇 VC Leave', `>>> **member**: <@${newState.member.id}>\n**channel**: <#${oldState.channel.id}>`, oldState.channel.guild, oldState.member, voiceLogsChannel);
         };
     });
     client.on('messageDelete', async message => {
@@ -59,22 +59,21 @@ async function advancedLogging(client) {
             for(var i = 0; i < badwords.length; i++) if(content.includes(badwords[i])) return;
 
             await delay(1000)
-            let contentstring =  `**author**: <@${message.author.id}>\n **channel**: <#${message.channel.id}>`;
+            let contentstring =  `>>> **author**: <@${message.author.id}>\n**channel**: <#${message.channel.id}>`;
             if(lastMsgDel !== null) {
                 if(message.author.id === lastMsgDel.targetId) {
                     contentstring += `\n **deleted by**:  <@${lastMsgDel.executorId}>`;
                     lastMsgDel = null;
                 };
             };
-            if(message.content.length > 0) contentstring += `\n **message**: ${message.content}`;
-            if(message.stickers.size > 0) contentstring += `\n **sticker**: ${message.stickers.first().name}`;
+            if(message.content.length > 0) contentstring += `\n**message**: ${message.content}`;
+            if(message.stickers.size > 0) contentstring += `\n**sticker**: ${message.stickers.first().name}`;
             if(message.attachments.size > 0) {
                 let string = '';
                 message.attachments.forEach(urls => {
                     string += urls.url + '\n';
-
                 });
-                contentstring += `\n **attachments**: ${string}`;
+                contentstring += `\n**attachments**: ${string}`;
             };
             logEx(color.warning, '🗑️ Deleted Message', contentstring, message.guild, message.member);
         } catch {

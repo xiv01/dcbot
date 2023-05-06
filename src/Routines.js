@@ -1,5 +1,5 @@
 const { ActivityType } = require('discord.js');
-const { rainbowRoles, activities } = require('./config.json');
+const { rainbowRoles, activities } = require('../config.json');
 const { setIntervalAsync } = require('set-interval-async');
 module.exports = { routines };
 
@@ -22,12 +22,12 @@ async function routines(guild, client) {
                 };
                 await member.roles.add(roles[currentIndex]);
                 await member.roles.remove(highest);
-            }).catch(console.error)
+            }).catch(console.error);
         };
         currentIndex = currentIndex >= roles.length - 1 
             ? 0
             : currentIndex + 1;
-    }, 11000);
+    }, 10000);
 
     let currentIndex2 = 0;
     setInterval(() => {

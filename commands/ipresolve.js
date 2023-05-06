@@ -1,12 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { logEx } = require('../Util.js');
+const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('ipresolve')
         .addUserOption(option => option.setName('member').setDescription('victim').setRequired(true))
-		.setDescription('resolve a users 100% real ip adress'),
+		.setDescription('resolves a users 100% real ip adress'),
 	async execute(interaction) {
         const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		const user = interaction.options.getUser('member');
