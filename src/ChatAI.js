@@ -11,7 +11,7 @@ function addAIMessage(client, role, input) {
         client.conversation.forEach( entry => {
             tokens += encode(entry.content).length
         });
-        while(tokens > 4096) {
+        while(tokens > 4000) {
             tokens -= encode(client.conversation[0].content).length;
             client.conversation.shift();
         };
@@ -38,13 +38,11 @@ async function chatAI(guild, client) {
             if(prompt.length > 1) {
                 await message.channel.sendTyping();
                 const typing = setInterval(() => { message.channel.sendTyping() }, 5000);
-                console.log(message.id + '\n\n')
                 addAIMessage(client, "user", message.member.displayName + " said to you: " + prompt);
                 try {
                     const completion = await client.openAI.createChatCompletion({
                         model: "gpt-3.5-turbo",
                         messages: client.conversation,
-                        max_tokens: 2000
                     });
                     logEx(color.defaultLog, '🤖 AI Chat', `<@${message.author.id}>: ${content} \n**reply cost**: \`\`${completion.data.usage.total_tokens}\`\` tokens`, guild, message.member);
                     reply = completion.data.choices[0].message.content;
@@ -79,7 +77,7 @@ async function chatAI(guild, client) {
                     console.log(err.response);
                     logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${content}`, guild, message.member);
                     if(err.response.status === 429) return message.reply('you are sending messages too fast please try again in a few seconds :(');
-                    return message.reply('An error occured while I was trying to answer. :(');
+                    return message.reply('an error occured while I was trying to answer. :(');
                 };
             };
         };
