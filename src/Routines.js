@@ -13,17 +13,22 @@ async function routines(guild, client) {
 
     let currentIndex = 0;
     setIntervalAsync(async () => {
+        let members = [];
         for(var i = 0; i < client.rainbowRole.length; i++) {
             await guild.members.fetch(client.rainbowRole[i]).then(async member => {
-                let highest = member.roles.highest
-                if(highest.name != "rainbow") {
-                    await member.roles.add(roles[0]); 
-                    return;
+                if(member.roles.highest.name !== 'rainbow') {
+                    await member.roles.add(roles[currentIndex]);
+                } else {
+                    members.push({member: member, highest: member.roles.highest});
                 };
-                await member.roles.add(roles[currentIndex]);
-                await member.roles.remove(highest);
             }).catch(console.error);
         };
+        members.forEach(async entry => {
+            await entry.member.roles.add(roles[currentIndex]);
+        });
+        members.forEach(async entry => {
+            await entry.member.roles.remove(entry.highest);
+        });
         currentIndex = currentIndex >= roles.length - 1 
             ? 0
             : currentIndex + 1;

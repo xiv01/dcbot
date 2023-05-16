@@ -7,10 +7,8 @@ module.exports = {
 		.setName('penis')
 		.setDescription('calculates your pp size'),
 	async execute(interaction) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-
         let length = Math.floor(Math.random() * 30);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /penis\n**length**: \`${length}\`\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /penis\n**length**: \`${length}\`\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
         let ppString = '8';
         for (let i = 0; i < length; i++) ppString += '=';

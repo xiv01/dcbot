@@ -10,12 +10,10 @@ module.exports = {
 	async execute(interaction) {
         await interaction.deferReply();
         const member = interaction.member;
-        const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-
         const bumperRole = interaction.guild.roles.cache.find(role => role.name === bumperRoleName, interaction.guild);
 
         if(member.roles.cache.has(bumperRole.id)) {
-            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> removed the bumper role`, interaction.guild, interactionUser);
+            logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> removed the bumper role`, interaction.guild, member);
             await member.roles.remove(bumperRole);
 
             const bumperEmbed = new EmbedBuilder()
@@ -26,7 +24,7 @@ module.exports = {
             await interaction.editReply({ embeds: [bumperEmbed]});
             setTimeout(() => interaction.deleteReply().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 5000);
         } else {
-            logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> added the bumper role`, interaction.guild, interactionUser);
+            logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> added the bumper role`, interaction.guild, member);
             await member.roles.add(bumperRole);
 
             const bumperEmbed = new EmbedBuilder()

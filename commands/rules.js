@@ -12,8 +12,7 @@ module.exports = {
 	async execute(interaction) {
         await interaction.deferReply();
         await interaction.deleteReply();
-        const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /rules>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+        logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /rules>\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
         
         const images = fs.readdirSync(path.join(__dirname,'../resources/images/rules')).filter(file => file.endsWith('.jpg'));
 		for(const image of images) {

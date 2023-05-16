@@ -10,8 +10,7 @@ module.exports = {
 		.setDescription('sends a cute cat picture'),
 	async execute(interaction, client) {
 		addAIMessage(client, "assistant", "i posted a cute cat picture");
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /catpic\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /catpic\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
         fs.readdir(__dirname + '/../resources/images/catpics', (err, files) => {
             let folderSize = files.length;

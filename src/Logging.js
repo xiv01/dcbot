@@ -77,7 +77,7 @@ async function advancedLogging(client) {
             };
             logEx(color.warning, '🗑️ Deleted Message', contentstring, message.guild, message.member);
         } catch {
-            logEx(color.warning, '❗Failed to log Deleted Message', `**channel**: <#${message.channel.id}>`, message.guild, message.member);
+            logEx(color.warning, '❗Failed to log Deleted Message', `**channel**: <#${message.channel.id}>`, message.guild);
         };
     });
     client.rest.on('rateLimited', async data => {

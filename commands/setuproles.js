@@ -11,8 +11,7 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 		await interaction.deleteReply();
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-        logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /setuproles\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+        logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /setuproles\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
 		for(i = 0; i < selfroles.length; i++) {
 			let description = selfroles[i].description + '\n';

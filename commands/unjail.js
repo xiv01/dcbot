@@ -16,10 +16,17 @@ module.exports = {
         const members = [];
         interaction.options.data.forEach(option => {
             if (option.type === 6) {
-                members.push(option.member);
+                if(!(typeof option.member === 'undefined')) { 
+                    members.push(option.member);
+                };
             };
         });
-        const description = `attempting to unjail ${members.map(member => `\`${member.user.username}#${member.user.discriminator}\``).join(' ')}`;
+
+        if(members.length <= 0) {
+            await interaction.reply({ embeds: [invalidMember] });
+            return;
+        };
+        const description = `attempting to unjail ${members.map(member => `\`${member.user.tag}\``).join(' ')}`;
 
         const unmuteEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)
@@ -27,7 +34,6 @@ module.exports = {
         await interaction.reply({ embeds: [unmuteEmbed], ephemeral: true });
 
         let mutedRole = interaction.guild.roles.cache.find(role => role.name === mutedRoleName);
-        const interactionUser = await interaction.guild.members.fetch(interaction.user.id);   
 
         members.forEach(async member => {
             if(member.roles.cache.has(mutedRole.id)) {
@@ -41,14 +47,15 @@ module.exports = {
                 await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
                 await member.roles.remove(mutedRole);
                 if(!dmEnabled) {
-                    logEx(color.success, 'UnJail Command Used', `<@${interactionUser.id}> unjailed <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interactionUser);
+                    logEx(color.success, 'UnJail Command Used', `<@${interaction.user.id}> unjailed <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interaction.member);
                 } else {
-                    logEx(color.success, 'UnJail Command Used', `<@${interactionUser.id}> unjailed <@${member.id}>`, interaction.guild, interactionUser);
+                    logEx(color.success, 'UnJail Command Used', `<@${interaction.user.id}> unjailed <@${member.id}>`, interaction.guild, interaction.member);
                 }
                 const unmuteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
-                    .setDescription(`successfully unjailed \`${member.user.username}#${member.user.discriminator}\``)
+                    .setDescription(`successfully unjailed \`${member.user.tag}\``)
+                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
         
                 let message = await interaction.channel.send({ embeds: [unmuteEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
@@ -56,9 +63,10 @@ module.exports = {
                 const unmuteEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **error**')
-                    .setDescription(`\`${member.user.username}#${member.user.discriminator}\` is not jailed`)
+                    .setDescription(`\`${member.user.tag}\` is not jailed`)
+                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
     
-                logEx(color.warning, 'UnJail Command Used', `<@${interactionUser.id}> tried to unjail <@${member.id}>`, interaction.guild, interactionUser);
+                logEx(color.warning, 'UnJail Command Used', `<@${interaction.user.id}> tried to unjail <@${member.id}>`, interaction.guild, interaction.member);
                 let message = await interaction.channel.send({ embeds: [unmuteEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
             };

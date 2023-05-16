@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { logsChannel, suggestionChannel, badwords, mutedRoleName, jailVCChannel } = require('../config.json');
 const { logEx } = require('./Util.js');
 const color = require('../colors.json');
@@ -6,6 +6,7 @@ module.exports = { messageFiltering };
 
 async function messageFiltering(client) {
     client.on('messageCreate', async message => {
+        const member = message.member;
         if((message.channelId === logsChannel) && !message.author.bot) {
             await message.delete(); 
             return;
@@ -19,16 +20,16 @@ async function messageFiltering(client) {
             if(content.includes(badwords[i])) {
                 await message.delete();
                 try {
-                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${message.member.id}>\n**message**: \`\`${content}\`\``, message.guild, message.member);
+                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from <@${member.id}>\n**message**: \`\`${content}\`\``, message.guild, member);
                     const badwordsembed = new EmbedBuilder()
                         .setColor(color.warning)
                         .setTitle('❗ **bad words deleted**')
-                        .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` said a bad word >:(`)
+                        .setDescription(`\`${member.user.username}#${member.user.discriminator}\` said a bad word >:(`)
         
                     let warning = await message.channel.send({ embeds: [badwordsembed] });
                     setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
                 } catch {
-                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from \`\`unknown\`\`\n**message**: \`\`${content}\`\``, message.guild, message.member);
+                    logEx(color.warning, '❗ Bad Words Deleted', `deleted message from \`\`unknown\`\`\n**message**: \`\`${content}\`\``, message.guild, member);
                     const badwordsembed = new EmbedBuilder()
                         .setColor(color.warning)
                         .setTitle('❗ **bad words deleted**')
@@ -36,13 +37,13 @@ async function messageFiltering(client) {
         
                     let warning = await message.channel.send({ embeds: [badwordsembed] });
                     setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
-                }
+                };
             };
         };
     
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/")) {
             await message.delete();
-            await message.member.roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
+            await member.roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
             if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
 
             const dmembed = new EmbedBuilder()
@@ -56,12 +57,12 @@ async function messageFiltering(client) {
             const inviteembed = new EmbedBuilder()
                 .setColor(color.warning)
                 .setTitle('❗ **invite link deleted**')
-                .setDescription(`\`${message.member.user.username}#${message.member.user.discriminator}\` tried to post an invite link and got muted 🤡`)
+                .setDescription(`\`${member.user.username}#${member.user.discriminator}\` tried to post an invite link and got muted 🤡`)
 
             if(!dmenabled) {
-                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link\n\n❗ unable to send DM due to users privacy settings`, message.guild, message.member);
+                logEx(color.warning, '❗ Invite Link Deleted', `<@${member.id}> tried to post an invite link\n\n❗ unable to send DM due to users privacy settings`, message.guild, member);
             } else {
-                logEx(color.warning, '❗ Invite Link Deleted', `<@${message.member.id}> tried to post an invite link`, message.guild, message.member);
+                logEx(color.warning, '❗ Invite Link Deleted', `<@${member.id}> tried to post an invite link`, message.guild, member);
             }
             let warning = await message.channel.send({ embeds: [inviteembed] });
             setTimeout(() => warning.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
@@ -69,52 +70,6 @@ async function messageFiltering(client) {
     
         if(content.includes(":catvibe:")) {
             await message.reply("<a:catvibe:1035808779255676978>");
-        };
-    
-        if(message.channelId === suggestionChannel) {
-            if(message.attachments.size > 0 || message.stickers.size > 0) {
-                const warningembed = new EmbedBuilder()
-                    .setColor(color.warning)
-                    .setTitle('❗ **your message cant contain attachments / stickers**')
-
-                let toolong = await message.channel.send({ embeds: [warningembed]});
-                setTimeout(() => toolong.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 5000);
-                await message.delete();
-                return;
-            }
-            if(message.type == 18) {
-                await message.delete();
-            } else {
-                let content = message.content
-                if(content.length > 87) {
-                    const toolongembed = new EmbedBuilder()
-                        .setColor(color.warning)
-                        .setTitle('❗ **your message was too long**')
-
-                    let toolong = await message.channel.send({ embeds: [toolongembed]});
-                    await message.delete();
-                    setTimeout(() => toolong.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 5000);
-                } else {
-                    logEx(color.defaultLog, 'Poll Posted', `<@${message.member.id}> posted a poll\n**message**: ${content}`, message.guild, message.member);
-                    const suggestembed = new EmbedBuilder()
-                        .setColor(color.pink)
-                        .setTitle(`${content}`)
-                        .setAuthor({
-                            name: `${message.member.displayName}`,
-                            iconURL: `${message.member.displayAvatarURL()}`,
-                    })
-                    
-                    await message.channel.send({embeds: [suggestembed]}).then(function (message) {
-                        message.react('✅');
-                        message.react('❌');
-                        message.startThread({
-                            name: `discussion - ${content}`,
-                            type: 'GUILD_PUBLIC_THREAD'
-                        });
-                    });
-                    message.delete(message.id);
-                };
-            };
         };
     });
 };

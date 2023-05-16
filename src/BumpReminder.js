@@ -5,14 +5,15 @@ const { logEx, getUnixTime } = require('./Util.js');
 const color = require('../colors.json');
 module.exports = { bumpReminder };
 
-const reminderEmbed = new EmbedBuilder()
-    .setColor(color.pink)
-    .setTitle(`🔔 Bump Reminder`)
-    .setDescription('bumpt ihr mausis')
-
-async function bumpReminder(client) {
-    const guild = client.guilds.cache.get(guildId);
+async function bumpReminder(guild, client) {
     const bumperRole = guild.roles.cache.find(role => role.name === bumperRoleName);
+    const commands = await client.application.commands.fetch();
+    const command = commands.find(cmd => cmd.name === 'bumper');
+
+    const reminderEmbed = new EmbedBuilder()
+        .setColor(color.pink)
+        .setTitle(`🔔 Bump Reminder`)
+        .setDescription(`use </bumper:${command.id}> to give urself the bumper role and receive bump notifications`)
 
     logEx(color.bumpLog, '🔔 Bump Reminder', `last bump was \`${getUnixTime() - lastbump}\` seconds ago`, guild);
     if((lastbump + 7200) < getUnixTime()) {

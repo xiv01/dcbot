@@ -10,8 +10,7 @@ module.exports = {
 		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
 	async execute(interaction) {
 		const num = interaction.options.getInteger('messages');
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /clear ${num}\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /clear ${num}\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
 		const clearEmbed = new EmbedBuilder()
 			.setColor(color.success)

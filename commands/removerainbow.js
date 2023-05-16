@@ -9,11 +9,10 @@ module.exports = {
         .addUserOption(option => option.setName('member').setDescription('user').setRequired(true))
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction, client) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		const member = interaction.options.getMember('member');
 
 		if(!client.rainbowRole.includes(member.id)) {
-			logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> tried to remove the rainbow role from <@${member.id}>`, interaction.guild, interactionUser);
+			logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> tried to remove the rainbow role from <@${member.id}>`, interaction.guild, interaction.member);
 			const embed = new EmbedBuilder()
 				.setColor(color.warning)
 				.setTitle('❗ **error**')
@@ -21,7 +20,7 @@ module.exports = {
 
 			await interaction.reply({ embeds: [embed], ephemeral: true });
 		} else {
-			logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> removed the rainbow role from <@${member.id}>`, interaction.guild, interactionUser);
+			logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> removed the rainbow role from <@${member.id}>`, interaction.guild, interaction.member);
 			client.rainbowRole = client.rainbowRole.filter(e => e !== member.id);
 			if(member.roles.highest.name === 'rainbow') {
 				await member.roles.remove(member.roles.highest);

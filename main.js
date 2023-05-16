@@ -9,6 +9,8 @@ const { selfRoles } = require('./src/SelfRoles.js');
 const { memberManager } = require('./src/MemberManager.js');
 const { bumpReminder } = require('./src/BumpReminder.js');
 const { chatAI } = require('./src/ChatAI.js');
+const { polls } = require('./src/Polls.js');
+const { interactionHandler } = require('./src/InteractionHandler.js');
 const color = require('./colors.json');
 
 const client = new Client({ 
@@ -35,35 +37,22 @@ const client = new Client({
 const configuration = new Configuration({
     apiKey: openaikey,
 });
-
 client.openAI = new OpenAIApi(configuration);
 
 client.once('ready', async () => {
     const guild = client.guilds.cache.get(guildId);
-    logEx(color.defaultLog, '⚙️ System', `bot started\n**latest commit** -> ${require('child_process').execSync('git rev-parse --short HEAD').toString().trim()}`, guild);
-    
+    logEx(color.defaultLog, '⚙️ System', `bot started`, guild);
+    registerCommands(guild, client);
+    interactionHandler(client);
     drawWelcomeImage('testrender', guild); 
     routines(guild, client);
-    registerCommands(guild, client);
     advancedLogging(client);
     messageFiltering(client);
     selfRoles(client);
     memberManager(client);
-    bumpReminder(client);
+    bumpReminder(guild, client);
+    polls(client);
     if(chatAIToggle) chatAI(guild, client);
-});
-
-client.on('interactionCreate', async interaction => {
-	if(!interaction.isChatInputCommand()) return;
-	const command = client.commands.get(interaction.commandName);
-	if(!command) return;
-
-	try {
-		await command.execute(interaction, client);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: 'there was an error while executing this command :(', ephemeral: true });
-	};
 });
 
 client.login(token);

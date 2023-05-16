@@ -9,15 +9,14 @@ module.exports = {
         .addStringOption(option => option.setName('prompt').setDescription('describe the image you want to generate').setMaxLength(100).setRequired(true)),
 	async execute(interaction, client) {
         await interaction.deferReply();
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
         let prompt = interaction.options.getString('prompt');
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /createimage \`${prompt}\`\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /createimage \`${prompt}\`\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
         try {
             const response = await client.openAI.createImage({
                 prompt: prompt,
                 n: 1,
-                size: "1024x1024",
+                size: "512x512",
             });
             var image_url = response.data.data[0].url;
         } catch {

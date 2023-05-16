@@ -2,6 +2,10 @@ const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('disc
 const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
+const invalidMember= new EmbedBuilder()
+    .setColor(color.warning)
+    .setTitle(`**❗member is invalid**`)
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('addrainbow')
@@ -9,11 +13,14 @@ module.exports = {
         .addUserOption(option => option.setName('member').setDescription('user').setRequired(true))
 		.setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 	async execute(interaction, client) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
 		const member = interaction.options.getMember('member');
+		if(typeof member === 'undefined') { 
+            await interaction.reply({ embeds: [invalidMember] });
+            return;
+        };
 
 		if(client.rainbowRole.includes(member.id)) {
-			logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> tried to add the rainbow role to <@${member.id}>`, interaction.guild, interactionUser);
+			logEx(color.commandLog, '📲 Command Used', `<@${interaction.id}> tried to add the rainbow role to <@${member.id}>`, interaction.guild, interaction.member);
 			const embed = new EmbedBuilder()
 				.setColor(color.warning)
 				.setTitle('❗ **error**')
@@ -21,7 +28,7 @@ module.exports = {
 
 			await interaction.reply({ embeds: [embed], ephemeral: true });
 		} else {
-			logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> added the rainbow role to <@${member.id}>`, interaction.guild, interactionUser);
+			logEx(color.commandLog, '📲 Command Used', `<@${interaction.id}> added the rainbow role to <@${member.id}>`, interaction.guild, interaction.member);
 			client.rainbowRole.push(member.id);
 			const embed = new EmbedBuilder()
 				.setColor(color.success)

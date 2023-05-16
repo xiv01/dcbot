@@ -1,5 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder, ComponentType } = require('discord.js');
-const path = require('node:path');
+const { SlashCommandBuilder, EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { logEx } = require('../src/Util.js');
 const color = require('../colors.json');
 
@@ -8,13 +7,12 @@ module.exports = {
 		.setName('help')
 		.setDescription('display help summary'),
 	async execute(interaction, client) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /help\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /help\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
 		let counter = 1;
 		let string = '';
 		let fields = [];
-		client.commands.forEach( command => {
+		client.commands.forEach(command => {
 			if(command.data.default_member_permissions === '8' || command.data.default_member_permissions === '2' || command.data.default_member_permissions === '4' || command.data.default_member_permissions === '1099511627776') string += '❗ ';
 			string += '**/' + command.data.name + '**\n\`\`\`' + command.data.description + '\`\`\`\n\n';
 			if(counter % 3 == 0) {
@@ -27,20 +25,26 @@ module.exports = {
 			fields.push({ name: ' ', value: string, inline: true });
 		};
 
-		const groups = [];
-		for (let i = 0; i < fields.length; i += Math.ceil(fields.length / 3)) {
-		    groups.push(fields.slice(i, i + Math.ceil(fields.length / 3)));
-		};
-
+		let group = [];
 		let embeds = [];
-		for(var i = 0; i < groups.length; i++) {
-			const embed = new EmbedBuilder()
-				.setColor(color.pink)
-				.setTitle('₊˚✦ **Command Overview**')
-				.setDescription('>>> commands marked with ❗ require special permissions\n\n')
-				.addFields(groups[i])
-				.setFooter({ text: `developed by max#0135 | Page ${i + 1} of ${groups.length}`, iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
-			embeds.push(embed);
+		let lastIndex
+		for(let i = 1; i < fields.length; i++) {
+			group.push(fields[i - 1]);
+			if(i % 3 == 0) {
+				embeds.push(createPage(group));
+				lastIndex = i;
+				group = [];
+			};
+		};
+		if(lastIndex < fields.length) {
+			group = [];
+			for(let i = lastIndex; i < fields.length; i++) {
+				group.push(fields[i]);
+			};
+			embeds.push(createPage(group));
+		};
+		for(let i = 0; i < embeds.length; i++) {
+			embeds[i].setFooter({ text: `developed by max#0135 | Page ${i + 1} of ${embeds.length}`, iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
 		};
 
 		let prev = new ButtonBuilder()
@@ -64,7 +68,14 @@ module.exports = {
 
 		const collector = response.createMessageComponentCollector({ componentType: 2, time: 120_000 });
 		collector.on('collect', async i => {
-			if(i.user.id !== interaction.user.id) return;
+			if(i.user.id !== interaction.user.id) {
+				const noPermissionEmbed = new EmbedBuilder()
+					.setColor(color.warning)
+					.setTitle('❗No Permission')
+					.setDescription(`only **${interaction.user.tag}** can control this menu`)
+				i.reply({ embeds: [noPermissionEmbed], ephemeral: true });
+				return;
+			};
 			if (i.customId === 'helpPrev') {
 				currentPage--;
 				if(currentPage === 0) prev.setDisabled(true);
@@ -81,7 +92,18 @@ module.exports = {
 				await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
 			};
 		});
-		//collector.on('end', async i => {await interaction.editReply({ embeds: [embeds[currentPage].setDescription('❗ **Menu Expired** run the command again to generate a new one').setColor(color.warning)], components: [] })});
-		collector.on('end', async i => {await interaction.editReply({ embeds: [expiredEmbed], components: [] })});
+		collector.on('end', async() => { 
+			try {
+				await interaction.editReply({ embeds: [expiredEmbed], components: [] })
+			} catch { return };
+		});
 	},
+};
+
+function createPage(group) {
+	return embed = new EmbedBuilder()
+		.setColor(color.pink)
+		.setTitle('₊˚✦ **Command Overview**')
+		.setDescription('>>> commands marked with ❗ require special permissions\n\n')
+		.addFields(group)
 };

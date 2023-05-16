@@ -10,10 +10,10 @@ module.exports = { logEx, drawWelcomeImage, getUnixTime, registerCommands };
 
 async function logEx(color, title, message, guild, member, channel) {
     let date = new Date();
-    let logmessage = message.replace(/[*`\n]/g, " ");
-    if(channel === undefined) channel = logsChannel;
-    if(guild != undefined) {
-        if(member != undefined) {
+    let logmessage = message.replace(/[*`\n]/g, '');
+    if(typeof channel === 'undefined') channel = logsChannel;
+    if(typeof guild != 'undefined') {
+        if(typeof member != 'undefined') {
                 const logembed = new EmbedBuilder()
                     .setColor(color)
                     .setTitle(title)
@@ -38,21 +38,29 @@ function getUnixTime() {
 };
 
 function registerCommands(guild, client) {
+    const rest = new REST({ version: '10' }).setToken(token);
     client.commands = new Collection();
+    client.contextmenus = new Collection();
     const reqBody = [];
-    const commandsPath = path.join(__dirname,'../commands');
-    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    const slashCommandsPath = path.join(__dirname,'../commands');
+    const contextMenuCommandsPath = path.join(__dirname,'../context menus');
+    const slashCommandFiles = fs.readdirSync(slashCommandsPath).filter(file => file.endsWith('.js'));
+    const contextMenuCommandFiles = fs.readdirSync(contextMenuCommandsPath).filter(file => file.endsWith('.js'));
     
-    for (const file of commandFiles) {
-    	const filePath = path.join(commandsPath, file);
+    for (const file of slashCommandFiles) {
+    	const filePath = path.join(slashCommandsPath, file);
     	const command = require(filePath);
     	reqBody.push(command.data.toJSON());
         client.commands.set(command.data.name, command);
     };
+    for (const file of contextMenuCommandFiles) {
+    	const filePath = path.join(contextMenuCommandsPath, file);
+    	const command = require(filePath);
+    	reqBody.push(command.data.toJSON());
+        client.contextmenus.set(command.data.name, command);
+    };
 
-    const rest = new REST({ version: '10' }).setToken(token);
-
-    rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: reqBody })
+    rest.put(Routes.applicationCommands(clientId), { body: reqBody })
     	.then(() => logEx(color.defaultLog, '⚙️ System', 'successfully registered commands', guild))
     	.catch(console.error);
 };

@@ -7,8 +7,7 @@ module.exports = {
 		.setName('github')
 		.setDescription('links to this bots public github repo'),
 	async execute(interaction) {
-		const interactionUser = await interaction.guild.members.fetch(interaction.user.id);
-		logEx(color.commandLog, '📲 Command Used', `<@${interactionUser.id}> used /github\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interactionUser);
+		logEx(color.commandLog, '📲 Command Used', `<@${interaction.user.id}> used /github\n **channel**: <#${interaction.channel.id}>`, interaction.guild, interaction.member);
 
 		const githubEmbed = new EmbedBuilder()
 			.setColor(color.defaultLog)
