@@ -71,7 +71,7 @@ async function handleBanModal(interaction) {
         const banEmbed = new EmbedBuilder()
             .setColor(color.success)
             .setTitle('✅ **done**')
-            .setDescription(`successfully banned \`${member.user.tag}\``)
+            .setDescription(`successfully banned \`${member.user.username}\``)
             .setTimestamp()
 
         await interaction.reply({ embeds: [banEmbed], ephemeral: true });
@@ -80,7 +80,7 @@ async function handleBanModal(interaction) {
         const banEmbed = new EmbedBuilder()
             .setColor(color.warning)
             .setTitle('❗ **failed**')
-            .setDescription(`failed to ban \`${member.user.tag}\``)
+            .setDescription(`failed to ban \`${member.user.username}\``)
             .setTimestamp()
 
         await interaction.reply({ embeds: [banEmbed], ephemeral: true });
@@ -113,7 +113,7 @@ async function handleKickModal(interaction) {
         const kickEmbed = new EmbedBuilder()
             .setColor(color.success)
             .setTitle('✅ **done**')
-            .setDescription(`successfully kicked \`${member.user.tag}\``)
+            .setDescription(`successfully kicked \`${member.user.username}\``)
             .setTimestamp()
     
         await interaction.reply({ embeds: [kickEmbed], ephemeral: true });
@@ -123,7 +123,7 @@ async function handleKickModal(interaction) {
         const kickEmbed = new EmbedBuilder()
             .setColor(color.warning)
             .setTitle('❗ **failed**')
-            .setDescription(`failed to kick \`${member.user.tag}\``)
+            .setDescription(`failed to kick \`${member.user.username}\``)
             .setTimestamp()
     
         await interaction.reply({ embeds: [kickEmbed], ephemeral: true });

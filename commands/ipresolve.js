@@ -23,7 +23,7 @@ module.exports = {
 		const ipEmbed  = new EmbedBuilder()
 			.setColor(color.defaultLog)
 			.setTitle('IP Resolver')
-			.setDescription(`**${user.tag}'s** IP adress is \`${ip}\``)
+			.setDescription(`**${user.username}'s** IP adress is \`${ip}\``)
 		await interaction.reply({ embeds: [ipEmbed] });
 	},
 };

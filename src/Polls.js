@@ -50,7 +50,7 @@ async function polls(client) {
                     var confirmEmbed = new EmbedBuilder()
                         .setColor(color.pink)
                         .setTitle('confirming this action will create a new poll called \`' + content + '\` are you sure you want to do that ?')
-                        .setFooter({ text: message.author.tag, iconURL: message.member.displayAvatarURL()});
+                        .setFooter({ text: message.author.username, iconURL: message.member.displayAvatarURL()});
 
                     var cancelledEmbed = new EmbedBuilder()
                         .setColor(color.pink)
@@ -63,7 +63,7 @@ async function polls(client) {
                             const noPermissionEmbed = new EmbedBuilder()
                                 .setColor(color.warning)
                                 .setTitle('❗No Permission')
-                                .setDescription(`only **${message.author.tag}** can control this menu`)
+                                .setDescription(`only **${message.author.username}** can control this menu`)
                             i.reply({ embeds: [noPermissionEmbed], ephemeral: true });
                             return;
                         };

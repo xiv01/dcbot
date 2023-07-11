@@ -31,7 +31,7 @@ module.exports = {
             await interaction.reply({ embeds: [invalidMember] });
             return;
         };
-        const description = `attempting to jail ${members.map(member => `\`${member.user.tag}\``).join(' ')}`;
+        const description = `attempting to jail ${members.map(member => `\`${member.user.username}\``).join(' ')}`;
 
         const muteEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)
@@ -46,8 +46,8 @@ module.exports = {
                 const muteEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **info**')
-                    .setDescription(`\`${member.user.tag}\` is already jailed`)
-                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`\`${member.user.username}\` is already jailed`)
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
 
                 logEx(color.warning, 'Jail Command Used', `<@${interaction.user.id}> tried to jail <@${member.id}>\n **reason**: ${reason}`, interaction.guild, interaction.member);
                 let message = await interaction.channel.send({ embeds: [muteEmbed] });
@@ -66,8 +66,8 @@ module.exports = {
                 const muteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
-                    .setDescription(`successfully jailed \`${member.user.tag}\``)
-                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`successfully jailed \`${member.user.username}\``)
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
         
                 if(!dmEnabled) {
                     logEx(color.warning, 'Jail Command Used', `<@${interaction.user.id}> jailed <@${member.id}>\n **reason**: ${reason}\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interaction.member);

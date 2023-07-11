@@ -26,9 +26,8 @@ async function generateAIResponse(client, message, prompt) {
         await client.openAI.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: client.conversation,
-            temperature: 1.3,
         }).then(completion => {
-            logEx(color.defaultLog, '🤖 AI Chat', `<@${message.author.id}>: ${message.content} \n**reply cost**: \`\`${completion.data.usage.total_tokens}\`\` tokens`, message.guild, message.member);
+            logEx(color.defaultLog, '🤖 AI Chat', `<@${message.author.id}>: ${message.content} \n**reply cost**: \`${completion.data.usage.total_tokens}\` tokens`, message.guild, message.member);
             let reply = completion.data.choices[0].message.content;
             addAIMessage(client, "assistant", reply);
             reply = reply.replaceAll('@', '@ ');
@@ -51,6 +50,18 @@ async function generateAIResponse(client, message, prompt) {
         });
     });
 };
+
+function censor(input) {
+    output = input.replaceAll('@', '@ ');
+    for(var i = 0; i < badwords.length; i++) {
+        if(output.includes(badwords[i])) {
+            let censor = '';
+            for(var j = 0; j < badwords[i].length; j++) censor += '\\*';
+            reply = reply.replaceAll(badwords[i], censor);
+        };
+    };
+    return output
+}
 
 async function chatAI(guild, client) {
     logEx(color.defaultLog, '⚙️ System', '🤖 AI Chat is enabled', guild);

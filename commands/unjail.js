@@ -26,7 +26,7 @@ module.exports = {
             await interaction.reply({ embeds: [invalidMember] });
             return;
         };
-        const description = `attempting to unjail ${members.map(member => `\`${member.user.tag}\``).join(' ')}`;
+        const description = `attempting to unjail ${members.map(member => `\`${member.user.username}\``).join(' ')}`;
 
         const unmuteEmbed = new EmbedBuilder()
             .setColor(color.defaultLog)
@@ -54,8 +54,8 @@ module.exports = {
                 const unmuteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
-                    .setDescription(`successfully unjailed \`${member.user.tag}\``)
-                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`successfully unjailed \`${member.user.username}\``)
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
         
                 let message = await interaction.channel.send({ embeds: [unmuteEmbed] });
                 setTimeout(() => message.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 8000);
@@ -63,8 +63,8 @@ module.exports = {
                 const unmuteEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **error**')
-                    .setDescription(`\`${member.user.tag}\` is not jailed`)
-                    .setFooter({ text: `${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`\`${member.user.username}\` is not jailed`)
+                    .setFooter({ text: `${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
     
                 logEx(color.warning, 'UnJail Command Used', `<@${interaction.user.id}> tried to unjail <@${member.id}>`, interaction.guild, interaction.member);
                 let message = await interaction.channel.send({ embeds: [unmuteEmbed] });

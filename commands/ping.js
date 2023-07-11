@@ -13,7 +13,7 @@ module.exports = {
 			.setColor(color.pink)
 			.setTitle('🏓 pong')
 			.setDescription(`\nbot latency ⇢ \`${Date.now() - interaction.createdTimestamp}ms\`\nAPI latency ⇢ \`${Math.round(interaction.client.ws.ping)}ms\`\n`)
-			.setFooter({ text: 'developed by max#0135', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
+			.setFooter({ text: 'developed by 03max', iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
 
 		await interaction.reply({ embeds: [pingEmbed] });
 	},

@@ -1,22 +1,22 @@
 const { ActivityType } = require('discord.js');
-const { rainbowRoles, activities } = require('../config.json');
+const { rainbowRolesName, activities } = require('../config.json');
 const { setIntervalAsync } = require('set-interval-async');
 module.exports = { routines };
 
 async function routines(guild, client) {
     client.rainbowRole = [];
     var roles = [];
-
-    for(var i = 0; i < rainbowRoles.length; i++) {
-        roles.push(guild.roles.cache.find(role => role.id === rainbowRoles[i]));
-    };
+    guild.roles.fetch()
+        .then(roleList => roleList.forEach(role => {
+            if(role.name === rainbowRolesName) roles.push(role);
+        }));
 
     let currentIndex = 0;
     setIntervalAsync(async () => {
         let members = [];
         for(var i = 0; i < client.rainbowRole.length; i++) {
             await guild.members.fetch(client.rainbowRole[i]).then(async member => {
-                if(member.roles.highest.name !== 'rainbow') {
+                if(member.roles.highest.name !== rainbowRolesName) {
                     await member.roles.add(roles[currentIndex]);
                 } else {
                     members.push({member: member, highest: member.roles.highest});

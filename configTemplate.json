@@ -18,6 +18,7 @@
     "standardRoleName": "ROLE NAME",
     "mutedRoleName": "ROLE NAME",
     "bumperRoleName": "ROLE NAME",
+    "rainbowRolesName": "ROLE NAME",
   
     "chatAIToggle": true,
   
@@ -29,9 +30,6 @@
     ],
     "badwords": [
         "BADWORD"
-    ],
-    "rainbowRoles": [
-        "ROLE ID"
     ],
     "selfroles": [
       {

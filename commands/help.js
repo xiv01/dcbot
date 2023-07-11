@@ -44,7 +44,7 @@ module.exports = {
 			embeds.push(createPage(group));
 		};
 		for(let i = 0; i < embeds.length; i++) {
-			embeds[i].setFooter({ text: `developed by max#0135 | Page ${i + 1} of ${embeds.length}`, iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
+			embeds[i].setFooter({ text: `developed by 03max | Page ${i + 1} of ${embeds.length}`, iconURL: 'https://cdn.discordapp.com/avatars/709098824253177859/4b00003de1780fcf41b50c2b41249811.webp?size=32' });
 		};
 
 		let prev = new ButtonBuilder()
@@ -72,7 +72,7 @@ module.exports = {
 				const noPermissionEmbed = new EmbedBuilder()
 					.setColor(color.warning)
 					.setTitle('❗No Permission')
-					.setDescription(`only **${interaction.user.tag}** can control this menu`)
+					.setDescription(`only **${interaction.user.username}** can control this menu`)
 				i.reply({ embeds: [noPermissionEmbed], ephemeral: true });
 				return;
 			};
@@ -82,15 +82,14 @@ module.exports = {
 				else prev.setDisabled(false);
 				if(currentPage === embeds.length) next.setDisabled(true);
 				else next.setDisabled(false);
-				await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
 			} else if (i.customId === 'helpNext') {
 				currentPage++;
 				if(currentPage === 0) prev.setDisabled(true);
 				else prev.setDisabled(false);
 				if(currentPage === (embeds.length - 1)) next.setDisabled(true);
 				else next.setDisabled(false);
-				await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
 			};
+			await i.update({ embeds: [embeds[currentPage]], components: [new ActionRowBuilder().addComponents(prev, next)] });
 		});
 		collector.on('end', async() => { 
 			try {

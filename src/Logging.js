@@ -7,21 +7,24 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 async function advancedLogging(client) {
     var lastMsgDel = null;
+    var lastInvCode = null;
     client.on('guildAuditLogEntryCreate', async (entry, guild) => {
         if(entry.action === 72) lastMsgDel = entry;
         if(entry.action === 22) {
             let executor = await guild.members.fetch(entry.executorId); 
-            logEx(color.warning, '🔨 Member Banned', `<@${entry.executorId}>\`${executor.user.tag}\` banned <@${entry.targetId}>\`${entry.target.tag}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
+            logEx(color.warning, '🔨 Member Banned', `<@${entry.executorId}>\`${executor.user.username}\` banned <@${entry.targetId}>\`${entry.target.username}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 23) {
             let executor = await guild.members.fetch(entry.executorId); 
-            logEx(color.success, 'Member Unbanned', `<@${entry.executorId}>\`${executor.user.tag}\` unbanned <@${entry.targetId}>\`${entry.target.tag}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
+            logEx(color.success, 'Member Unbanned', `<@${entry.executorId}>\`${executor.user.username}\` unbanned <@${entry.targetId}>\`${entry.target.username}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 20) {
             let executor = await guild.members.fetch(entry.executorId); 
-            logEx(color.warning, '💥 Member Kicked', `<@${entry.executorId}>\`${executor.user.tag}\` kicked <@${entry.targetId}>\`${entry.target.tag}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
+            logEx(color.warning, '💥 Member Kicked', `<@${entry.executorId}>\`${executor.user.username}\` kicked <@${entry.targetId}>\`${entry.target.username}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 40) {
+            if(lastInvCode === entry.changes[0].new) return;
+            lastInvCode = entry.changes[0].new;
             logEx(color.success, '➕ Invite Created', `<@${entry.executorId}> created invite code: \`${entry.changes[0].new}\``, guild, await guild.members.fetch(entry.executorId), memberLogsChannel);
         };
         if(entry.action === 42) { 

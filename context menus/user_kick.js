@@ -8,7 +8,7 @@ module.exports = {
     async execute(interaction) {
 		const modal = new ModalBuilder()
         .setCustomId('kickModal' + interaction.targetUser.id)
-        .setTitle(`kick ${interaction.targetUser.tag}`);
+        .setTitle(`kick ${interaction.targetUser.username}`);
 
         const reasonInput = new TextInputBuilder()
             .setCustomId('kickReasonInput')

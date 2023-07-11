@@ -18,7 +18,7 @@ async function logEx(color, title, message, guild, member, channel) {
                     .setColor(color)
                     .setTitle(title)
                     .setDescription(message)
-                    .setFooter({ text: `${member.user.tag}`, iconURL: member.displayAvatarURL() })
+                    .setFooter({ text: `${member.user.username}`, iconURL: member.displayAvatarURL() })
                     .setTimestamp()
                 await guild.channels.cache.get(channel).send({ embeds: [logembed] });
             } else {

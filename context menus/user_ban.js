@@ -8,7 +8,7 @@ module.exports = {
     async execute(interaction) {
 		const modal = new ModalBuilder()
         .setCustomId('banModal' + interaction.targetUser.id)
-        .setTitle(`ban ${interaction.targetUser.tag}`);
+        .setTitle(`ban ${interaction.targetUser.username}`);
 
         const reasonInput = new TextInputBuilder()
             .setCustomId('banReasonInput')

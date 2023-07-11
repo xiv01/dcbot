@@ -30,7 +30,7 @@ module.exports = {
             await interaction.reply({ embeds: [invalidMember] });
             return;
         };
-        const description = `attempting to ban ${members.map(member => `\`${member.user.tag}\``).join(' ')}`;
+        const description = `attempting to ban ${members.map(member => `\`${member.user.username}\``).join(' ')}`;
 
         const banembed = new EmbedBuilder()
             .setColor(color.defaultLog)
@@ -58,8 +58,8 @@ module.exports = {
                 const banEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
-                    .setDescription(`successfully banned \`${member.user.tag}\``)
-                    .setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`successfully banned \`${member.user.username}\``)
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp()
     
                 let message = await interaction.channel.send({ embeds: [banEmbed] });
@@ -69,8 +69,8 @@ module.exports = {
                 const banEmbed = new EmbedBuilder()
                     .setColor(color.warning)
                     .setTitle('❗ **failed**')
-                    .setDescription(`failed to ban \`${member.user.tag}\``)
-                    .setFooter({ text: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+                    .setDescription(`failed to ban \`${member.user.username}\``)
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
                     .setTimestamp()
     
                 let message = await interaction.channel.send({ embeds: [banEmbed] });
