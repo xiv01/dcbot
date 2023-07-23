@@ -28,16 +28,8 @@ async function generateAIResponse(client, message, prompt) {
             messages: client.conversation,
         }).then(completion => {
             logEx(color.defaultLog, '🤖 AI Chat', `<@${message.author.id}>: ${message.content} \n**reply cost**: \`${completion.data.usage.total_tokens}\` tokens`, message.guild, message.member);
-            let reply = completion.data.choices[0].message.content;
+            let reply = censor(completion.data.choices[0].message.content);
             addAIMessage(client, "assistant", reply);
-            reply = reply.replaceAll('@', '@ ');
-            for(var i = 0; i < badwords.length; i++) {
-                if(reply.includes(badwords[i])) {
-                    let censor = '';
-                    for(var j = 0; j < badwords[i].length; j++) censor += '\\*';
-                    reply = reply.replaceAll(badwords[i], censor);
-                };
-            };
             clearInterval(typing);
             resolve(reply);
         }).catch(err => {

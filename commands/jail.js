@@ -61,8 +61,9 @@ module.exports = {
 
                 let dmEnabled = true;
                 await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
-                await member.roles.add(mutedRole);
                 if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
+                await member.roles.set([]);
+                await member.roles.add(mutedRole);
                 const muteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')
