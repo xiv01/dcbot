@@ -1,5 +1,5 @@
-const { EmbedBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
-const { logsChannel, suggestionChannel, badwords, mutedRoleName, jailVCChannel } = require('../config.json');
+const { EmbedBuilder } = require('discord.js');
+const { logsChannel, badwords, mutedRoleName, jailVCChannel } = require('../config.json');
 const { logEx } = require('./Util.js');
 const color = require('../colors.json');
 module.exports = { messageFiltering };
@@ -43,6 +43,7 @@ async function messageFiltering(client) {
     
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/")) {
             await message.delete();
+            await member.roles.set([]);
             await member.roles.add(message.guild.roles.cache.find(role => role.name === mutedRoleName));
             if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
 

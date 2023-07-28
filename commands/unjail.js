@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { logEx } = require('../src/Util.js');
-const { mutedRoleName } = require('../config.json');
+const { mutedRoleName, standardRoleName } = require('../config.json');
 const color = require('../colors.json');
 
 module.exports = {
@@ -34,6 +34,7 @@ module.exports = {
         await interaction.reply({ embeds: [unmuteEmbed], ephemeral: true });
 
         let mutedRole = interaction.guild.roles.cache.find(role => role.name === mutedRoleName);
+        let standardRole = interaction.guild.roles.cache.find(role => role.name === standardRoleName);
 
         members.forEach(async member => {
             if(member.roles.cache.has(mutedRole.id)) {
@@ -45,6 +46,7 @@ module.exports = {
     
                 let dmEnabled = true;
                 await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
+                await member.roles.add(standardRole);
                 await member.roles.remove(mutedRole);
                 if(!dmEnabled) {
                     logEx(color.success, 'UnJail Command Used', `<@${interaction.user.id}> unjailed <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interaction.member);
