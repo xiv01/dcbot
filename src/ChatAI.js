@@ -37,10 +37,14 @@ async function generateAIResponse(client, message, prompt) {
             resolve(reply);
         }).catch(err => {
             clearInterval(typing);
-            console.log(err);
-            logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
             console.log(err.response);
-            resolve('an error occured while i was trying to answer :(');
+            if(err.response.statusText === 'Too Many Requests') {
+                logEx(color.warning, '🤖 AI Rate Limit', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
+                resolve('you are chatting too fast please wait a few seconds :(');
+            } else {
+                logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
+                resolve('an error occured while i was trying to answer :(');
+            };
         });
     });
 };
@@ -68,12 +72,12 @@ async function chatAI(guild, client) {
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/") || content.includes("@everyone") || content.includes("@here")) return;
         for(var i = 0; i < badwords.length; i++) if(content.includes(badwords[i])) return;
         if(!message.mentions.has(client.user)) {
-            addAIMessage(client, "user", message.member.displayName + ": " + message.content);
+            addAIMessage(client, "user", message.content);
         };
         if (message.mentions.has(client.user)) {
             let prompt = content.replace(/<@\d+>/g, '');
             if(prompt.length > 1) {
-                let reply = await generateAIResponse(client, message, message.member.displayName + " to you: " + prompt)
+                let reply = await generateAIResponse(client, message, prompt)
                 if(reply.length > 2000) {
                     try {
                         await message.reply(reply.substr(0, 2000));
