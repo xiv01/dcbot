@@ -7,32 +7,24 @@ module.exports = { chatAI, addAIMessage, generateAIResponse };
 function addAIMessage(client, role, input) {
     if(chatAIToggle) {
         let tokens = 0;
-        let systemMsgs = [];
         client.conversation.push({ role: role, content: input });
         for(let i = 0; i < client.conversation.length; i++) {
             tokens += encode(JSON.stringify(client.conversation[i])).length
-            if(client.conversation[i].role === "system") systemMsgs.push(i); 
-        };
-        if(systemMsgs.length > 1) {
-            for(let i = 0; i < (systemMsgs.length - 1); i++) {
-                client.conversation.splice(systemMsgs[i], 1);
-            };
         };
         while(tokens > 4000) {
             tokens -= encode(JSON.stringify(client.conversation[0])).length;
-            client.conversation.shift();
+            client.conversation.splice(1, 1);
         };
-        while(client.conversation.length > 15) {
-            client.conversation.shift();
+        while(client.conversation.length > 10) {
+            client.conversation.splice(1, 1);
         };
     };
 };
 
-async function generateAIResponse(client, message, prompt, personality) {
+async function generateAIResponse(client, message, prompt) {
     return new Promise(async function (resolve) {
         await message.channel.sendTyping();
         const typing = setInterval(() => { message.channel.sendTyping() }, 5000);
-        addAIMessage(client, "system", personality);
         addAIMessage(client, "user", prompt);
         await client.openAI.createChatCompletion({
             model: "gpt-3.5-turbo",
@@ -48,7 +40,7 @@ async function generateAIResponse(client, message, prompt, personality) {
             console.log(err);
             logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
             console.log(err.response);
-            resolve('an error occured while I was trying to answer. :(');
+            resolve('an error occured while i was trying to answer :(');
         });
     });
 };
@@ -67,7 +59,7 @@ function censor(input) {
 
 async function chatAI(guild, client) {
     logEx(color.defaultLog, '⚙️ System', '🤖 AI Chat is enabled', guild);
-    client.conversation = [];
+    client.conversation = [{ role: "system", content: chatPersonality }];
 
     client.on('messageCreate', async message => {
         if(message.author.bot) return;
@@ -75,13 +67,13 @@ async function chatAI(guild, client) {
         if(content === null) return;
         if(content.includes("discord.gg/") || content.includes("discordapp.com/invite/") || content.includes("discord.com/invite/") || content.includes("@everyone") || content.includes("@here")) return;
         for(var i = 0; i < badwords.length; i++) if(content.includes(badwords[i])) return;
-        if(!message.mentions.has(client.user)) { 
-            addAIMessage(client, "user", message.member.displayName + " said: " + message.content);
+        if(!message.mentions.has(client.user)) {
+            addAIMessage(client, "user", message.member.displayName + ": " + message.content);
         };
         if (message.mentions.has(client.user)) {
             let prompt = content.replace(/<@\d+>/g, '');
             if(prompt.length > 1) {
-                let reply = await generateAIResponse(client, message, message.member.displayName + " said to you: " + prompt, chatPersonality)
+                let reply = await generateAIResponse(client, message, message.member.displayName + " to you: " + prompt)
                 if(reply.length > 2000) {
                     try {
                         await message.reply(reply.substr(0, 2000));
