@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits, Partials } = require('discord.js');
 const { Configuration, OpenAIApi } = require("openai");
-const { guildId, token, chatAIToggle, openaikey } = require('./config.json');
+const { guildId, token, openaikey } = require('./config.json');
 const { logEx, drawWelcomeImage, registerCommands } = require('./src/Util.js');
 const { advancedLogging } = require('./src/Logging.js');
 const { messageFiltering } = require('./src/MessageFiltering.js');
@@ -49,10 +49,10 @@ client.once('ready', async () => {
     advancedLogging(client);
     messageFiltering(client);
     selfRoles(client);
-    memberManager(client);
+    memberManager(guild, client);
     bumpReminder(guild, client);
     polls(client);
-    if(chatAIToggle) chatAI(guild, client);
+    chatAI(guild, client);
 });
 
 client.login(token);

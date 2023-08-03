@@ -75,6 +75,7 @@ async function chatAI(guild, client) {
             addAIMessage(client, "user", message.content);
         };
         if (message.mentions.has(client.user)) {
+            if(!chatAIToggle) return;
             let prompt = content.replace(/<@\d+>/g, '');
             if(prompt.length > 1) {
                 let reply = await generateAIResponse(client, message, prompt)

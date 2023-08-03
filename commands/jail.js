@@ -17,7 +17,7 @@ module.exports = {
         .addUserOption(option => option.setName('member4').setDescription('name of user you want to jail'))
         .addStringOption(option => option.setName('reason').setDescription('provide a reason for the jail').setMaxLength(2000))
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-	async execute(interaction) {
+	async execute(interaction, client) {
         const members = [];
         interaction.options.data.forEach(option => {
             if (option.type === 6) {
@@ -64,6 +64,7 @@ module.exports = {
                 if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
                 await member.roles.set([]);
                 await member.roles.add(mutedRole);
+                client.jailed.push(member.id)
                 const muteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')

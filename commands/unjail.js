@@ -12,7 +12,7 @@ module.exports = {
         .addUserOption(option => option.setName('member3').setDescription('name of user you want to unjail'))
         .addUserOption(option => option.setName('member4').setDescription('name of user you want to unjail'))
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
-	async execute(interaction) {
+	async execute(interaction, client) {
         const members = [];
         interaction.options.data.forEach(option => {
             if (option.type === 6) {
@@ -48,6 +48,7 @@ module.exports = {
                 await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
                 await member.roles.add(standardRole);
                 await member.roles.remove(mutedRole);
+                client.jailed = client.jailed.filter(e => e !== member.id);
                 if(!dmEnabled) {
                     logEx(color.success, 'UnJail Command Used', `<@${interaction.user.id}> unjailed <@${member.id}>\n\n❗ unable to send DM due to users privacy settings`, interaction.guild, interaction.member);
                 } else {
