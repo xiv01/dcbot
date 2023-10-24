@@ -1,5 +1,5 @@
-const { ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder} = require('discord.js');
-const { generateAIResponse } = require('../src/ChatAI.js');
+const { ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder } = require('discord.js');
+const { generateAIResponse, sendReply } = require('../src/ChatAI.js');
 const color = require('../colors.json');
 
 const errorEmbed = new EmbedBuilder()
@@ -21,22 +21,7 @@ module.exports = {
             return;
         };
         await interaction.reply({ embeds: [successEmbed], ephemeral: true });
-        let reply = await generateAIResponse(client, message, interaction.member.displayName + ' wants you to reply to a message by ' + message.member.displayName + ': ' + message.content)
-        if(reply.length > 2000) {
-            try {
-                await message.reply(reply.substr(0, 2000));
-            } catch {
-                await message.channel.send(reply.substr(0, 2000));
-            };
-            for(i = 1; i < reply.length / 2000; i++) {
-                await message.channel.send(reply.substr(i * 2000, 2000 + (i * 2000)));
-            };
-        } else {
-            try {
-                await message.reply(reply);
-            } catch {
-                await message.channel.send(reply);
-            };
-        };
+        let reply = await generateAIResponse(client, message, message.content)
+        sendReply(reply, message)
     },
 };

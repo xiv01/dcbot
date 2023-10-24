@@ -1,10 +1,16 @@
 const { EmbedBuilder } = require('discord.js');
+const { generateAIResponse, sendReply } = require('./ChatAI.js');
 const { logEx } = require('./Util.js');
 const color = require('../colors.json');
 module.exports = { interactionHandler };
 
 async function interactionHandler(client) {
     client.on('interactionCreate', async interaction => {
+        if(interaction.isModalSubmit()) {
+            if(interaction.customId.startsWith('AIReply')) {
+                handleAIModal(interaction, client);
+            };
+        };
         if(interaction.isModalSubmit()) {
             if(interaction.customId.startsWith('banModal')) {
                 handleBanModal(interaction);
@@ -44,6 +50,14 @@ async function interactionHandler(client) {
 const invalidMember= new EmbedBuilder()
     .setColor(color.warning)
     .setTitle(`**❗member is invalid**`)
+
+const errorEmbed = new EmbedBuilder()
+    .setColor(color.warning)
+    .setTitle(`**❗ cant reply to this message**`)
+
+const successEmbed = new EmbedBuilder()
+    .setColor(color.success)
+    .setTitle(`**✅ replying to this message**`)
 
 async function handleBanModal(interaction) {
     try {
@@ -129,4 +143,22 @@ async function handleKickModal(interaction) {
         await interaction.reply({ embeds: [kickEmbed], ephemeral: true });
         return;
     };
+};
+
+async function handleAIModal(interaction, client) {
+    let message = await interaction.channel.messages.fetch(interaction.customId.substring(7));
+    if(message.author.bot || message.content === null || typeof message === 'undefined') {
+        await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+        return;
+    };
+    await interaction.reply({ embeds: [successEmbed], ephemeral: true });
+    await generateAIResponse(client, message, 'message: "' + message.content + '" reply to this message using the following information: ' + interaction.fields.getTextInputValue('promptInput')).then(
+        (result) => {
+            sendReply(result, message);
+        },
+        async (error) => {
+            let errorMessage = await message.channel.send(error);
+            setTimeout(() => errorMessage.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 3000);
+        }
+    );
 };

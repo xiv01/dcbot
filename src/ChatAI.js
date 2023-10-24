@@ -2,7 +2,7 @@ const { chatAIToggle, badwords, chatPersonality } = require('../config.json');
 const { encode } = require('gpt-3-encoder')
 const { logEx } = require('./Util.js');
 const color = require('../colors.json');
-module.exports = { chatAI, addAIMessage, generateAIResponse };
+module.exports = { chatAI, addAIMessage, generateAIResponse, sendReply };
 
 function addAIMessage(client, role, input) {
     if(chatAIToggle) {
@@ -22,7 +22,7 @@ function addAIMessage(client, role, input) {
 };
 
 async function generateAIResponse(client, message, prompt) {
-    return new Promise(async function (resolve) {
+    return new Promise(async function (resolve, reject) {
         await message.channel.sendTyping();
         const typing = setInterval(() => { message.channel.sendTyping() }, 5000);
         addAIMessage(client, "user", prompt);
@@ -40,10 +40,10 @@ async function generateAIResponse(client, message, prompt) {
             console.log(err.response);
             if(err.response.statusText === 'Too Many Requests') {
                 logEx(color.warning, '🤖 AI Rate Limit', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
-                resolve('you are chatting too fast please wait a few seconds :(');
+                reject('you are chatting too fast please wait a few seconds :(');
             } else {
                 logEx(color.warning, '🤖 AI Error', `**last prompt**: <@${message.author.id}>: ${message.content}`, message.guild, message.member);
-                resolve('an error occured while i was trying to answer :(');
+                reject('an error occured while i was trying to answer :(');
             };
         });
     });
@@ -60,6 +60,25 @@ function censor(input) {
     };
     return output
 };
+
+async function sendReply(reply, message) {
+    if(reply.length > 2000) {
+        try {
+            await message.reply(reply.substr(0, 2000));
+        } catch {
+            await message.channel.send(reply.substr(0, 2000));
+        };
+        for(i = 1; i < reply.length / 2000; i++) {
+            await message.channel.send(reply.substr(i * 2000, 2000 + (i * 2000)));
+        };
+    } else {
+        try {
+            await message.reply(reply);
+        } catch {
+            await message.channel.send(reply);
+        };
+    };
+}
 
 async function chatAI(guild, client) {
     logEx(color.defaultLog, '⚙️ System', '🤖 AI Chat is enabled', guild);
@@ -78,23 +97,15 @@ async function chatAI(guild, client) {
             if(!chatAIToggle) return;
             let prompt = content.replace(/<@\d+>/g, '');
             if(prompt.length > 1) {
-                let reply = await generateAIResponse(client, message, prompt)
-                if(reply.length > 2000) {
-                    try {
-                        await message.reply(reply.substr(0, 2000));
-                    } catch {
-                        await message.channel.send(reply.substr(0, 2000));
-                    };
-                    for(i = 1; i < reply.length / 2000; i++) {
-                        await message.channel.send(reply.substr(i * 2000, 2000 + (i * 2000)));
-                    };
-                } else {
-                    try {
-                        await message.reply(reply);
-                    } catch {
-                        await message.channel.send(reply);
-                    };
-                };
+                await generateAIResponse(client, message, prompt).then(
+                    (result) => {
+                        sendReply(result, message);
+                    },
+                    async (error) => {
+                        let errorMessage = await message.channel.send(error);
+                        setTimeout(() => errorMessage.delete().catch(() => { console.error("[error] unable to delete message (already deleted?)") }), 3000);
+                    }
+                );
             };
         };
     });

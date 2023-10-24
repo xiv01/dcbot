@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { logEx } = require('../src/Util.js');
-const { mutedRoleName, jailVCChannel } = require('../config.json');
+const { mutedRoleName, jailVCChannel, boosterRoleName } = require('../config.json');
 const color = require('../colors.json');
 
 const invalidMember= new EmbedBuilder()
@@ -61,10 +61,14 @@ module.exports = {
 
                 let dmEnabled = true;
                 await member.send({ embeds: [dmEmbed] }).catch(() => dmEnabled = false); 
-                if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel)); 
-                await member.roles.set([]);
+                if(member.voice.channel) await member.voice.setChannel(member.guild.channels.cache.get(jailVCChannel));
+                member.roles.cache.forEach(async role => {
+                    if (role.name !== boosterRoleName && role.name !== '@everyone') {
+                        await member.roles.remove(role);
+                    };
+                });
                 await member.roles.add(mutedRole);
-                client.jailed.push(member.id)
+                client.jailed.push(member.id);
                 const muteEmbed = new EmbedBuilder()
                     .setColor(color.success)
                     .setTitle('✅ **done**')

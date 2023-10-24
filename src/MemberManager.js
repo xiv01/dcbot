@@ -58,7 +58,7 @@ async function memberManager(guild, client) {
             console.error(error);
         };
     });
-    
+
     client.on('guildMemberRemove', async (member) => {
         logEx(color.leaveLog, '📤 Member Left', `<@${member.id}> left the server`, member.guild, member, memberLogsChannel)
         try {
